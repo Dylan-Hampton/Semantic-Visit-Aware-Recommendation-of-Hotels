@@ -3,13 +3,17 @@ import './App.css';
 
 import Header from './components/header/header';
 import Form from './components/form/form';
+import Map from './components/map/map';
 
 
 function App() {
   return (
-    <div>
-      <Header></Header>
-      <Form></Form>
+    <div style={{ flex: 1 }}>
+      <Header />
+      <div className='grid'>
+        <Form />
+        <Map />
+      </div>
     </div>
   );
 }
