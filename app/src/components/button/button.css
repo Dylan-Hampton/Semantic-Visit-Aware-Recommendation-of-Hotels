@@ -1,0 +1,23 @@
+.button {
+    /* Box */
+    width: 576px;
+    height: 120px;
+    
+    background: #C8102E;
+    border: 0px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+
+    /* Text */
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 72px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    
+    color: #FFFFFF;
+}

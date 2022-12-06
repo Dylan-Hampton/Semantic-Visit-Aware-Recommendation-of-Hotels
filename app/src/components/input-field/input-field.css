@@ -1,0 +1,42 @@
+.container {
+    margin-bottom: 32px;
+    flex: 1;
+}
+
+.title {
+    height: 24px;
+
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    display: flex;
+    align-items: flex-end;
+
+    color: #000000;
+}
+
+.field {
+    /* Box */
+    width: 576px;
+    height: 56px;
+    box-sizing: border-box;
+    border: 3px solid #E8E8E8;
+    border-radius: 20px;
+    padding: 16px;
+
+    /* Text */
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    align-items: center;
+
+    color: #000000;
+}
+
+::placeholder {
+    color: #E8E8E8;
+}

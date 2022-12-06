@@ -1,0 +1,10 @@
+.form {
+    padding-left: 48px;
+    width: 576px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 64px;
+}
