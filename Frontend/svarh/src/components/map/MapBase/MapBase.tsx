@@ -24,7 +24,8 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
             zoom: zoom,
             minZoom: 10,
             pitch: 0,
-            maxPitch: 0
+            maxPitch: 0,
+            attributionControl: false
         });
     });
 
