@@ -8,6 +8,7 @@ import HotelIcon from '@mui/icons-material/Hotel';
 const styles = {
   submitBtn: {
     fontSize: 45,
+    backgroundColor: 'coral',
   },
 };
 
