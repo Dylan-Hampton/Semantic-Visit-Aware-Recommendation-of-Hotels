@@ -19,7 +19,8 @@ function App() {
       <Autocomplete
         disablePortal
         id="cityInput"
-        options={cities}
+        options={inputCities}
+        getOptionLabel={(option) => option.name}
         sx={{ width: 250 }}
         renderInput={(params) => <TextField {...params} label="City" />}
       />
@@ -60,8 +61,8 @@ const poiTypes = [
   { type: 'Aquarium' },
 ]
 
-const cities = [
-  { city: 'New York City' },
+const inputCities = [
+  { name: 'New York City' },
 ]
 
 export default App;
