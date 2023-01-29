@@ -1,8 +1,9 @@
 import React from 'react';
 import './App.css';
 import Button from '@mui/material/Button';
-import Icon from '@mui/material/Icon';
 import HotelIcon from '@mui/icons-material/Hotel';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const styles = {
@@ -15,19 +16,52 @@ const styles = {
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <Button 
-          className='submitButton'
-          variant="contained"
-          startIcon=<HotelIcon style={{fontSize:45}} /> 
-          sx={styles.submitBtn}
-          onClick={() => console.log("Clicked Submit")}
-          >
-            Submit
-          </Button>
-      </header>
-    </div>
+      <Autocomplete
+        disablePortal
+        id="cityInput"
+        options={cities}
+        sx={{ width: 250 }}
+        renderInput={(params) => <TextField {...params} label="City" />}
+      />
+
+      <Autocomplete
+        multiple
+        id="poiInput"
+        options={poiTypes}
+        getOptionLabel={(option) => option.type}
+        sx={{ width: 250 }}
+        renderInput={(params) => (
+          <TextField{...params} 
+            variant="standard" 
+            label="Points of Interest"/>
+            )
+          }
+      />
+
+      <Button 
+        className='submitButton'
+        variant="contained"
+        startIcon=<HotelIcon style={{fontSize:45}} /> 
+        sx={styles.submitBtn}
+        onClick={() => console.log("Clicked Submit")}
+        >
+          Submit
+        </Button>
+  </div>
   );
 }
+
+const poiTypes = [
+  { type: 'Museum' },
+  { type: 'Statue' },
+  { type: 'Mall' },
+  { type: 'Park' },
+  { type: 'Zoo' },
+  { type: 'Aquarium' },
+]
+
+const cities = [
+  { city: 'New York City' },
+]
 
 export default App;
