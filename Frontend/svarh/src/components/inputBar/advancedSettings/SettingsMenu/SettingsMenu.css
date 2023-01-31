@@ -1,0 +1,22 @@
+.settings-frame {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 8px;
+    -webkit-box-shadow: 3px 3px 8px -2px #000000; 
+    box-shadow: 3px 3px 8px -2px #000000;
+}
+
+.settings-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 200px 0 5px 10px;
+}
+
+.settings-option {
+    margin: 5px 0 5px 10px;
+}

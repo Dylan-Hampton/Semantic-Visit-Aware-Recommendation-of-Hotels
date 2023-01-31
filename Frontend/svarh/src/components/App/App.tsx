@@ -1,13 +1,12 @@
 import React from 'react';
 import './App.css';
 import MapBase from '../map/MapBase/MapBase';
-import CityDropdown from '../inputBar/inputFields/CityDropdown/CityDropdown';
-import PoiDropdown from '../inputBar/inputFields/PoIDropdown/PoiDropdown';
-import SubmitButton from '../inputBar/inputFields/SubmitButton/SubmitButton';
+import Settings from '../inputBar/advancedSettings/Settings/Settings';
 
 function App() {
   return (
     <div className="App">
+      <Settings />
       <MapBase />
   </div>
   );
