@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AlgorithmDropdown from "../AlgorithmDropdown/AlgorithmDropdown";
 import { ISettingsValues } from "../Settings/Settings";
@@ -27,7 +27,8 @@ const SettingsMenu: React.FC<ISettingsMenuProps> = (props: ISettingsMenuProps) =
     return (
         <>
             <div className="settings-frame">
-                <span className="settings-title">Advanced Settings</span>
+                <div className="settings-title"><span>Advanced Settings</span></div>
+                <Divider />
                 <div className="settings-option">
                     <AlgorithmDropdown options={algorithms} value={algorithm} selectEvent={handleAlgorithmChange}/>
                 </div>

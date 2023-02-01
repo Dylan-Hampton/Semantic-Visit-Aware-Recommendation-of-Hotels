@@ -1,4 +1,4 @@
-import { InputLabel, MenuItem, Select } from "@mui/material";
+import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React from "react";
 import './AlgorithmDropdown.css';
 
@@ -11,17 +11,17 @@ interface IAlgorithmDropdownProps {
 const AlgorithmDropdown: React.FC<IAlgorithmDropdownProps> = (props: IAlgorithmDropdownProps) => {
     return (
         <>
-            <InputLabel id="algorithm-select">Algorithm</InputLabel>
-            <Select 
-            labelId="algorithm-select"
+            <TextField select
+            SelectProps={{ MenuProps: { disableScrollLock: true } }}
+            variant="outlined"
             className="algorithm-select"
-            label="Algorithm"
-            defaultValue={props.value}
+            label={"Algorithm"}
+            value={props.value ?? ''}
             onChange={props.selectEvent}>
                 {props.options.map(o => {
-                    return <MenuItem value={o}>{o}</MenuItem>
+                    return <MenuItem key={o} value={o}>{o}</MenuItem>
                 })}
-            </Select>
+            </TextField>
         </>
     )
 }
