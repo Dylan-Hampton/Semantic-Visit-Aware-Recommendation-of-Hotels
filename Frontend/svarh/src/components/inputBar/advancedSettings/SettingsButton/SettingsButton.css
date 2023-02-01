@@ -1,0 +1,41 @@
+.settings-button {
+    background-color: #c0c0c0;
+    border: solid #000000 5px;
+    border-radius: 8px;
+    width: fit-content;
+    height: fit-content;
+    padding: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.settings-button:hover {
+    transition-duration: 0.1s;
+    background-color: #dedede;
+}
+  
+.settings-button:after {
+    content: "";
+    display: block;
+    position: absolute;
+    border-radius: 8px;
+    left: 0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all 0.25s;
+    box-shadow: 0 0 10px 10px white;
+}
+  
+.settings-button:active:after {
+    box-shadow: 0 0 0 0 white;
+    position: absolute;
+    border-radius: 8px;
+    left: 0;
+    top:0;
+    opacity: 1;
+    transition: 0s;
+}
