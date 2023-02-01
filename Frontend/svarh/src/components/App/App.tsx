@@ -7,8 +7,8 @@ import GeneratedRoute from '../results/generatedRoute/GeneratedRoute/GeneratedRo
 function App() {
   return (
     <div className="App">
-      <Settings />
       <GeneratedRoute routes={[{},{},{}]}/>
+      <Settings />
       <MapBase />
   </div>
   );
