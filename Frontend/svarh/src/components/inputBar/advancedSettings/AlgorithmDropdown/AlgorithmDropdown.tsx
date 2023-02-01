@@ -1,4 +1,4 @@
-import { InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
 import React from "react";
 import './AlgorithmDropdown.css';
 

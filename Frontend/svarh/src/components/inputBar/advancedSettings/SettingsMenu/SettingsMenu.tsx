@@ -1,4 +1,4 @@
-import { Divider, Grid } from "@mui/material";
+import { Divider } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AlgorithmDropdown from "../AlgorithmDropdown/AlgorithmDropdown";
 import { ISettingsValues } from "../Settings/Settings";
