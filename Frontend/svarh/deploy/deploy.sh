@@ -8,6 +8,6 @@ npm install
 npm run build
 
 echo "Deploying to ${DEPLOY_SERVER}"
-cp -r build/ /var/www/html/${SERVER_FOLDER}/
+sudo cp -r build/ /var/www/html/${SERVER_FOLDER}/
 
 echo "Finished copying the build files"
