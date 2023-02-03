@@ -19,7 +19,10 @@ const CityDropdown: React.FC<ICityDropdownProps> = (props: ICityDropdownProps) =
       id="cityInput"
       options={inputCities}
       getOptionLabel={(option) => option.name}
-      sx={{ width: 250 }}
+      sx={{ 
+        width: 250,
+        'marginBottom': '4px',
+      }}
       renderInput={(params) => 
       <TextField {...params}
       label="City" />}

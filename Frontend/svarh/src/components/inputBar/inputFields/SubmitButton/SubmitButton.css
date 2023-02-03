@@ -1,3 +1,9 @@
+.submit-button-frame {
+    display: flex;
+    position: absolute;
+    bottom: 25px;
+}
+
 .submitButton {
     size: 45;
     background-color: #FF7F50 !important;
