@@ -9,14 +9,16 @@ interface ISubmitButtonProps {
 
 const SubmitButton: React.FC<ISubmitButtonProps> = (props: ISubmitButtonProps) => {
     return (
-        <Button 
-        className='submitButton'
-        variant="contained"
-        startIcon=<HotelIcon style={{fontSize:45}} />
-        onClick={() => console.log("Clicked Submit")}
-        >
-          Submit
-        </Button>
+        <div className="submit-button-frame">
+          <Button
+          className="submitButton"
+          variant="contained"
+          startIcon=<HotelIcon style={{fontSize:45}} />
+          onClick={() => console.log("Clicked Submit")}
+          >
+            Submit
+          </Button>
+        </div>
     );
 }
 
