@@ -2,7 +2,7 @@ image: node
 
 cache:
   paths:
-    - node_modules/
+    - Frontend/svarg/node_modules/
 
 before_script:
   - apt-get update -qq
