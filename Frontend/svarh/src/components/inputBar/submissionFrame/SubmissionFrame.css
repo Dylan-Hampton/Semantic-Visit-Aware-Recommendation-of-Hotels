@@ -1,0 +1,14 @@
+.submissionFrame {
+    display: flex;
+    position: fixed;
+    top: 2%;
+    left: 2%;
+    width: 350px;
+    height: 95%;
+    opacity: 75%;
+}
+
+.submissionFrame:hover {
+    transition-duration: 0.3s;
+    opacity: 100%;
+}
