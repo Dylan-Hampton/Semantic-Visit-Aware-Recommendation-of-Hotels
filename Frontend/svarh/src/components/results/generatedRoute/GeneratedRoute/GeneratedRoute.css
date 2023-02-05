@@ -3,9 +3,11 @@
     top: calc(1% + 65px);
     right: 1%;
     width: 20%;
+    max-width: 300px;
+    min-width: 250px;
     height: 60%;
     background-color: white;
-    border-radius: 5%;
+    border-radius: 8px;
     -webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
     -moz-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
     box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);

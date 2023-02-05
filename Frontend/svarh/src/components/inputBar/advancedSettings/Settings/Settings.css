@@ -2,6 +2,6 @@
     position: fixed;
     top: 1%;
     right: 1%;
-    height: 350px;
+    height: fit-content;
     width: 250px;
 }

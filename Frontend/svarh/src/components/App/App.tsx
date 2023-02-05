@@ -10,9 +10,9 @@ function App() {
   return (
     <div className="App">
       <SubmissionFrame />
-      {//<RecommendedHotels />
+      {<RecommendedHotels />
       }
-      {<GeneratedRoute routes={[{},{},{}]}/>
+      {//<GeneratedRoute routes={[{},{},{}]}/>
 }
       <Settings />
       <MapBase />
