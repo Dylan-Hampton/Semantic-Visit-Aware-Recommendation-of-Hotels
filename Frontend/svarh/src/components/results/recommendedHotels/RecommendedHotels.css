@@ -1,8 +1,21 @@
-.recommendedHotels {
-    display: flex;
+.recommended-hotels-container {
     position: fixed;
-    top: 10%;
-    right: 30px;
-    width: 250px;
-    height: 400px;
+    top: calc(1% + 65px);
+    right: 1%;
+    width: 20%;
+    max-width: 300px;
+    min-width: 250px;
+    height: 60%;
+    background-color: white;
+    border-radius: 8px;
+    -webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
+    padding: 16px;
+}
+
+.recommended-hotels-title {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
 }

@@ -26,7 +26,7 @@ const Settings: React.FC<ISettingsProps> = (props: ISettingsProps) => {
 
     return (
         <>
-            <div className="settings">
+            <div className={`settings ${showMenu ? 'on-top' : ''}`}>
                 {showMenu && <SettingsMenu savedValues={{algorithm: algorithm}} saveAlgorithm={saveAlgorithm}/>}
                 <SettingsButton onClick={toggleMenu}/>
             </div>
