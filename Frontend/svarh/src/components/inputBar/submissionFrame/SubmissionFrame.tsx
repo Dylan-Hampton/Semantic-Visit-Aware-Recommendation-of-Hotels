@@ -1,5 +1,5 @@
 import { Card, Divider } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import CityDropdown from '../inputFields/CityDropdown/CityDropdown';
 import MaximumDistance from '../inputFields/MaximumDistanceField/MaximumDistance';
 import PoiDropdown from '../inputFields/PoIDropdown/PoiDropdown';
