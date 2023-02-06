@@ -1,14 +1,45 @@
 .submissionFrame {
-    display: flex;
     position: fixed;
     top: 2%;
     left: 2%;
-    width: 350px;
-    height: 95%;
-    opacity: 75%;
+    width: 25%;
+    max-width: 350px;
+    min-width: 250px;
+    height: 96%;
 }
 
-.submissionFrame:hover {
-    transition-duration: 0.3s;
-    opacity: 100%;
+.input-header {
+}
+
+.input-title {
+    display: block;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.input-body {
+    height: 100%;
+}
+
+.input-bottom {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.input-submit {
+    margin: 5px 0;
+}
+
+.input-maxdist {
+    margin: 0 0 30px 0;
+}
+
+.input-city {
+    margin: 10px 0;
+}
+
+.input-poi {
+    margin: 20px 0;
 }

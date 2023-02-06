@@ -16,23 +16,35 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
             <div className="submissionFrame">
                 <Card
                     sx={{
-                        width: 'inherit',
+                        width: '100%',
                         height: 'inherit',
-                        padding: 2,
+                        padding: '16px 16px 32px 16px',
                         // '&:hover': {
                         // backgroundColor: 'primary.main',
                         // opacity: [0.9, 0.8, 0.7],
                         // },
                     }}
                 >
-                    <CityDropdown></CityDropdown>
-                    <PoiDropdown></PoiDropdown>
+                    <div className='input-header'>
+                        <span className="input-title">Search Hotels</span>
+                    </div>
                     <Divider sx={{
-                        marginBottom: 2,
-                        marginTop: 2,
-                    }} />
-                    <MaximumDistance></MaximumDistance>
-                    <SubmitButton></SubmitButton>
+                                marginBottom: 2,
+                                marginTop: 1
+                            }}/>
+                    <div className="input-body">
+                        <div className="input-city"><CityDropdown></CityDropdown></div>
+                        <div className="input-poi"><PoiDropdown></PoiDropdown></div>
+                        
+                        <div className="input-bottom">
+                            <Divider sx={{
+                                marginBottom: 2,
+                                marginTop: 2,
+                            }} />
+                            <div className="input-maxdist"><MaximumDistance></MaximumDistance></div>
+                            <div className="input-submit"><SubmitButton></SubmitButton></div>
+                        </div>
+                    </div>
                 </Card>
             </div>
         </>

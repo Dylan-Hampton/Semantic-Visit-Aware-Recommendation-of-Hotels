@@ -9,13 +9,13 @@ import GeneratedRoute from '../results/generatedRoute/GeneratedRoute/GeneratedRo
 function App() {
   return (
     <div className="App">
+      <MapBase />
       <SubmissionFrame />
       {<RecommendedHotels />
       }
       {//<GeneratedRoute routes={[{},{},{}]}/>
 }
       <Settings />
-      <MapBase />
   </div>
   );
 }

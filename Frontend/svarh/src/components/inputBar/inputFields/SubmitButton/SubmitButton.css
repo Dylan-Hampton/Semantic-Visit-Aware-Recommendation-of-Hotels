@@ -1,10 +1,5 @@
-.submit-button-frame {
-    display: flex;
-    position: absolute;
-    bottom: 25px;
-}
-
 .submitButton {
-    size: 45;
+    width: 100%;
+    height: 75px;
     background-color: #FF7F50 !important;
 }

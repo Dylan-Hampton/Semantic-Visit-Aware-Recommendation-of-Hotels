@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
 import './MaximumDistance.css';
 
@@ -7,16 +7,26 @@ interface IMaximumDistanceProps {
 }
 
 const MaximumDistance: React.FC<IMaximumDistanceProps> = (props: IMaximumDistanceProps) => {
-    const [maxDist, changeMaxDist] = useState(false)
+    const [maxDist, changeMaxDist] = useState(null);
 
     const handleMaximumDistanceChange = (e: any) => {
-        changeMaxDist(e.target.value)
-        console.log(maxDist)
+        let valAsNum: number = parseInt(e.target.value);
+        if ((Number.isNaN(valAsNum) && maxDist != null) || (!Number.isNaN(valAsNum) && valAsNum >= 0)) {
+            changeMaxDist(e.target.value === '' ? null : e.target.value);
+        }
     }
 
     return (
         <div className="maxDist">
-            <TextField id="outlined-basic" label="Maximum Distance" onChange={() => handleMaximumDistanceChange} variant="outlined" />
+            <TextField 
+                inputProps={{ inputMode: 'text', pattern: '[0-9]*' }} 
+                InputProps={{endAdornment: <InputAdornment position="end">mi</InputAdornment>}}
+                className="maxDistInput" 
+                id="outlined-basic" 
+                label="Maximum Distance" 
+                value={maxDist ?? ''}
+                onChange={handleMaximumDistanceChange} 
+                variant="outlined" />
         </div>
     );
 }
