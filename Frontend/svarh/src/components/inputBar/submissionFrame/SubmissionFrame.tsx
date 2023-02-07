@@ -26,12 +26,12 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                     }}
                 >
                     <div className='input-header'>
-                        <span className="input-title">Search Hotels</span>
-                    </div>
-                    <Divider sx={{
+                        <span className="input-title">Search Hotels</span>  
+                        <Divider sx={{
                                 marginBottom: 2,
                                 marginTop: 1
                             }}/>
+                    </div>
                     <div className="input-body">
                         <div className="input-city"><CityDropdown></CityDropdown></div>
                         <div className="input-poi"><PoiDropdown></PoiDropdown></div>
