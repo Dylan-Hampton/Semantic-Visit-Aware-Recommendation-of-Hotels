@@ -13,6 +13,7 @@ const SubmitButton: React.FC<ISubmitButtonProps> = (props: ISubmitButtonProps) =
           <Button
           className="submitButton"
           variant="contained"
+          sx={{fontSize: 36}}
           startIcon=<HotelIcon style={{fontSize:45}} />
           onClick={() => console.log("Clicked Submit")}
           >

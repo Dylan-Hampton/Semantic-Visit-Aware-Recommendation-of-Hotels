@@ -24,10 +24,9 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         id="poiInput"
         options={poiTypes}
         getOptionLabel={(option) => option.type}
-        sx={{ width: 250 }}
+        sx={{ width: '100%' }}
         renderInput={(params) => (
           <TextField{...params} 
-            variant="standard" 
             label="Points of Interest"/>
             )
           }

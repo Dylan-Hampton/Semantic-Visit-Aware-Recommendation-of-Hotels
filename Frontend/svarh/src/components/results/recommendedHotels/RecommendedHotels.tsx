@@ -1,5 +1,5 @@
-import { Card, Divider } from '@mui/material';
-import React, { useState } from 'react';
+import { Divider } from '@mui/material';
+import React from 'react';
 import './RecommendedHotels.css';
 
 interface IRecommendedHotelsProps {

@@ -20,7 +20,7 @@ const CityDropdown: React.FC<ICityDropdownProps> = (props: ICityDropdownProps) =
       options={inputCities}
       getOptionLabel={(option) => option.name}
       sx={{ 
-        width: 250,
+        width: '100%',
         'marginBottom': '4px',
       }}
       renderInput={(params) => 
