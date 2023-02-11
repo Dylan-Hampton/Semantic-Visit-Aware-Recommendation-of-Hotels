@@ -1,7 +1,3 @@
-stages:
-  - deploy-frontend
-  - deploy-backend
-
 cache:
   paths:
     - Frontend/svarg/node_modules/
@@ -12,32 +8,16 @@ before_script:
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-deploy-frontend:
+deploy:
   image: node
-  stage: deploy-frontend
-  tags:
-    - frontend-runner
+  stage: deploy
   environment:
     name: production
     url: http://sdmay23-34.ece.iastate.edu/
   script:
     - cd Frontend/svarh/
     - bash deploy/deploy.sh
+    - cd ../../Backend
+    - bash deploy/deploy.sh
   only:
     - main
-
-deploy-backend:
-  image: python:3.7.16-slim-buster
-  stage: deploy-backend
-  tags:
-    - backend-runner
-  before_script: 
-    - python --version
-    - pip install virtualenv
-    - virtualenv env
-    - source env/bin/activate
-  script: 
-    - cd Backend/
-    - bash deploy/deploy.sh
-  # only:
-  #   - main
