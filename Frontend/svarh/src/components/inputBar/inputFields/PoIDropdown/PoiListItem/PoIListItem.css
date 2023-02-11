@@ -1,0 +1,22 @@
+.li-name {
+    font-size: 18px;
+    padding-left: 10px;
+    color: #724400;
+}
+
+.li-remove {
+    color: #838383;
+    cursor: pointer;
+}
+
+.circle-on-hover {
+    padding: 2px;
+}
+
+.circle-on-hover:hover {
+    background-color: #f1f1f1;
+    border-radius: 50%;
+    -webkit-transition: background-color 150ms ease-in;
+    -ms-transition: background-color 150ms ease-in;
+    transition: background-color 150ms ease-in;
+}

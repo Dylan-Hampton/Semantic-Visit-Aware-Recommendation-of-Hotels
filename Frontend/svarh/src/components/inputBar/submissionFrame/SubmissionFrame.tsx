@@ -35,7 +35,6 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                     <div className="input-body">
                         <div className="input-city"><CityDropdown></CityDropdown></div>
                         <div className="input-poi"><PoiDropdown></PoiDropdown></div>
-                        
                         <div className="input-bottom">
                             <Divider sx={{
                                 marginBottom: 2,
