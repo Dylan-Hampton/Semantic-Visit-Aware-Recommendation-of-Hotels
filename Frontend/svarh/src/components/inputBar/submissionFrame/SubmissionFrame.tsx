@@ -18,11 +18,7 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                     sx={{
                         width: '100%',
                         height: 'inherit',
-                        padding: '16px 16px 32px 16px',
-                        // '&:hover': {
-                        // backgroundColor: 'primary.main',
-                        // opacity: [0.9, 0.8, 0.7],
-                        // },
+                        padding: '16px 16px 32px 16px'
                     }}
                 >
                     <div className='input-header'>
@@ -35,7 +31,6 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                     <div className="input-body">
                         <div className="input-city"><CityDropdown></CityDropdown></div>
                         <div className="input-poi"><PoiDropdown></PoiDropdown></div>
-                        
                         <div className="input-bottom">
                             <Divider sx={{
                                 marginBottom: 2,
