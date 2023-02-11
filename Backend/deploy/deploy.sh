@@ -12,4 +12,4 @@ pip install flask gunicorn
 
 echo "Starting flask app"
 export FLASK_APP=app.py
-gunicorn -b 127.0.0.1:80 myproject:app
+gunicorn -b 127.0.0.1:80 app:app
