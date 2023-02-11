@@ -1,4 +1,6 @@
-image: node
+stages:
+  - deploy-frontend
+  - deploy-backend
 
 cache:
   paths:
@@ -10,8 +12,9 @@ before_script:
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-deploy:
-  stage: deploy
+deploy-frontend:
+  image: node
+  stage: deploy-frontend
   environment:
     name: production
     url: http://sdmay23-34.ece.iastate.edu/
@@ -20,3 +23,17 @@ deploy:
     - bash deploy/deploy.sh
   only:
     - main
+
+deploy-backend:
+  image: python:3.7.16-buster
+  stage: deploy-backend
+  before_script: 
+    - python --version
+    - pip install virtualenv
+    - virtualenv env
+    - source env/bin/activate
+  script: 
+    - cd Backend/
+    - bash deploy/deploy.sh
+  # only:
+  #   - main
