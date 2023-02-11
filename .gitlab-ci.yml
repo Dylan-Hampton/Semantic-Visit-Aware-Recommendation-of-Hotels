@@ -25,7 +25,7 @@ deploy-frontend:
     - main
 
 deploy-backend:
-  image: python:3.7.16-buster
+  image: python:3.7.16-slim-buster
   stage: deploy-backend
   before_script: 
     - python --version
