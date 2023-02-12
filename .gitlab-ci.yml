@@ -1,3 +1,7 @@
+stages:
+  # - deploy-frontend
+  - deploy-backend
+
 cache:
   paths:
     - Frontend/svarg/node_modules/
@@ -8,16 +12,23 @@ before_script:
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-deploy:
+deploy-frontend:
   image: node
-  stage: deploy
+  stage: deploy-frontend
   environment:
     name: production
     url: http://sdmay23-34.ece.iastate.edu/
   script:
     - cd Frontend/svarh/
     - bash deploy/deploy.sh
-    - cd ../../Backend
-    - bash deploy/deploy.sh
   only:
     - main
+
+deploy-backend:
+  image: node
+  stage: deploy-backend
+  script:
+    - cd Backend/
+    - bash deploy/deploy.sh
+  # only:
+  #   - main
