@@ -1,0 +1,16 @@
+.return-container {
+    width: max-content !important;
+    color: inherit;
+}
+
+.return-container:hover {
+    color: inherit;
+    cursor: pointer;
+}
+
+.return-text {
+    display: inline;
+    font-size: 20px;
+    width: fit-content;
+    white-space: nowrap;
+}
