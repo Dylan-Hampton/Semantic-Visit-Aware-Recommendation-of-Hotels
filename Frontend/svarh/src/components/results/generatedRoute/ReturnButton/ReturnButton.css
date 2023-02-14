@@ -1,5 +1,5 @@
 .return-container {
-    width: fit-content;
+    width: max-content !important;
     color: inherit;
 }
 
@@ -8,11 +8,9 @@
     cursor: pointer;
 }
 
-.return-icon {
-    display: inline-block;
-}
-
 .return-text {
-    display: inline-block;
+    display: inline;
     font-size: 20px;
+    width: fit-content;
+    white-space: nowrap;
 }
