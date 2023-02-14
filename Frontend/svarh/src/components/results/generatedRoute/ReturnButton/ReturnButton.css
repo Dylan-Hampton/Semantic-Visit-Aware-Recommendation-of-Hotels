@@ -1,0 +1,18 @@
+.return-container {
+    width: fit-content;
+    color: inherit;
+}
+
+.return-container:hover {
+    color: inherit;
+    cursor: pointer;
+}
+
+.return-icon {
+    display: inline-block;
+}
+
+.return-text {
+    display: inline-block;
+    font-size: 20px;
+}
