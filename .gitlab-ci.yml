@@ -22,12 +22,18 @@ deploy-frontend:
     - cd Frontend/svarh/
     - bash deploy/deploy.sh
   only:
-    - main
+    refs:
+      - main
+    changes:
+      - Frontend/**/*
 
 deploy-backend:
   stage: deploy-backend
   script:
     - cd Backend/
     - bash deploy/deploy.sh
-  # only:
-  #   - main
+  only:
+    refs:
+      - main
+    changes:
+      - Backend/**/*
