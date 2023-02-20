@@ -20,8 +20,15 @@ test('renders search frame header', () => {
   expect(linkHeader).toBeInTheDocument();
 });
 
+test('renders submission frame inputs', () => {
+  render(<App />);
+  expect(screen.getByRole("combobox", { name: "City" })).toBeInTheDocument();
+  expect(screen.getByRole("combobox", { name: "Points of Interest" })).toBeInTheDocument();
+  expect(screen.getByRole("textbox", { name: "Maximum Distance" })).toBeInTheDocument();
+});
+
 test('renders submission button', () => {
   render(<App />);
-  const submitBtn = screen.getByText(/Submit/i);
+  const submitBtn = screen.getByRole("button", { name: "Submit" });
   expect(submitBtn).toBeInTheDocument();
 });
