@@ -42,6 +42,7 @@ test('settings button handles click', () => {
   const settingsBtn = screen.getByTestId("SettingsIcon");
   expect(settingsBtn).toBeInTheDocument(); 
   fireEvent.click(settingsBtn); // open settings panel
+
   expect(settingsBtn).not.toBeInTheDocument();
   expect(screen.getByLabelText("CloseSettingsMenuBtn")).toBeInTheDocument();
   expect(screen.getByText("Advanced Settings")).toBeInTheDocument();
@@ -52,6 +53,7 @@ test('open and close settings panel', () => {
   render(<App />);
   const settingsBtn = screen.getByTestId("SettingsIcon");
   fireEvent.click(settingsBtn); // open settings panel
+
   expect(settingsBtn).not.toBeInTheDocument();
   const closeSettingsBtn = screen.getByLabelText("CloseSettingsMenuBtn");
   const settingsTxt = screen.getByText("Advanced Settings");
@@ -60,6 +62,7 @@ test('open and close settings panel', () => {
   expect(settingsTxt).toBeInTheDocument();
   expect(algoDropdown).toBeInTheDocument();
   fireEvent.click(screen.getByLabelText("CloseSettingsMenuBtn")); // close settings panel
+  
   expect(screen.getByTestId("SettingsIcon")).toBeInTheDocument(); 
   expect(closeSettingsBtn).not.toBeInTheDocument();
   expect(settingsTxt).not.toBeInTheDocument();
