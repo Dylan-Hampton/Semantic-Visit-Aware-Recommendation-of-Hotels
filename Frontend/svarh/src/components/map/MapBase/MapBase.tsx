@@ -31,6 +31,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
             maxPitch: 0,
             attributionControl: false
         });
+        console.log(map);
     });
 
     useEffect(() => {

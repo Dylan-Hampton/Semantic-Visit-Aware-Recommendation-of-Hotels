@@ -1,32 +1,41 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Skeleton, TextField } from "@mui/material";
 import React from "react";
 
 interface ICityDropdownProps {
-
+  cities: string[];
+  setCity: (c: string) => void;
 }
 
 const CityDropdown: React.FC<ICityDropdownProps> = (props: ICityDropdownProps) => {
     
-    //TODO: Get possible cities from backend and pass in through the props
-    const inputCities = [
-        { name: 'New York City' },
-    ]
+    const setCity = (e: any) => {
+      props.setCity(e.target.value);
+    }
 
     return (
-        
-      <Autocomplete
-      disablePortal
-      id="cityInput"
-      options={inputCities}
-      getOptionLabel={(option) => option.name}
-      sx={{ 
-        width: '100%',
-        'marginBottom': '4px',
-      }}
-      renderInput={(params) => 
-      <TextField {...params}
-      label="City" />}
-    />
+      <>
+      {props.cities ? 
+        <Autocomplete
+          disablePortal
+          id="cityInput"
+          options={props.cities}
+          getOptionLabel={(option) => option}
+          sx={{ 
+            width: '100%',
+            'marginBottom': '4px',
+          }}
+          renderInput={(params) => 
+            <TextField {...params}
+            label="City" />}
+          onChange={setCity}
+          />
+        :
+        <Skeleton sx={{ 
+          width: '100%',
+          'marginBottom': '4px',
+        }}/>
+      }  
+      </>
     )
 }
 

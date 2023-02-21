@@ -14,7 +14,7 @@ export interface ISettingsValues {
 const Settings: React.FC<ISettingsProps> = (props: ISettingsProps) => {
     const [showMenu, setShowMenu] = useState(false);
 
-    const [algorithm, setAlgorithm] = useState(null);
+    const [algorithm, setAlgorithm] = useState('Node-first');
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
