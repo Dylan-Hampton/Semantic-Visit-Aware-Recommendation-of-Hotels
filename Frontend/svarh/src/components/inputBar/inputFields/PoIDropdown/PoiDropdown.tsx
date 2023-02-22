@@ -1,5 +1,5 @@
-import { Autocomplete, AutocompleteChangeDetails, AutocompleteChangeReason, TextField } from "@mui/material";
-import React, { useState } from "react";
+import { Autocomplete, AutocompleteChangeDetails, AutocompleteChangeReason, Skeleton, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import PoIListItem from "./PoiListItem/PoIListItem";
 import MuseumIcon from '@mui/icons-material/Museum';
 import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
@@ -10,22 +10,23 @@ import PinDropIcon from '@mui/icons-material/PinDrop';
 import './PoiDropdown.css';
 
 interface IPoiDropdownProps {
-
+  poiTypes: string[]
 }
 
 const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
     const [pois, setPois] = useState([]);
-    const [inputValue, setInputValue] = useState({type: ""});
+    const [inputValue, setInputValue] = useState('');
     //TODO: Get PoI types from database on page load, pass them in through props
-    
-    const poiTypes = [
-        { type: 'Museum' },
-        { type: 'Statue' },
-        { type: 'Mall' },
-        { type: 'Park' },
-        { type: 'Zoo' },
-        { type: 'Aquarium' },
-    ]
+
+    useEffect(() => {
+      let newPoiList: string[] = [];
+      pois.forEach((p) => {
+        if (props.poiTypes.includes(p.name)) {
+          newPoiList = newPoiList.concat(p);
+        }
+      })
+      setPois(newPoiList);
+    })
 
     const getIcon = (name: string): JSX.Element => {
       switch (name) {
@@ -44,12 +45,12 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
       }
     }
 
-    const onChange = (event: React.SyntheticEvent<Element, Event>, value: { type: string; }, reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<{ type: string; }>) => {
+    const onChange = (event: React.SyntheticEvent<Element, Event>, value: string, reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<string>) => {
       if (value !== null) {
         event.preventDefault();
         event.stopPropagation();
-        setInputValue({type: ""});
-        const selectedName: string = value.type;
+        setInputValue('');
+        const selectedName: string = value;
         const icon = getIcon(selectedName);
         if (!doesPoiListContain(selectedName)) {
           setPois(pois.concat({name: selectedName, icon: icon}));
@@ -76,34 +77,41 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
     }
 
     const optionValue = (option: any, value: any) => {
-      if (value.type === '') return true;
-      if (value.type === option) return true;
+      if (value === '') return true;
+      if (value === option) return true;
       return false;
     }
 
     return (
       <>
-      <Autocomplete
-      id="poiInput"
-      options={poiTypes}
-      getOptionLabel={(option) => option.type}
-      sx={{ width: '100%' }}
-      value={inputValue}
-      isOptionEqualToValue={optionValue}
-      disablePortal
-      onChange={onChange}
-      renderInput={(params) => (
-        <TextField{...params} 
-          label="Points of Interest"/>
-          )
-        }
-    />
-      {pois.map(p => {
-        return (
-          <div key={p.name} className="poi-item">
-            <PoIListItem key={p.name} name={p.name} icon={p.icon} setQuantity={(name: string, quantity: number) => {}} onRemove={removePoi} />
-          </div>)
-      })}
+      {props.poiTypes ? 
+        <>
+        <Autocomplete
+        id="poiInput"
+        options={props.poiTypes}
+        getOptionLabel={(option) => option}
+        sx={{ width: '100%' }}
+        value={inputValue}
+        isOptionEqualToValue={optionValue}
+        disablePortal
+        onChange={onChange}
+        renderInput={(params) => (
+          <TextField{...params} 
+            label="Points of Interest"/>
+            )
+          }
+      />
+        {pois.map(p => {
+          return (
+            <div key={p.name} className="poi-item">
+              <PoIListItem key={p.name} name={p.name} icon={p.icon} setQuantity={(name: string, quantity: number) => {}} onRemove={removePoi} />
+            </div>)
+        })}
+        </>
+      :
+      <Skeleton sx={{ width: '100%' }}/>
+      }
+      
     </>
         
     )

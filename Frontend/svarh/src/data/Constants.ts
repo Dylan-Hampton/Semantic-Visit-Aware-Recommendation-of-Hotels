@@ -1,0 +1,2 @@
+// No idea if that is actually the flask app url on local, may need to change.
+export const apiUrl = process.env.NODE_ENV === 'production' ? 'http://sdmay23-34.ece.iastate.edu/api' : 'http://127.0.0.1:5000';
