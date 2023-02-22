@@ -1,5 +1,5 @@
 import { Autocomplete, AutocompleteChangeDetails, AutocompleteChangeReason, Skeleton, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PoIListItem from "./PoiListItem/PoIListItem";
 import MuseumIcon from '@mui/icons-material/Museum';
 import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
@@ -17,6 +17,16 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
     const [pois, setPois] = useState([]);
     const [inputValue, setInputValue] = useState('');
     //TODO: Get PoI types from database on page load, pass them in through props
+
+    useEffect(() => {
+      let newPoiList: string[] = [];
+      pois.forEach((p) => {
+        if (props.poiTypes.includes(p.name)) {
+          newPoiList = newPoiList.concat(p);
+        }
+      })
+      setPois(newPoiList);
+    })
 
     const getIcon = (name: string): JSX.Element => {
       switch (name) {
@@ -67,8 +77,8 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
     }
 
     const optionValue = (option: any, value: any) => {
-      if (value.type === '') return true;
-      if (value.type === option) return true;
+      if (value === '') return true;
+      if (value === option) return true;
       return false;
     }
 

@@ -55,13 +55,13 @@ const GeneratedRoute: React.FC<IGeneratedRouteProps> = (props: IGeneratedRoutePr
             <div className="route-container">
                 <div className="route-header">
                     <Grid container >
-                        <Grid xs={3} display="flex" alignItems="center" justifyContent="center" >
+                        <Grid item xs={3} display="flex" alignItems="center" justifyContent="center" >
                             <NavigateBeforeIcon onClick={navigatePrevRoute} className={prevRouteDisabled ? "nav-button-disabled" : "nav-button"} sx={navButtonStyles}/>
                         </Grid>
-                        <Grid xs={6} textAlign="center">
+                        <Grid item xs={6} textAlign="center">
                             <h3 className="route-header-title">Generated Route #{currentRoute + 1}</h3>
                         </Grid>
-                        <Grid xs={3} display="flex" alignItems="center" justifyContent="center">
+                        <Grid item xs={3} display="flex" alignItems="center" justifyContent="center">
                             <NavigateNextIcon onClick={navigateNextRoute} className={nextRouteDisabled ? "nav-button-disabled" : "nav-button"} sx={navButtonStyles}/>
                         </Grid>
                     </Grid>

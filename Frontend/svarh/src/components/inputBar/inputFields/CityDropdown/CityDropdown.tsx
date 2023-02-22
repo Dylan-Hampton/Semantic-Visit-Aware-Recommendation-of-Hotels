@@ -9,7 +9,7 @@ interface ICityDropdownProps {
 const CityDropdown: React.FC<ICityDropdownProps> = (props: ICityDropdownProps) => {
     
     const setCity = (e: any) => {
-      props.setCity(e.target.value);
+      props.setCity(e.target.innerText);
     }
 
     return (
