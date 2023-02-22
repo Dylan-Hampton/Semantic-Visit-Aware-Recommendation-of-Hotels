@@ -36,7 +36,7 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                 setFailAlert(true);
             });
         }
-    });
+    }, [cities]);
 
     useEffect(() => {
         if (cities) {
