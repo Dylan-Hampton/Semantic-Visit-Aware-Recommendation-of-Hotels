@@ -26,7 +26,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         }
       })
       setPois(newPoiList);
-    })
+    }, [pois, props.poiTypes])
 
     const getIcon = (name: string): JSX.Element => {
       switch (name) {
