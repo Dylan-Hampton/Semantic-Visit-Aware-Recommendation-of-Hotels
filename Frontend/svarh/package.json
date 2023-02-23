@@ -14,7 +14,7 @@
     "@types/node": "^16.18.11",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
-    "mapbox-gl": "^2.12.0",
+    "mapbox-gl": "^2.13.0",
     "material-icons": "^1.13.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

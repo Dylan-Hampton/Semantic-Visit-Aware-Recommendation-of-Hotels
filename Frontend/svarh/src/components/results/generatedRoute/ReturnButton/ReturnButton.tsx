@@ -13,7 +13,7 @@ const ReturnButton: React.FC<IReturnButtonProps> = (props: IReturnButtonProps) =
             <Grid item xs={2} justifyItems="center" justifyContent="center" className="return-icon">
                 <ReplyIcon />
             </Grid>
-            <Grid item xs={10} justifyItems="center" justifyContent="center" className="return-text" >View Hotels</Grid>
+            <Grid item xs={10} justifyItems="center" justifyContent="center" className="return-text" aria-label="HotelReturnBtn" >View Hotels</Grid>
         </Grid>
     )
 }

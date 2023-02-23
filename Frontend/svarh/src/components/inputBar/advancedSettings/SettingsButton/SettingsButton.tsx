@@ -18,7 +18,7 @@ const SettingsButton: React.FC<ISettingsButtonProps> = (props: ISettingsButtonPr
     return (
         <div className="settings-button" onClick={onClick}>
             {showClose ? 
-                <CloseIcon sx={{ fontSize: 35, margin: '4px 4px 0 4px' }}/> 
+                <CloseIcon aria-label="CloseSettingsMenuBtn" sx={{ fontSize: 35, margin: '4px 4px 0 4px' }}/> 
                 : <SettingsIcon sx={{ fontSize: 35, margin: '4px 4px 0 4px' }}/>
             }
         </div>
