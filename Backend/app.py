@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+from flask_api import status
 from flask_cors import CORS
 
 import sys
@@ -8,10 +9,12 @@ import math
 import heapq
 import os
 
-sys.path.insert(1, "./PaDOC-Query")
+sys.path.insert(1, "./PaDOC-Query/")
 import ContractPoINetwork, CONSTANTS
 import GreedySearch
 import Node
+from Experiment import random_walk_restart
+from Experiment import greedy_dijkstra
 
 app = Flask(__name__)
 CORS(app)
@@ -266,17 +269,34 @@ def routes():
 
     g.rtree_build(origins)
 
-    theta = [0,1,0,1,0,1]
-    max_dist = 2000
-    num_required_origin = 1
-    max_time = 20
+    GREEDY_DIJKSTRA = 0
+    RANDOM_WALK_RESTART = 1
+    POI_FIRST = 2
+    ORIGIN_FIRST = 3
 
-    alg_poi_res = GreedySearch.greedy_process_PoI(g, container_index, theta, max_dist, origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
-    # gd_res = greedy_dijkstra(g, origins, theta, max_dist, num_required_origin, verbal=False, complexity=False)
-    # alg_o_res = GreedySearch.greedy_process_origin(g, container_index, theta, max_dist, origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
-    # rwr_res = random_walk_restart(g, origins, theta, max_dist, 3*max_time, num_required_origin, verbal=False, complexity=False)
+    content = request.json
 
-    return jsonify(get_result_JSON(g, alg_poi_res))
+    algorithm = content['algorithm']
+    theta = content['categories']
+    max_dist = content['distance']
+    num_required_origin = content['origins']
+
+    # Not really sure what this should be set to, but for now 2 seems good
+    max_time = 2
+
+    route_res = None
+    if(algorithm == GREEDY_DIJKSTRA):
+        route_res = greedy_dijkstra(g, origins, theta, max_dist, num_required_origin, verbal=False, complexity=False)
+    elif(algorithm == RANDOM_WALK_RESTART):
+        route_res = random_walk_restart(g, origins, theta, max_dist, 3*max_time, num_required_origin, verbal=False, complexity=False)
+    elif(algorithm == POI_FIRST):
+        route_res = GreedySearch.greedy_process_PoI(g, container_index, theta, max_dist, origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
+    elif(algorithm == ORIGIN_FIRST):
+        route_res = GreedySearch.greedy_process_origin(g, container_index, theta, max_dist, origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
+    else:
+        return "Invalid argument for: algorithm", status.HTTP_400_BAD_REQUEST
+    
+    return jsonify(get_result_JSON(g, route_res))
 
 def get_result_JSON(g, route_res):
     result = []
