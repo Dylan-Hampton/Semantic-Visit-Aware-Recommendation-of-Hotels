@@ -1,4 +1,5 @@
 stages:
+  - test
   - deploy-frontend
   - deploy-backend
 
@@ -11,6 +12,28 @@ before_script:
   - ssh-add <(echo "$SSH_PRIVATE_KEY")
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+
+test:
+  image: node
+  stage: test
+  before_script:
+    - cd Frontend/svarh/
+    - npm install
+  script:
+    - npm run test:ci
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    paths:
+      - coverage/
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  only:
+    refs:
+      - main
+    changes:
+      - Frontend/**/*
 
 deploy-frontend:
   image: node
