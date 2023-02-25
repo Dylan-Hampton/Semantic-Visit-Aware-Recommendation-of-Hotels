@@ -322,6 +322,8 @@ def get_result_JSON(g, route_res):
             path_JSON['pois'].append(get_poi_JSON(g, path, poi))
         
         result.append(path_JSON)
+        path_JSON = {'origin': [], 'nodes': [], 'pois': [], 'distance': ''}
+        
     return result
 
 def get_node_JSON(node):
