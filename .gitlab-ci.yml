@@ -18,7 +18,7 @@ test:
   stage: test
   before_script:
     - cd Frontend/svarh/
-    - npm install
+    - npm ci
   script:
     - npm run test:ci
   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
