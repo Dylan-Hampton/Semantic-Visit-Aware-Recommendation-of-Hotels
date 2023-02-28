@@ -5,6 +5,8 @@ import App from './App';
 export const mockMapOn = jest.fn();
 export const mockMapRemove = jest.fn();
 
+// test change
+
 jest.mock('mapbox-gl', () => ({
     Map: function () {
       // @ts-ignore
