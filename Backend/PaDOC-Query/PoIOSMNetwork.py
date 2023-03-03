@@ -33,7 +33,7 @@ def map_to_list(osm_g):
     for n_id, n_inf in osm_g.nodes(data=True):
         if n_id not in ref_table:
             ref_table[n_id] = len(node_col)
-            node_col[len(node_col)] = {'lng': n_inf['x'], 'lat': n_inf['y'], 'sites': set(), 'starting': False}
+            node_col[len(node_col)] = {'lng': n_inf['x'], 'lat': n_inf['y'], 'sites': set(), 'starting': False, 'hotel_names': set()}
 
     edge_col = {}
     for start_n, end_n, e_inf in osm_g.edges(data=True):
@@ -126,6 +126,7 @@ class PoI_Graph:
                     self.node_col[pick_e[0]]['sites'].add(k)
                 else:
                     self.node_col[pick_e[0]]['starting'] = True
+                    self.node_col[pick_e[0]]['hotel_names'].add(k)
 
                 print("Match to existing node (start)...")
             elif d_nn_part == 1:
@@ -135,6 +136,7 @@ class PoI_Graph:
                     self.node_col[pick_e[1]]['sites'].add(k)
                 else:
                     self.node_col[pick_e[1]]['starting'] = True
+                    self.node_col[pick_e[1]]['hotel_names'].add(k)
 
                 print("Match to existing node (end)...")
             else:
@@ -146,10 +148,10 @@ class PoI_Graph:
 
                 if processPoI:
                     self.node_col[new_id] = {'lng': projected_node.x, 'lat': projected_node.y,
-                                             'sites': set([k]), 'starting': False}
+                                             'sites': set([k]), 'starting': False, 'hotel_names': set()}
                 else:
                     self.node_col[new_id] = {'lng': projected_node.x, 'lat': projected_node.y,
-                                             'sites': set(), 'starting': True}
+                                             'sites': set(), 'starting': True, 'hotel_names': set([k])}
 
                 # Add new edges to edge_col & Delete previous edge(s) from edge_col
                 start_site_len = self.edge_col[pick_e] * d_nn_part
@@ -249,7 +251,7 @@ def main():
         with open(folder_name + "/" + short_name + "_ns.csv", 'w', newline='', encoding="cp1252") as whandle:
             spamwriter = csv.writer(whandle)
 
-            spamwriter.writerow(['no', 'lng', 'lat', 'sites', 'hotel'])
+            spamwriter.writerow(['no', 'lng', 'lat', 'sites', 'hotel', 'name'])
 
             for k, v in nsDic.items():
                 if v['starting']:
@@ -258,7 +260,7 @@ def main():
                     hotelFlag = 'N'
 
                 spamwriter.writerow([
-                    k, v['lng'], v['lat'], '|'.join(list(v['sites'])), hotelFlag
+                    k, v['lng'], v['lat'], '|'.join(list(v['sites'])), hotelFlag, '|'.join(list(v['hotel_names']))
                 ])
 
         with open(folder_name + "/" + short_name + "_es.csv", 'w', newline='', encoding="cp1252") as whandle:
