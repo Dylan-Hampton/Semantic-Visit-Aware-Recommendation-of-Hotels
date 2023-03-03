@@ -213,15 +213,18 @@ def routes():
     if os.path.exists("./PaDOC-Query/PoI_Network/NY_ns.csv"):
         print("Starting Locating Origins/Hotels......")
         origins = set()
+        origin_name_mapping = {}
 
         with open("./PaDOC-Query/PoI_Network/NY_ns.csv", 'r', encoding="cp1252") as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
 
             for each_row in spamreader:
-                node_id, hotel_flag = int(each_row[0]), each_row[4]
+                node_id, hotel_flag, hotel_name = int(each_row[0]), each_row[4], each_row[5]
 
-                if hotel_flag == 'Y':  origins.add(node_id)
+                if hotel_flag == 'Y':  
+                    origins.add(node_id)
+                    origin_name_mapping[node_id] = hotel_name
 
         print("In total ", len(origins), " Origins/Hotels found......")
         print("==================================================")
@@ -296,9 +299,9 @@ def routes():
     else:
         return "Invalid argument for: algorithm", status.HTTP_400_BAD_REQUEST
     
-    return jsonify(get_result_JSON(g, route_res))
+    return jsonify(get_result_JSON(g, route_res, origin_name_mapping))
 
-def get_result_JSON(g, route_res):
+def get_result_JSON(g, route_res, origin_name_mapping):
     result = []
     path_JSON = {'origin': [], 'nodes': [], 'pois': [], 'distance': ''}
 
@@ -311,7 +314,7 @@ def get_result_JSON(g, route_res):
         pois = data[3]
 
         # Construct result JSON for a certain origin
-        path_JSON['origin'] = get_node_JSON(g.nodes[origin_id])
+        path_JSON['origin'] = get_node_JSON(g.nodes[origin_id], origin_name=origin_name_mapping[origin_id])
 
         for node_id in path:
             path_JSON['nodes'].append(get_node_JSON(g.nodes[node_id]))
@@ -326,8 +329,11 @@ def get_result_JSON(g, route_res):
         
     return result
 
-def get_node_JSON(node):
-        return {'lng': node.lng, 'lat': node.lat}
+def get_node_JSON(node, origin_name=None):
+        if origin_name:
+            return {'lng': node.lng, 'lat': node.lat, 'name': origin_name}
+        else:
+            return {'lng': node.lng, 'lat': node.lat}
 
 # TODO: Find a way to not have to iterate through all nodes in the path to find PoI's lat,long
 def get_poi_JSON(g, path, poi):
