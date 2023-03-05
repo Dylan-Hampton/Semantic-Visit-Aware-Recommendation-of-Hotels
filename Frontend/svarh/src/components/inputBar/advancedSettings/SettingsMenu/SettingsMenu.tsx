@@ -1,16 +1,18 @@
 import { Divider } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AlgorithmDropdown from "../AlgorithmDropdown/AlgorithmDropdown";
+import MaxOrigins from "../MaxOriginsField/MaxOrigins";
 import { ISettingsValues } from "../Settings/Settings";
 import './SettingsMenu.css';
 
 interface ISettingsMenuProps {
-    saveAlgorithm: (s: string) => void;
+    saveValues: (v: ISettingsValues) => void;
     savedValues: ISettingsValues;
 }
 
 const SettingsMenu: React.FC<ISettingsMenuProps> = (props: ISettingsMenuProps) => {
     const [algorithm, setAlgorithm] = useState(props.savedValues.algorithm);
+    const [maxOrigins, setMaxOrigins] = useState(props.savedValues.maxOrigins);
 
     useEffect(() => {
 
@@ -21,7 +23,16 @@ const SettingsMenu: React.FC<ISettingsMenuProps> = (props: ISettingsMenuProps) =
 
     const handleAlgorithmChange = (e: any) => {
         setAlgorithm(e.target.value);
-        props.saveAlgorithm(e.target.value);
+        props.savedValues.algorithm = e.target.value;
+        props.saveValues(props.savedValues);
+    }
+
+    const handleMaxOriginsChange = (e: any) => {
+        if (!Number.isNaN(+e.target.value)) {
+            setMaxOrigins(+e.target.value);
+        }
+        props.savedValues.maxOrigins = +e.target.value;
+        props.saveValues(props.savedValues);
     }
 
     return (
@@ -31,6 +42,9 @@ const SettingsMenu: React.FC<ISettingsMenuProps> = (props: ISettingsMenuProps) =
                 <Divider />
                 <div className="settings-option">
                     <AlgorithmDropdown options={algorithms} value={algorithm} selectEvent={handleAlgorithmChange}/>
+                </div>
+                <div className="settings-option">  
+                    <MaxOrigins value={maxOrigins} onChange={handleMaxOriginsChange}/>
                 </div>
             </div>
         </>
