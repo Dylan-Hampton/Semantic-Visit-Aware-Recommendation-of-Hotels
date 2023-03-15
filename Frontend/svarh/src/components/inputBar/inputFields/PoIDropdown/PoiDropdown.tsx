@@ -25,7 +25,11 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
           newPoiList = newPoiList.concat(p);
         }
       })
-      setPois(newPoiList);
+      const compNewPoI = newPoiList.sort().toString();
+      const compOldPoI = pois.sort().toString();
+      if(compOldPoI != compNewPoI) {
+        setPois(newPoiList);
+      }
     }, [pois, props.poiTypes])
 
     const getIcon = (name: string): JSX.Element => {

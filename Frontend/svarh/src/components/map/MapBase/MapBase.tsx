@@ -51,7 +51,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         mapController.subscribe(MapController.ADD_LINE, (data: IAddLineData) => {
             addLine(); // Change this to add params as needed
         });
-        console.log(map);
+        // console.log(map);
     });
 
 
