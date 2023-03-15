@@ -23,9 +23,9 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     const [lat, setLat] = useState(40.723);
     const [zoom, setZoom] = useState(13);
 
-    const addMarker = (test: string) => {
+    const addMarker = (data: IAddMarkerData) => {
         // Use `map` variable with .current to deal with Map object
-        console.log(test);
+        console.log(data.test);
     }
 
     const addLine = () => {
@@ -46,7 +46,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         });
         let mapController: MapController = MapController.getInstance();
         mapController.subscribe(MapController.ADD_MARKER, (data: IAddMarkerData) => {
-            addMarker(data.test); // Change this to add params as needed, string is passed as an example
+            addMarker(data); // Change this to add params as needed, string is passed as an example
         });
         mapController.subscribe(MapController.ADD_LINE, (data: IAddLineData) => {
             addLine(); // Change this to add params as needed
