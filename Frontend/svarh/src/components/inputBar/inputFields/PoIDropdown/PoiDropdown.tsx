@@ -27,7 +27,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
       })
       const compNewPoI = newPoiList.sort().toString();
       const compOldPoI = pois.sort().toString();
-      if(compOldPoI != compNewPoI) {
+      if(compOldPoI !== compNewPoI) {
         setPois(newPoiList);
       }
     }, [pois, props.poiTypes])
