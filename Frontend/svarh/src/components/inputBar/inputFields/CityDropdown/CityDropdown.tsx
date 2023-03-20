@@ -18,6 +18,7 @@ const CityDropdown: React.FC<ICityDropdownProps> = (props: ICityDropdownProps) =
         <Autocomplete
           disablePortal
           id="cityInput"
+          aria-label="cityInput"
           options={props.cities}
           getOptionLabel={(option) => option}
           sx={{ 

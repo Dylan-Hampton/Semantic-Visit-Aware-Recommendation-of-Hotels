@@ -92,6 +92,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         <>
         <Autocomplete
         id="poiInput"
+        aria-label="poiInput"
         options={props.poiTypes}
         getOptionLabel={(option) => option}
         sx={{ width: '100%' }}

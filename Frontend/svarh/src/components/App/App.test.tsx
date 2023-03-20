@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, getByTestId, getAllByTestId } from '@testing-library/react';
 import App from './App';
 
 export const mockMapOn = jest.fn();
@@ -23,8 +23,8 @@ test('renders search frame header', () => {
 
 test('renders submission frame inputs', () => {
   render(<App />);
-  expect(screen.getByRole("combobox", { name: "City" })).toBeInTheDocument();
-  expect(screen.getByRole("combobox", { name: "Points of Interest" })).toBeInTheDocument();
+  expect(screen.getByLabelText("cityInput")).toBeInTheDocument();
+  expect(screen.getByLabelText("poiInput")).toBeInTheDocument();
   expect(screen.getByRole("textbox", { name: "Maximum Distance" })).toBeInTheDocument();
 });
 
@@ -49,6 +49,8 @@ test('settings button handles click', () => {
   expect(screen.getByLabelText("CloseSettingsMenuBtn")).toBeInTheDocument();
   expect(screen.getByText("Advanced Settings")).toBeInTheDocument();
   expect(screen.getByLabelText("Algorithm")).toBeInTheDocument();
+  expect(screen.getByLabelText("Max # of Origins")).toBeInTheDocument();
+  expect(screen.getByLabelText("Max # of Origins")).toHaveValue("10");
 });
 
 test('open and close settings panel', () => {
@@ -101,4 +103,11 @@ test('scroll through generated routes panel', () => {
       fireEvent.click(screen.getByTestId("NavigateBeforeIcon"));
     }
   }
+});
+
+test('city + PoI inputs handle clicks', () => {
+  render(<App />);
+  const cityInput = screen.getByLabelText("cityInput");
+  const poiInput = screen.getByLabelText("poiInput");
+  // need to find way to check for and click dropdown options
 });
