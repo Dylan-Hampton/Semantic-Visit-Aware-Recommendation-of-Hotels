@@ -1,0 +1,14 @@
+.list-item {
+    margin: 7px 0;
+}
+
+.hotel-name {
+    color: rgb(240, 116, 71);
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.hotel-distance {
+    color: #7d7d7d;
+    font-size: 14px;
+}
