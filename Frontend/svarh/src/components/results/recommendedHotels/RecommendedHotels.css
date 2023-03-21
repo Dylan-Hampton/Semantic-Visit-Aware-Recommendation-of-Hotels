@@ -11,11 +11,15 @@
     -webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
     -moz-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
     box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
-    padding: 16px;
+    padding: 0px;
 }
 
 .recommended-hotels-title {
     text-align: center;
-    margin-top: 0;
-    margin-bottom: 0;
+    margin: 14px 10px 0 10px;
+}
+
+.recommended-hotels-body {
+    height: 87%;
+    overflow: auto;
 }
