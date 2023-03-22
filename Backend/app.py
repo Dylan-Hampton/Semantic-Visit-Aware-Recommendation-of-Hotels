@@ -56,8 +56,128 @@ def cities():
 @app.route('/routes')
 def routes():
     # TODO: Separate the setup parts (graph, index, origins) into different functions that can be called or ran on setup of Apache
-    num_poi = 623
 
+    g = get_ny_graph()
+    ############################################################################################
+    ############################################################################################
+    ############################################################################################
+
+    container_index = get_index_from_pickle("./PaDOC-Query/PoI_Network/Index/MatrixContainer_" + str(num_poi) + ".pickle")
+
+    ############################################################################################
+    ############################################################################################
+    ############################################################################################
+    origins, origin_name_mapping = get_origins("./PaDOC-Query/PoI_Network/NY_ns.csv")
+
+    g.rtree_build(origins)
+
+    GREEDY_DIJKSTRA = 0
+    RANDOM_WALK_RESTART = 1
+    POI_FIRST = 2
+    ORIGIN_FIRST = 3
+
+    content = request.json
+
+    algorithm = content['algorithm']
+    theta = content['categories']
+    max_dist = content['distance']
+    num_required_origin = content['origins']
+
+    # Not really sure what this should be set to, but for now 2 seems good
+    max_time = 2
+
+    route_res = None
+    if(algorithm == GREEDY_DIJKSTRA):
+        route_res = greedy_dijkstra(g, origins, theta, max_dist, num_required_origin, verbal=False, complexity=False)
+    elif(algorithm == RANDOM_WALK_RESTART):
+        route_res = random_walk_restart(g, origins, theta, max_dist, 3*max_time, num_required_origin, verbal=False, complexity=False)
+    elif(algorithm == POI_FIRST):
+        route_res = GreedySearch.greedy_process_PoI(g, container_index, theta, max_dist, origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
+    elif(algorithm == ORIGIN_FIRST):
+        route_res = GreedySearch.greedy_process_origin(g, container_index, theta, max_dist, origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
+    else:
+        return "Invalid argument for: algorithm", status.HTTP_400_BAD_REQUEST
+    
+    return jsonify(get_result_JSON(g, route_res, origin_name_mapping))
+
+def get_index_from_pickle(path_to_pickle):
+    if os.path.exists(path_to_pickle):
+        print("Start Loading Container Index from Pickle file......")
+
+        with open(path_to_pickle, 'rb') as f:
+            container_index = pickle.load(f)
+
+        print("Container Index Has Been Loaded......")
+        print("=================================================")
+        return container_index
+    else:
+        print("No Index Found!!!")
+        exit()
+
+def get_origins(origins_csv_path):
+    if os.path.exists(origins_csv_path):
+        print("Starting Locating Origins/Hotels......")
+        origins = set()
+        origin_name_mapping = {}
+
+        with open(origins_csv_path, 'r', encoding="cp1252") as rf:
+            spamreader = csv.reader(rf)
+            next(spamreader)
+
+            for each_row in spamreader:
+                node_id, hotel_flag, hotel_name = int(each_row[0]), each_row[4], each_row[5]
+
+                if hotel_flag == 'Y':  
+                    origins.add(node_id)
+                    origin_name_mapping[node_id] = hotel_name
+
+        print("In total ", len(origins), " Origins/Hotels found......")
+        print("==================================================")
+    else:
+        print("No Hotel/Origin Info!!!")
+        exit()
+
+    # Generate new sample from all origins
+    new_sample_origin = False
+    # If want sampled subset of origins OR all origins
+    sampled_origin = False
+
+    baseline_greedy_dijkstra = True
+    baseline_rwr = True
+
+    if sampled_origin:
+        num_origin = 120
+    else:
+        num_origin = len(origins)
+
+    if new_sample_origin:
+        origins = random.sample(list(origins), k=num_origin)
+
+        with open('./PaDOC-Query/ExperimentRelated/random' + str(num_origin) + '.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow([str(x) for x in origins])
+
+        origins = set(origins)
+
+        print("Origins Sampling Completed...")
+        print("==================================================")
+    elif sampled_origin:
+        with open('./PaDOC-Query/ExperimentRelated/random' + str(num_origin) + '.csv', 'r') as f:
+            rf = csv.reader(f)
+
+            for row in rf:
+                if not row:  break
+                origins = set([int(x) for x in row])
+
+        print("Sampled Origins Loaded Completed...")
+        print("==================================================")
+    else:
+        print("Use All ", len(origins), " Origins")
+        print("==================================================")
+    return origins, origin_name_mapping
+
+def get_ny_graph():
+    num_poi = 623
     if os.path.exists("./PaDOC-Query/PoI_Network/PKL/NY_" + str(num_poi) + "_PoI_network_euclidean.pickle"):
         print("Start Loading PoI Network from Pickle file......")
 
@@ -190,116 +310,7 @@ def routes():
     else:
         print("No PoI network data!!!")
         exit()
-
-    ############################################################################################
-    ############################################################################################
-    ############################################################################################
-
-    if os.path.exists("./PaDOC-Query/PoI_Network/Index/MatrixContainer_" + str(num_poi) + ".pickle"):
-        print("Start Loading Container Index from Pickle file......")
-
-        with open("./PaDOC-Query/PoI_Network/Index/MatrixContainer_" + str(num_poi) + ".pickle", 'rb') as f:
-            container_index = pickle.load(f)
-
-        print("Container Index Has Been Loaded......")
-        print("=================================================")
-    else:
-        print("No Index Found!!!")
-        exit()
-
-    ############################################################################################
-    ############################################################################################
-    ############################################################################################
-    if os.path.exists("./PaDOC-Query/PoI_Network/NY_ns.csv"):
-        print("Starting Locating Origins/Hotels......")
-        origins = set()
-        origin_name_mapping = {}
-
-        with open("./PaDOC-Query/PoI_Network/NY_ns.csv", 'r', encoding="cp1252") as rf:
-            spamreader = csv.reader(rf)
-            next(spamreader)
-
-            for each_row in spamreader:
-                node_id, hotel_flag, hotel_name = int(each_row[0]), each_row[4], each_row[5]
-
-                if hotel_flag == 'Y':  
-                    origins.add(node_id)
-                    origin_name_mapping[node_id] = hotel_name
-
-        print("In total ", len(origins), " Origins/Hotels found......")
-        print("==================================================")
-    else:
-        print("No Hotel/Origin Info!!!")
-        exit()
-
-    # Generate new sample from all origins
-    new_sample_origin = False
-    # If want sampled subset of origins OR all origins
-    sampled_origin = False
-
-    baseline_greedy_dijkstra = True
-    baseline_rwr = True
-
-    if sampled_origin:
-        num_origin = 120
-    else:
-        num_origin = len(origins)
-
-    if new_sample_origin:
-        origins = random.sample(list(origins), k=num_origin)
-
-        with open('./PaDOC-Query/ExperimentRelated/random' + str(num_origin) + '.csv', 'w') as f:
-            writer = csv.writer(f)
-            writer.writerow([str(x) for x in origins])
-
-        origins = set(origins)
-
-        print("Origins Sampling Completed...")
-        print("==================================================")
-    elif sampled_origin:
-        with open('./PaDOC-Query/ExperimentRelated/random' + str(num_origin) + '.csv', 'r') as f:
-            rf = csv.reader(f)
-
-            for row in rf:
-                if not row:  break
-                origins = set([int(x) for x in row])
-
-        print("Sampled Origins Loaded Completed...")
-        print("==================================================")
-    else:
-        print("Use All ", len(origins), " Origins")
-        print("==================================================")
-
-    g.rtree_build(origins)
-
-    GREEDY_DIJKSTRA = 0
-    RANDOM_WALK_RESTART = 1
-    POI_FIRST = 2
-    ORIGIN_FIRST = 3
-
-    content = request.json
-
-    algorithm = content['algorithm']
-    theta = content['categories']
-    max_dist = content['distance']
-    num_required_origin = content['origins']
-
-    # Not really sure what this should be set to, but for now 2 seems good
-    max_time = 2
-
-    route_res = None
-    if(algorithm == GREEDY_DIJKSTRA):
-        route_res = greedy_dijkstra(g, origins, theta, max_dist, num_required_origin, verbal=False, complexity=False)
-    elif(algorithm == RANDOM_WALK_RESTART):
-        route_res = random_walk_restart(g, origins, theta, max_dist, 3*max_time, num_required_origin, verbal=False, complexity=False)
-    elif(algorithm == POI_FIRST):
-        route_res = GreedySearch.greedy_process_PoI(g, container_index, theta, max_dist, origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
-    elif(algorithm == ORIGIN_FIRST):
-        route_res = GreedySearch.greedy_process_origin(g, container_index, theta, max_dist, origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
-    else:
-        return "Invalid argument for: algorithm", status.HTTP_400_BAD_REQUEST
-    
-    return jsonify(get_result_JSON(g, route_res, origin_name_mapping))
+    return g
 
 def get_result_JSON(g, route_res, origin_name_mapping):
     result = []
