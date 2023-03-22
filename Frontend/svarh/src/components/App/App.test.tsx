@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, getByTestId, getAllByTestId } from '@testing-library/react';
+import { shallow } from 'enzyme';
 import App from './App';
+import CityDropdown from '../inputBar/inputFields/CityDropdown/CityDropdown';
 
 export const mockMapOn = jest.fn();
 export const mockMapRemove = jest.fn();
@@ -106,8 +108,9 @@ test('scroll through generated routes panel', () => {
 });
 
 test('city + PoI inputs handle clicks', () => {
-  render(<App />);
-  const cityInput = screen.getByLabelText("cityInput");
-  const poiInput = screen.getByLabelText("poiInput");
-  // need to find way to check for and click dropdown options
+  const wrapper = shallow(<App/>);
+  wrapper.find("#cityInput").at(0).simulate("change", {
+    target: { value: "New York City" }
+  });
+
 });
