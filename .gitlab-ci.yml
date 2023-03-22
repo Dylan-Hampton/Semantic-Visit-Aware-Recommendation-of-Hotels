@@ -1,7 +1,8 @@
 stages:
-  - test
-  - deploy-frontend
-  - deploy-backend
+  # - test
+  # - deploy-frontend
+  - test-backend
+  # - deploy-backend
 
 cache:
   paths:
@@ -34,6 +35,19 @@ test:
       - main
     changes:
       - Frontend/**/*
+
+test-backend:
+  stage: test-backend
+  before_script:
+    - source /home/vm-user/environments/python37/bin/activate
+  script:
+    cd Backend/
+    pytest
+  # only:
+  #   refs:
+  #     - main
+  #   changes:
+  #     - Backend/**/*
 
 deploy-frontend:
   image: node
