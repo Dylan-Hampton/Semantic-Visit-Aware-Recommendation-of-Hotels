@@ -1,8 +1,5 @@
 stages:
-  # - test
-  # - deploy-frontend
   - test-backend
-  # - deploy-backend
 
 cache:
   paths:
