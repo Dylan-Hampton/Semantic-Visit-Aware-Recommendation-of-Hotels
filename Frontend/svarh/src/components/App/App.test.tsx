@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
+import GeneratedRoute from '../results/generatedRoute/GeneratedRoute/GeneratedRoute';
 
 export const mockMapOn = jest.fn();
 export const mockMapRemove = jest.fn();
@@ -70,15 +71,14 @@ test('open and close settings panel', () => {
   expect(settingsTxt).not.toBeInTheDocument();
   expect(algoDropdown).not.toBeInTheDocument();
 });
-/*
+
 test('renders view hotels return button', () => {
-  render(<App />);
+  render(<GeneratedRoute routes={[{},{},{}]}/>);
   expect(screen.getByLabelText("HotelReturnBtn")).toBeInTheDocument(); 
-  // may need to be changed in future when generated route frame is hidden to start
 });
 
 test('scroll through generated routes panel', () => {
-  render(<App />);
+  render(<GeneratedRoute routes={[{},{},{}]}/>);
   // expect(screen.getByTestId("NavigateBeforeIcon")).toBeDisabled();   not too sure on how to check if icon is disabled, toBeDisabled seems to be for buttons
 
   // Test scrolling forwards 
@@ -102,4 +102,3 @@ test('scroll through generated routes panel', () => {
     }
   }
 });
-*/
