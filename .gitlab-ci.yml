@@ -39,9 +39,7 @@ before_script:
 test-backend:
   stage: test-backend
   before_script:
-    - pwd
-    - ls
-    - source /home/vm-user/environments/python37/bin/activate
+    - sudo source /home/vm-user/environments/python37/bin/activate
   script:
     cd Backend/
     pytest
