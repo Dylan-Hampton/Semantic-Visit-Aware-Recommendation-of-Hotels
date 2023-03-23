@@ -1,8 +1,8 @@
 stages:
-  # - test
-  # - deploy-frontend
+  - test
+  - deploy-frontend
   - test-backend
-  # - deploy-backend
+  - deploy-backend
 
 cache:
   paths:
@@ -14,27 +14,27 @@ before_script:
   - mkdir -p ~/.ssh
   - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
 
-# test:
-#   image: node
-#   stage: test
-#   before_script:
-#     - cd Frontend/svarh/
-#     - npm ci
-#   script:
-#     - npm run test:ci
-#   coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
-#   artifacts:
-#     paths:
-#       - coverage/
-#     when: always
-#     reports:
-#       junit:
-#         - junit.xml
-#   only:
-#     refs:
-#       - main
-#     changes:
-#       - Frontend/**/*
+test:
+  image: node
+  stage: test
+  before_script:
+    - cd Frontend/svarh/
+    - npm ci
+  script:
+    - npm run test:ci
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  artifacts:
+    paths:
+      - coverage/
+    when: always
+    reports:
+      junit:
+        - junit.xml
+  only:
+    refs:
+      - main
+    changes:
+      - Frontend/**/*
 
 test-backend:
   stage: test-backend
@@ -43,34 +43,34 @@ test-backend:
   script:
     - cd Backend/
     - python3 -m pytest -rA -W ignore::DeprecationWarning
-  # only:
-  #   refs:
-  #     - main
-  #   changes:
-  #     - Backend/**/*
+  only:
+    refs:
+      - main
+    changes:
+      - Backend/**/*
 
-# deploy-frontend:
-#   image: node
-#   stage: deploy-frontend
-#   environment:
-#     name: production
-#     url: http://sdmay23-34.ece.iastate.edu/
-#   script:
-#     - cd Frontend/svarh/
-#     - bash deploy/deploy.sh
-#   only:
-#     refs:
-#       - main
-#     changes:
-#       - Frontend/**/*
+deploy-frontend:
+  image: node
+  stage: deploy-frontend
+  environment:
+    name: production
+    url: http://sdmay23-34.ece.iastate.edu/
+  script:
+    - cd Frontend/svarh/
+    - bash deploy/deploy.sh
+  only:
+    refs:
+      - main
+    changes:
+      - Frontend/**/*
 
-# deploy-backend:
-#   stage: deploy-backend
-#   script:
-#     - cd Backend/
-#     - bash deploy/deploy.sh
-#   only:
-#     refs:
-#       - main
-#     changes:
-#       - Backend/**/*
+deploy-backend:
+  stage: deploy-backend
+  script:
+    - cd Backend/
+    - bash deploy/deploy.sh
+  only:
+    refs:
+      - main
+    changes:
+      - Backend/**/*
