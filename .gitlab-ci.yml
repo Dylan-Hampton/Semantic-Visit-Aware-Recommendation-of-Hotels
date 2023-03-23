@@ -42,7 +42,7 @@ test-backend:
     - source /home/vm-user/environments/python37/bin/activate
   script:
     - cd Backend/
-    - python3 -m pytest
+    - python3 -m pytest -W ignore::DeprecationWarning
   # only:
   #   refs:
   #     - main
