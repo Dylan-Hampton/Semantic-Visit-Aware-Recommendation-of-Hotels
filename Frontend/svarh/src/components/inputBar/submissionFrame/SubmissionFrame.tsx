@@ -1,4 +1,5 @@
 import { Alert, Card, Divider, Snackbar } from '@mui/material';
+import { useAppSelector, useAppDispatch } from '../../../hooks';
 import React, { useEffect, useState } from 'react';
 import { apiUrl } from '../../../data/Constants';
 import CityDropdown from '../inputFields/CityDropdown/CityDropdown';
@@ -17,6 +18,7 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
     const [failAlert, setFailAlert] = useState(false);
     const [city, setCity] = useState<string>(null);
     const [pois, setPois] = useState<string[]>([]);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (!cities) {
