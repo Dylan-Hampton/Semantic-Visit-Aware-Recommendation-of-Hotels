@@ -56,6 +56,7 @@ def cities():
 @app.route('/routes')
 def routes():
     # TODO: Separate the setup parts (graph, index, origins) into different functions that can be called or ran on setup of Apache
+    num_poi = 623
 
     g = get_ny_graph()
     ############################################################################################
