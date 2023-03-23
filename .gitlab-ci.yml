@@ -42,7 +42,7 @@ test-backend:
     - source /home/vm-user/environments/python37/bin/activate
   script:
     cd Backend/
-    pytest
+    python3 -m pytest
   # only:
   #   refs:
   #     - main
