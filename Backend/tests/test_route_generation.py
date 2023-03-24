@@ -73,8 +73,6 @@ def test_random_walk_restart_generation():
         "categories": [1,1,1,1,1,1]
     })
     
-    # Generation of routes does not seem to be deterministic (PoIs change on different runs)
-    # Testing lengths of responses to account for above
     assert response.status_code == 200
 
     # Chance nothing is found
