@@ -16,16 +16,16 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
                 <div className="recommended-hotels-header">
                     <h3 className="recommended-hotels-title">Recommended Hotels</h3>
                 </div>
-                <Divider sx={{padding: 1, width: '100%'}}/>
+                <Divider sx={{ width: '100%'}}/>
                 <div className="recommended-hotels-body">
                     {hotels.map((h, i) => {
                         return (
-                            <>
+                            <div key={i}>
                                 <HotelListItem name={h.name} distance={h.routeLength} />
                                 {i !== props.hotels.length - 1 &&
-                                    <Divider />
+                                    <Divider/>
                                 }
-                            </>
+                            </div>
                         )
                     })}
                 </div>

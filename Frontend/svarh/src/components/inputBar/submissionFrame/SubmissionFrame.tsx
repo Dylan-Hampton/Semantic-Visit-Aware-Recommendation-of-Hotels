@@ -84,29 +84,32 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                 <Card
                     sx={{
                         width: '100%',
-                        height: 'inherit',
-                        padding: '16px 16px 32px 16px'
+                        height: '100%',
+                        padding: '0'
                     }}
                 >
+                <div className="input-frame">    
                     <div className='input-header'>
                         <span className="input-title">Search Hotels</span>  
                         <Divider sx={{
                                 marginBottom: 2,
-                                marginTop: 1
+                                marginTop: 1,
+                                width: '100%'
                             }}/>
                     </div>
                     <div className="input-body">
                         <div className="input-city"><CityDropdown cities={cities ? cities.map((c: City) => c.cityName) : []} setCity={setCity}></CityDropdown></div>
                         <div className="input-poi"><PoiDropdown changeCategories={handleCategories} poiTypes={pois}></PoiDropdown></div>
-                        <div className="input-bottom">
-                            <Divider sx={{
-                                marginBottom: 2,
-                                marginTop: 2,
-                            }} />
-                            <div className="input-maxdist"><MaximumDistance></MaximumDistance></div>
-                            <div className="input-submit" onClick={handleSubmit}><SubmitButton></SubmitButton></div>
-                        </div>
                     </div>
+                    
+                    <div className="input-bottom">
+                            <Divider />
+                            <div className="input-bottom-inputs">
+                                <div className="input-maxdist"><MaximumDistance></MaximumDistance></div>
+                                <div className="input-submit" onClick={handleSubmit}><SubmitButton></SubmitButton></div>
+                            </div>
+                        </div>
+                </div>
                 </Card>
             </div>
             <Snackbar open={failAlert} autoHideDuration={6000} onClose={closeFailAlert}>

@@ -50,6 +50,8 @@ test('settings button handles click', () => {
   expect(screen.getByLabelText("CloseSettingsMenuBtn")).toBeInTheDocument();
   expect(screen.getByText("Advanced Settings")).toBeInTheDocument();
   expect(screen.getByLabelText("Algorithm")).toBeInTheDocument();
+  expect(screen.getByLabelText("Max # of Origins")).toBeInTheDocument();
+  expect(screen.getByLabelText("Max # of Origins")).toHaveValue("10");
 });
 
 test('open and close settings panel', () => {

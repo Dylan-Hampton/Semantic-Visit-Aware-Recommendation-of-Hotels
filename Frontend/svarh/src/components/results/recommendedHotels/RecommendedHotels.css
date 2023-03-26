@@ -14,12 +14,22 @@
     padding: 0px;
 }
 
+.recommended-hotels-header {
+    height: 50px;
+    display: flex;
+}
+
 .recommended-hotels-title {
     text-align: center;
-    margin: 14px 10px 0 10px;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .recommended-hotels-body {
-    height: 87%;
+    height: calc(100% - 52px);
     overflow: auto;
 }
