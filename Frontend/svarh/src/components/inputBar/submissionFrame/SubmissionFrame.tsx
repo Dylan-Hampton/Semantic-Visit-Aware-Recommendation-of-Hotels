@@ -29,7 +29,7 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
     useEffect(() => {
         if (!cities) {
             // fetch(apiUrl + '/cities').then(async (response) => {
-            fetch('http://sdmay23-34.ece.iastate.edu/api/cities').then(async (response) => {
+            fetch(apiUrl + '/cities').then(async (response) => {
                 const data = await response.json();
                 if (response.ok) {
                     const cities = data as City[];

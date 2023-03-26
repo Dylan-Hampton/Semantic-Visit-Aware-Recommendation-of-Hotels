@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../../../store';
 import RouteRequest from '../../../data/request/RouteRequest';
+import { apiUrl } from '../../../data/Constants';
 
 interface SubmitState {
     city: string,
@@ -15,9 +16,9 @@ const initialState: SubmitState = {
     city: '',
     pois: [],
     algorithm: 3,
-    origins: 10,
+    origins: 1,
     distance: -1,
-    categories: [2, 3],
+    categories: [0,1,0,1,0,1],
 }
 
 export const generateRoute = createAsyncThunk(
@@ -28,12 +29,15 @@ export const generateRoute = createAsyncThunk(
             algorithm: request.algorithm,
             origins: request.origins,
             distance: request.distance,
-            categories: [2, 3],
+            categories: request.categories,
         }
-        console.log('data', JSON.stringify(r))
+        console.log('data:', JSON.stringify(r))
         // We send the initial data to the fake API server
-        const response = await fetch('http://sdmay23-34.ece.iastate.edu/api/routes', {
+        const response = await fetch(apiUrl + '/routes', {
             method: 'POST',
+            headers: {
+                'content-type': 'json',
+            },
             body: JSON.stringify(r),
         })
         console.log(response.json())
