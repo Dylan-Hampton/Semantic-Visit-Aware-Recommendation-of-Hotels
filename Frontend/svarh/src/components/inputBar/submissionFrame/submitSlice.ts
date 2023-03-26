@@ -14,24 +14,25 @@ interface SubmitState {
 const initialState: SubmitState = {
     city: '',
     pois: [],
-    algorithm: 2,
+    algorithm: 3,
     origins: 10,
     distance: -1,
-    categories: [],
+    categories: [2, 3],
 }
 
 export const generateRoute = createAsyncThunk(
     'submit/generateRoute',
     // The payload creator receives the partial `{title, content, user}` object
-    async (state: any) => {
+    async (request: any) => {
         const r: RouteRequest = {
-            algorithm: state.algorithm,
-            origins: 10,
-            distance: state.distance,
+            algorithm: request.algorithm,
+            origins: request.origins,
+            distance: request.distance,
             categories: [2, 3],
         }
+        console.log('data', JSON.stringify(r))
         // We send the initial data to the fake API server
-        const response = await fetch('/fakeApi/generateRoute', {
+        const response = await fetch('http://sdmay23-34.ece.iastate.edu/api/routes', {
             method: 'POST',
             body: JSON.stringify(r),
         })
@@ -70,24 +71,13 @@ export const submitSlice = createSlice({
 export const { changeCity, changePois, changeAlgorithm, changeOrigins, changeDistance, changeCategories } = submitSlice.actions
 
 // export const generateRoute = () => (dispatch: any) => {
-//     // fetch(apiUrl + '/cities').then(async (response) => {
-//     //     const data = await response.json();
-//     //     if (response.ok) {
-//     //         const cities = data as City[];
-//     //         if (cities.length === 0) {
-//     //             setFailAlert(true);
-//     //         }
-//     //         setCities(cities);
-//     //     }
-//     //     else {
-//     //         setFailAlert(true);
-//     //     }
-//     // }).catch(() => {
-//     //     setFailAlert(true);
-//     // });
 // }
 
 // Add selectors here
-//export const select[Something] = (state: RootState) => state.[...].value
+export const selectDistance = (state: RootState) => state.submit.distance
+export const selectCity = (state: RootState) => state.submit.city
+export const selectAlgorithm = (state: RootState) => state.submit.algorithm
+export const selectOrigins = (state: RootState) => state.submit.origins
+export const selectCategories = (state: RootState) => state.submit.categories
 
 export default submitSlice.reducer

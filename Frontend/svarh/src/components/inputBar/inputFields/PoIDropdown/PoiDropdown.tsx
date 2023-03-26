@@ -63,7 +63,6 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         if (!doesPoiListContain(selectedName)) {
           setPois(pois.concat({name: selectedName, icon: icon}));
         }
-        console.log(pois)
       }
     }
 

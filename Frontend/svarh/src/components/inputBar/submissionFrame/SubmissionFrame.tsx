@@ -7,8 +7,9 @@ import MaximumDistance from '../inputFields/MaximumDistanceField/MaximumDistance
 import PoiDropdown from '../inputFields/PoIDropdown/PoiDropdown';
 import SubmitButton from '../inputFields/SubmitButton/SubmitButton';
 import { City } from '../../../data/City';
+import type RouteRequest from '../../../data/request/RouteRequest';
 import './SubmissionFrame.css';
-import { changeCategories, changePois } from './submitSlice';
+import { changeCategories, changePois, generateRoute, selectAlgorithm, selectCategories, selectDistance, selectOrigins } from './submitSlice';
 
 interface ISubmissionFrameProps {
 
@@ -19,6 +20,10 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
     const [failAlert, setFailAlert] = useState(false);
     const [city, setCity] = useState<string>(null);
     const [pois, setPois] = useState<string[]>([]);
+    const dist = useAppSelector(selectDistance);
+    const algo = useAppSelector(selectAlgorithm);
+    const origins = useAppSelector(selectOrigins);
+    const categories = useAppSelector(selectCategories);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -64,7 +69,13 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
     }
 
     const handleSubmit = () => {
-        dispatch(changePois(pois))
+        const r: RouteRequest = {
+            algorithm: algo,
+            origins: origins,
+            distance: dist,
+            categories: categories,
+        }
+        dispatch(generateRoute(r))
     }
 
     return (
