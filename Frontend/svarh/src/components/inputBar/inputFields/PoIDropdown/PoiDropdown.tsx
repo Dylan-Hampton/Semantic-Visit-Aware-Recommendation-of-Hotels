@@ -8,14 +8,18 @@ import EmojiNatureIcon from '@mui/icons-material/EmojiNature';
 import WaterIcon from '@mui/icons-material/Water';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import './PoiDropdown.css';
+import { useAppDispatch } from "../../../../hooks";
+import { changePois } from '../../submissionFrame/submitSlice';
 
 interface IPoiDropdownProps {
-  poiTypes: string[]
+  poiTypes: string[];
+  changeCategories: (categories: string[]) => void;
 }
 
 const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
     const [pois, setPois] = useState([]);
     const [inputValue, setInputValue] = useState('');
+    const dispatch = useAppDispatch();
     //TODO: Get PoI types from database on page load, pass them in through props
 
     useEffect(() => {
@@ -59,6 +63,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         if (!doesPoiListContain(selectedName)) {
           setPois(pois.concat({name: selectedName, icon: icon}));
         }
+        console.log(pois)
       }
     }
 

@@ -8,6 +8,7 @@ import PoiDropdown from '../inputFields/PoIDropdown/PoiDropdown';
 import SubmitButton from '../inputFields/SubmitButton/SubmitButton';
 import { City } from '../../../data/City';
 import './SubmissionFrame.css';
+import { changeCategories, changePois } from './submitSlice';
 
 interface ISubmissionFrameProps {
 
@@ -22,7 +23,8 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
 
     useEffect(() => {
         if (!cities) {
-            fetch(apiUrl + '/cities').then(async (response) => {
+            // fetch(apiUrl + '/cities').then(async (response) => {
+            fetch('http://sdmay23-34.ece.iastate.edu/api/cities').then(async (response) => {
                 const data = await response.json();
                 if (response.ok) {
                     const cities = data as City[];
@@ -56,6 +58,15 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
         setFailAlert(false);
     }
 
+    const handleCategories = (categories: string[]) => {
+        const poisToCategories: number[] = []
+        dispatch(changeCategories(poisToCategories))
+    }
+
+    const handleSubmit = () => {
+        dispatch(changePois(pois))
+    }
+
     return (
         <>
             <div className="submissionFrame">
@@ -75,14 +86,14 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                     </div>
                     <div className="input-body">
                         <div className="input-city"><CityDropdown cities={cities ? cities.map((c: City) => c.cityName) : []} setCity={setCity}></CityDropdown></div>
-                        <div className="input-poi"><PoiDropdown poiTypes={pois}></PoiDropdown></div>
+                        <div className="input-poi"><PoiDropdown changeCategories={handleCategories} poiTypes={pois}></PoiDropdown></div>
                         <div className="input-bottom">
                             <Divider sx={{
                                 marginBottom: 2,
                                 marginTop: 2,
                             }} />
                             <div className="input-maxdist"><MaximumDistance></MaximumDistance></div>
-                            <div className="input-submit"><SubmitButton></SubmitButton></div>
+                            <div className="input-submit" onClick={handleSubmit}><SubmitButton></SubmitButton></div>
                         </div>
                     </div>
                 </Card>
