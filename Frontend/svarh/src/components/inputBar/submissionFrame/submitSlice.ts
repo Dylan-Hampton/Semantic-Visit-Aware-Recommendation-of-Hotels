@@ -36,7 +36,7 @@ export const generateRoute = createAsyncThunk(
         const response = await fetch(apiUrl + '/routes', {
             method: 'POST',
             headers: {
-                'content-type': 'json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(r),
         })
