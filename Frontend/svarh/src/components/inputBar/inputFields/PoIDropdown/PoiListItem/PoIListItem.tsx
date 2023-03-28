@@ -9,26 +9,14 @@ import CloseIcon from '@mui/icons-material/Close';
 interface IPoIListItemProps {
     name: string;
     icon: ReactElement;
+    changeCategoryValue: (category: string, value: number) => void;
     onRemove: (name: string) => void;
 }
 
 const PoIListItem: React.FC<IPoIListItemProps> = (props: IPoIListItemProps) => {
-    const dispatch = useAppDispatch();
-    const categories = useAppSelector(selectCategories);
-
-    const assignCategory = (n: number) => {
-        const c: { [name: string]: number } = {}
-        Object.assign(c, categories)
-        c[props.name] = n
-        dispatch(changeCategories(c))
-    }
-
-    useEffect(() => {
-        assignCategory(1);
-    }, []);
 
     const setQuantity = (n: number) => {
-        assignCategory(n);
+        props.changeCategoryValue(props.name, n)
     }
 
     const remove = () => {

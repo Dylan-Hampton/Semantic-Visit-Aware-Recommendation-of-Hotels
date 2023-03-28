@@ -16,7 +16,6 @@ interface IPoiDropdownProps {
 }
 
 const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
-
     const [pois, setPois] = useState([]);
     const [inputValue, setInputValue] = useState('');
     
@@ -24,13 +23,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
     const categories = useAppSelector(selectCategories);
 
     useEffect(() => {
-      setPois([]);
-      let c: { [name: string]: number } = {}
-      Object.assign(c, categories)
-      props.poiTypes.forEach(p => {
-        c[p] = 0;
-      })
-      dispatch(changeCategories(c))
+      setPois([])
     }, [props.poiTypes])
 
     const getIcon = (name: string): JSX.Element => {
@@ -59,6 +52,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         const icon = getIcon(selectedName);
         if (!doesPoiListContain(selectedName)) {
           setPois(pois.concat({name: selectedName, icon: icon}));
+          changeCategoryValue(selectedName, 1)
         }
       }
     }
@@ -91,6 +85,13 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
       return false;
     }
 
+    const changeCategoryValue = (category: string, value: number) => {
+      const c: { [name: string]: number } = {}
+      Object.assign(c, categories)
+      c[category] = value
+      dispatch(changeCategories(c))
+    }
+
     return (
       <>
       {props.poiTypes ? 
@@ -113,7 +114,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         {pois.map(p => {
           return (
             <div key={p.name} className="poi-item">
-              <PoIListItem key={p.name} name={p.name} icon={getIcon(p.name)} onRemove={removePoi} />
+              <PoIListItem key={p.name} name={p.name} icon={getIcon(p.name)} onRemove={removePoi} changeCategoryValue={changeCategoryValue}/>
             </div>)
         })}
         </>
