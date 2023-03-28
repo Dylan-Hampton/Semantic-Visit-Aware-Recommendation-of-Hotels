@@ -9,34 +9,35 @@ import SubmitButton from '../inputFields/SubmitButton/SubmitButton';
 import { City } from '../../../data/City';
 import type RouteRequest from '../../../data/request/RouteRequest';
 import './SubmissionFrame.css';
-import { changeCategories, changePois, generateRoute, selectAlgorithm, selectCategories, selectDistance, selectOrigins } from './submitSlice';
+import { selectAlgorithm, selectCategories, selectDistance, selectOrigins, receivedCities, selectCities, selectCity } from './submitSlice';
+import { generateRoute } from '../../../data/api';
 
 interface ISubmissionFrameProps {
 
 }
 
 const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFrameProps) => {
-    const [cities, setCities] = useState<City[]>(null);
     const [failAlert, setFailAlert] = useState(false);
-    const [city, setCity] = useState<string>(null);
-    const [pois, setPois] = useState<string[]>([]);
+    const city = useAppSelector(selectCity);
+    const cities = useAppSelector(selectCities);
     const dist = useAppSelector(selectDistance);
     const algo = useAppSelector(selectAlgorithm);
     const origins = useAppSelector(selectOrigins);
     const categories = useAppSelector(selectCategories);
     const dispatch = useAppDispatch();
 
+    // Get list of cities from backend on page load
     useEffect(() => {
-        if (!cities) {
+        if (cities.length === 0) {
             // fetch(apiUrl + '/cities').then(async (response) => {
             fetch(apiUrl + '/cities').then(async (response) => {
                 const data = await response.json();
                 if (response.ok) {
-                    const cities = data as City[];
-                    if (cities.length === 0) {
+                    const c = data as City[];
+                    if (c.length === 0) {
                         setFailAlert(true);
                     }
-                    setCities(cities);
+                    dispatch(receivedCities(c))
                 }
                 else {
                     setFailAlert(true);
@@ -45,35 +46,21 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                 setFailAlert(true);
             });
         }
-    }, [cities]);
+    }, [cities, dispatch]);
 
-    useEffect(() => {
-        if (cities) {
-            let pois: string[] = [];
-            cities.forEach(c => {
-                if (c.cityName === city) {
-                    pois = c.poiTypes;
-                }
-            });
-            setPois(pois);
-        }
-    }, [city, cities]);
-
+    // Close popup for failing to retrieve cities
     const closeFailAlert = () => {
         setFailAlert(false);
     }
 
-    const handleCategories = (categories: string[]) => {
-        const poisToCategories: number[] = []
-        dispatch(changeCategories(poisToCategories))
-    }
-
+    // Sends data to async thunk for generating route
     const handleSubmit = () => {
+        const categoryNumbers = Object.values(categories)
         const r: RouteRequest = {
-            algorithm: algo,
+            algorithm: algo.algorithmNum,
             origins: origins,
             distance: dist,
-            categories: categories,
+            categories: categoryNumbers,
         }
         dispatch(generateRoute(r))
     }
@@ -98,8 +85,8 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                             }}/>
                     </div>
                     <div className="input-body">
-                        <div className="input-city"><CityDropdown cities={cities ? cities.map((c: City) => c.cityName) : []} setCity={setCity}></CityDropdown></div>
-                        <div className="input-poi"><PoiDropdown changeCategories={handleCategories} poiTypes={pois}></PoiDropdown></div>
+                        <div className="input-city"><CityDropdown cities={cities ? cities : []}></CityDropdown></div>
+                        <div className="input-poi"><PoiDropdown poiTypes={city.poiTypes}></PoiDropdown></div>
                     </div>
                     
                     <div className="input-bottom">

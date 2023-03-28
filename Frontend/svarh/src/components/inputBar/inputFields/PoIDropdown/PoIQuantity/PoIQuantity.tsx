@@ -9,19 +9,19 @@ interface IPoIQuantityProps {
 }
 
 const PoIQuantity: React.FC<IPoIQuantityProps> = (props: IPoIQuantityProps) => {
-    const [value, setValue] = useState(1);
+    const [value, setValue] = useState(0);
 
     const subtract = () => {
-        if (value > 1) {
+        if (value > 0) {
             setValue(value - 1);
-            props.setQuantity(value);
+            props.setQuantity(value - 1);
         }
     }
 
     const add = () => {
         if (value < 9) {
             setValue(value + 1);
-            props.setQuantity(value);
+            props.setQuantity(value + 1);
         }
     }
 
