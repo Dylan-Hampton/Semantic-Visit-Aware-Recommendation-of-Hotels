@@ -24,7 +24,7 @@ const initialState: SubmitState = {
         algorithmName: NODEFIRST,
         algorithmNum: 3,
     },
-    origins: 1,
+    origins: 10,
     distance: -1,
     categories: {
         
