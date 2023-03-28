@@ -1,8 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import RouteRequest from './request/RouteRequest';
 import { apiUrl } from './Constants';
+import { number } from 'yargs';
 
-const miToMeter= 1609.344;
+let miToMeter= 1609.344;
 
 export const generateRoute = createAsyncThunk(
     'submit/generateRoute',
