@@ -7,7 +7,7 @@ def test_cities_route():
     assert response.status_code == 200
 
 def test_routes_route():
-    response = app.test_client().get('/routes', json={
+    response = app.test_client().post('/routes', json={
         "algorithm": 3,
         "origins": 1,
         "distance": 2000,

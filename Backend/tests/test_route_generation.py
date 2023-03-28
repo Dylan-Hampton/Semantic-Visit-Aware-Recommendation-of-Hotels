@@ -8,7 +8,7 @@ ORIGIN_FIRST = 3
 
 def test_greedy_dijkstra_generation():
     # 1 origin, 1 PoI of first category
-    response = app.test_client().get('/routes', json={
+    response = app.test_client().post('/routes', json={
         "algorithm": GREEDY_DIJKSTRA,
         "origins": 1,
         "distance": 1000,
@@ -23,7 +23,7 @@ def test_greedy_dijkstra_generation():
     assert response.json[0]["pois"][0]["name"] == "St. Peter's Church"
 
     # 3 origins, 1 PoI of each category
-    response = app.test_client().get('/routes', json={
+    response = app.test_client().post('/routes', json={
         "algorithm": GREEDY_DIJKSTRA,
         "origins": 3,
         "distance": 2000,
@@ -48,7 +48,7 @@ def test_greedy_dijkstra_generation():
 
 def test_random_walk_restart_generation():
     # 1 origin, 1 PoI of first category
-    response = app.test_client().get('/routes', json={
+    response = app.test_client().post('/routes', json={
         "algorithm": RANDOM_WALK_RESTART,
         "origins": 1,
         "distance": 1000,
@@ -66,7 +66,7 @@ def test_random_walk_restart_generation():
         assert response.json[0]["pois"][0]["name"] is not None
 
     # 3 origins, 1 PoI of each category
-    response = app.test_client().get('/routes', json={
+    response = app.test_client().post('/routes', json={
         "algorithm": RANDOM_WALK_RESTART,
         "origins": 3,
         "distance": 2000,
@@ -92,7 +92,7 @@ def test_random_walk_restart_generation():
 
 def test_poi_first_generation():
     # 1 origin, 1 PoI of first category
-    response = app.test_client().get('/routes', json={
+    response = app.test_client().post('/routes', json={
         "algorithm": POI_FIRST,
         "origins": 1,
         "distance": 1000,
@@ -107,7 +107,7 @@ def test_poi_first_generation():
     assert response.json[0]["pois"][0]["name"] == "St. Patrick's Cathedral"
 
     # 3 origins, 1 PoI of each category
-    response = app.test_client().get('/routes', json={
+    response = app.test_client().post('/routes', json={
         "algorithm": POI_FIRST,
         "origins": 3,
         "distance": 2000,
@@ -132,7 +132,7 @@ def test_poi_first_generation():
 
 def test_origin_first_generation():
     # 1 origin, 1 PoI of first category
-    response = app.test_client().get('/routes', json={
+    response = app.test_client().post('/routes', json={
         "algorithm": ORIGIN_FIRST,
         "origins": 1,
         "distance": 1000,
@@ -147,7 +147,7 @@ def test_origin_first_generation():
     assert response.json[0]["pois"][0]["name"] == "St. Peter's Church"
 
     # 3 origins, 1 PoI of each category
-    response = app.test_client().get('/routes', json={
+    response = app.test_client().post('/routes', json={
         "algorithm": ORIGIN_FIRST,
         "origins": 3,
         "distance": 2000,
