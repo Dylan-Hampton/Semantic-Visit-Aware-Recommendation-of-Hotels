@@ -8,29 +8,23 @@ import EmojiNatureIcon from '@mui/icons-material/EmojiNature';
 import WaterIcon from '@mui/icons-material/Water';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import './PoiDropdown.css';
+import { useAppDispatch, useAppSelector } from "../../../../hooks";
+import { changeCategories, selectCategories } from "../../submissionFrame/submitSlice";
 
 interface IPoiDropdownProps {
-  poiTypes: string[]
+  poiTypes: string[];
 }
 
 const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
     const [pois, setPois] = useState([]);
     const [inputValue, setInputValue] = useState('');
-    //TODO: Get PoI types from database on page load, pass them in through props
+    
+    const dispatch = useAppDispatch();
+    const categories = useAppSelector(selectCategories);
 
     useEffect(() => {
-      let newPoiList: string[] = [];
-      pois.forEach((p) => {
-        if (props.poiTypes.includes(p.name)) {
-          newPoiList = newPoiList.concat(p);
-        }
-      })
-      const compNewPoI = newPoiList.sort().toString();
-      const compOldPoI = pois.sort().toString();
-      if(compOldPoI !== compNewPoI) {
-        setPois(newPoiList);
-      }
-    }, [pois, props.poiTypes])
+      setPois([])
+    }, [props.poiTypes])
 
     const getIcon = (name: string): JSX.Element => {
       switch (name) {
@@ -58,6 +52,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         const icon = getIcon(selectedName);
         if (!doesPoiListContain(selectedName)) {
           setPois(pois.concat({name: selectedName, icon: icon}));
+          changeCategoryValue(selectedName, 1)
         }
       }
     }
@@ -78,12 +73,23 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         }
       });
       setPois(newPoiList);
+      const c: { [name: string]: number } = {}
+      Object.assign(c, categories)
+      c[name] = 0
+      dispatch(changeCategories(c))
     }
 
     const optionValue = (option: any, value: any) => {
       if (value === '') return true;
       if (value === option) return true;
       return false;
+    }
+
+    const changeCategoryValue = (category: string, value: number) => {
+      const c: { [name: string]: number } = {}
+      Object.assign(c, categories)
+      c[category] = value
+      dispatch(changeCategories(c))
     }
 
     return (
@@ -108,7 +114,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         {pois.map(p => {
           return (
             <div key={p.name} className="poi-item">
-              <PoIListItem key={p.name} name={p.name} icon={p.icon} setQuantity={(name: string, quantity: number) => {}} onRemove={removePoi} />
+              <PoIListItem key={p.name} name={p.name} icon={getIcon(p.name)} onRemove={removePoi} changeCategoryValue={changeCategoryValue}/>
             </div>)
         })}
         </>

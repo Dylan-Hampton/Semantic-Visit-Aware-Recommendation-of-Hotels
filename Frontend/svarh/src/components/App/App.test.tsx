@@ -1,7 +1,8 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 import GeneratedRoute from '../results/generatedRoute/GeneratedRoute/GeneratedRoute';
+import { Provider } from 'react-redux';
+import store from '../../store';
 
 export const mockMapOn = jest.fn();
 export const mockMapRemove = jest.fn();
@@ -18,30 +19,41 @@ jest.mock('mapbox-gl', () => ({
   }));
 
 test('renders search frame header', () => {
-  render(<App />);
+  render(<Provider store={store}>
+           <App />
+         </Provider>);
   expect(screen.getByText(/Search Hotels/i)).toBeInTheDocument();
 });
 
 test('renders submission frame inputs', () => {
-  render(<App />);
+  render(<Provider store={store}>
+    <App />
+  </Provider>);
   expect(screen.getByRole("combobox", { name: "City" })).toBeInTheDocument();
   expect(screen.getByRole("combobox", { name: "Points of Interest" })).toBeInTheDocument();
   expect(screen.getByRole("textbox", { name: "Maximum Distance" })).toBeInTheDocument();
 });
 
 test('renders submission button', () => {
-  render(<App />);
+  render(<Provider store={store}>
+          <App />
+        </Provider>);
   expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Submit" })).toBeEnabled();
 });
 
 test('renders settings button', () => {
-  render(<App />);
+  render(<Provider store={store}>
+          <App />
+        </Provider>);
   expect(screen.getByTestId("SettingsIcon")).toBeInTheDocument(); 
 });
 
 test('settings button handles click', () => {
-  render(<App />);
+  const defaultOriginNum = "10";
+  render(<Provider store={store}>
+          <App />
+        </Provider>);
   const settingsBtn = screen.getByTestId("SettingsIcon");
   expect(settingsBtn).toBeInTheDocument(); 
   fireEvent.click(settingsBtn); // open settings panel
@@ -51,11 +63,13 @@ test('settings button handles click', () => {
   expect(screen.getByText("Advanced Settings")).toBeInTheDocument();
   expect(screen.getByLabelText("Algorithm")).toBeInTheDocument();
   expect(screen.getByLabelText("Max # of Origins")).toBeInTheDocument();
-  expect(screen.getByLabelText("Max # of Origins")).toHaveValue("10");
+  expect(screen.getByLabelText("Max # of Origins")).toHaveValue(defaultOriginNum);
 });
 
 test('open and close settings panel', () => {
-  render(<App />);
+  render(<Provider store={store}>
+        <App />
+        </Provider>);
   const settingsBtn = screen.getByTestId("SettingsIcon");
   fireEvent.click(settingsBtn); // open settings panel
 

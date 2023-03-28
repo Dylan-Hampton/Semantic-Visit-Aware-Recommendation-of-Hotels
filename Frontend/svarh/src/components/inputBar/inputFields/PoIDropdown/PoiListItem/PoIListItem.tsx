@@ -1,20 +1,20 @@
 import React, { ReactElement } from "react";
 import PoIQuantity from "../PoIQuantity/PoIQuantity";
 import './PoIListItem.css';
-import CloseIcon from '@mui/icons-material/Close';
 import { Grid } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 interface IPoIListItemProps {
     name: string;
     icon: ReactElement;
-    setQuantity: (name: string, quantity: number) => void;
+    changeCategoryValue: (category: string, value: number) => void;
     onRemove: (name: string) => void;
 }
 
 const PoIListItem: React.FC<IPoIListItemProps> = (props: IPoIListItemProps) => {
 
     const setQuantity = (n: number) => {
-        props.setQuantity(props.name, n);
+        props.changeCategoryValue(props.name, n)
     }
 
     const remove = () => {
