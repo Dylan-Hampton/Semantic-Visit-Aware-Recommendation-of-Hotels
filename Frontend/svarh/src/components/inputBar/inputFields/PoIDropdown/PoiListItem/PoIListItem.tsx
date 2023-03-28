@@ -1,9 +1,7 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement } from "react";
 import PoIQuantity from "../PoIQuantity/PoIQuantity";
 import './PoIListItem.css';
 import { Grid } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../../../hooks";
-import { changeCategories, selectCategories } from "../../../submissionFrame/submitSlice";
 import CloseIcon from '@mui/icons-material/Close';
 
 interface IPoIListItemProps {

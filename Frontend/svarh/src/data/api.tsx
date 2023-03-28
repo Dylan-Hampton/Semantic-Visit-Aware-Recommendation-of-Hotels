@@ -11,7 +11,6 @@ export const generateRoute = createAsyncThunk(
             distance: request.distance,
             categories: request.categories,
         }
-        console.log('data:', JSON.stringify(r))
         // We send the initial data to the fake API server
         const response = await fetch(apiUrl + '/routes', {
             method: 'POST',
@@ -20,7 +19,7 @@ export const generateRoute = createAsyncThunk(
             },
             body: JSON.stringify(r),
         })
-        console.log(response.json())
+        //TODO: HANDLE RESPONSE
         // The response includes the complete post object, including unique ID
         return response.json()
     }
