@@ -8,9 +8,12 @@ import PoiDropdown from '../inputFields/PoIDropdown/PoiDropdown';
 import SubmitButton from '../inputFields/SubmitButton/SubmitButton';
 import { City } from '../../../data/City';
 import type RouteRequest from '../../../data/request/RouteRequest';
+import type Route from '../../../data/response/RouteResponse';
+import { changeRoutes, selectRoutes } from '../../../data/response/routeSlice';
 import './SubmissionFrame.css';
 import { selectAlgorithm, selectCategories, selectDistance, selectOrigins, receivedCities, selectCities, selectCity } from './submitSlice';
 import { generateRoute } from '../../../data/api';
+import { unwrapResult } from '@reduxjs/toolkit';
 
 interface ISubmissionFrameProps {
 
@@ -24,6 +27,7 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
     const algo = useAppSelector(selectAlgorithm);
     const origins = useAppSelector(selectOrigins);
     const categories = useAppSelector(selectCategories);
+    const routesState = useAppSelector(selectRoutes);
     const dispatch = useAppDispatch();
 
     // Get list of cities from backend on page load
@@ -62,7 +66,23 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
             distance: dist,
             categories: categoryNumbers,
         }
-        dispatch(generateRoute(r))
+        dispatch(generateRoute(r)).then(unwrapResult).then(
+            (result) => {
+                let responseRoutes: Route[] = [];
+                result.forEach((route: { distance: any; nodes: any; origin: any; pois: any; }) => {
+                    let currentRoute: Route = {
+                        distance: route.distance,
+                        nodes: route.nodes,
+                        origin: route.origin,
+                        pois: route.pois,
+                    }
+                    responseRoutes.push(currentRoute);
+                });
+                dispatch(changeRoutes(responseRoutes))
+            }).catch((error) => {
+                console.error(error);
+            })
+            console.log(routesState);
     }
 
     return (
