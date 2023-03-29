@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Algorithm, DIJKSTRA, EDGEFIRST, NODEFIRST, RANDOMWALK } from '../../../data/Algorithm';
-import { City } from '../../../data/City';
-import { RootState } from '../../../store';
+import { Algorithm, DIJKSTRA, EDGEFIRST, NODEFIRST, RANDOMWALK } from './data/Algorithm';
+import { generateRoute } from './data/api';
+import { City } from './data/City';
+import Route from './data/response/RouteResponse';
+import { RootState } from './store';
 
 interface SubmitState {
     cities: City[],
@@ -11,6 +13,8 @@ interface SubmitState {
     distance: number,
     categories: { [name: string]: number },
     algorithmChoices: string[],
+    routes: Route[],
+    loading: boolean,
 }
 
 const initialState: SubmitState = {
@@ -26,14 +30,14 @@ const initialState: SubmitState = {
     },
     origins: 10,
     distance: -1,
-    categories: {
-        
-    },
+    categories: {},
+    routes: [],
+    loading: false,
 }
 
 
-export const submitSlice = createSlice({
-    name: 'submit',
+export const routeDataSlice = createSlice({
+    name: 'routeData',
     initialState,
     reducers: {
         receivedCities: (state, action: PayloadAction<City[]>) => {
@@ -85,18 +89,31 @@ export const submitSlice = createSlice({
         changeCategories: (state, action: PayloadAction<{ [name: string]: number }>) => {
             state.categories = action.payload
         },
-    }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(generateRoute.pending, (state, action) => {
+            state.loading = true
+        })
+        .addCase(generateRoute.fulfilled, (state, action) => {
+            state.loading = false
+            state.routes = action.payload
+        })
+        .addCase(generateRoute.rejected, (state, action) => {
+            state.loading = false
+        })
+    },
 })
 
-export const { changeCity, changeAlgorithm, changeOrigins, changeDistance, changeCategories, receivedCities } = submitSlice.actions
+export const { changeCity, changeAlgorithm, changeOrigins, changeDistance, changeCategories, receivedCities } = routeDataSlice.actions
 
 // Add selectors here
-export const selectDistance = (state: RootState) => state.submit.distance
-export const selectCity = (state: RootState) => state.submit.city
-export const selectAlgorithm = (state: RootState) => state.submit.algorithm
-export const selectOrigins = (state: RootState) => state.submit.origins
-export const selectCategories = (state: RootState) => state.submit.categories
-export const selectCities = (state: RootState) => state.submit.cities
-export const selectAlgorithmChoices = (state: RootState) => state.submit.algorithmChoices
+export const selectDistance = (state: RootState) => state.routeData.distance
+export const selectCity = (state: RootState) => state.routeData.city
+export const selectAlgorithm = (state: RootState) => state.routeData.algorithm
+export const selectOrigins = (state: RootState) => state.routeData.origins
+export const selectCategories = (state: RootState) => state.routeData.categories
+export const selectCities = (state: RootState) => state.routeData.cities
+export const selectAlgorithmChoices = (state: RootState) => state.routeData.algorithmChoices
+export const selectRoutes = (state: RootState) => state.routeData.routes
 
-export default submitSlice.reducer
+export default routeDataSlice.reducer

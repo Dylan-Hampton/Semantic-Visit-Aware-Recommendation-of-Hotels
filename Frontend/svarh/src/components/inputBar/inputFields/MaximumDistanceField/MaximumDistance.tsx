@@ -1,7 +1,7 @@
 import { InputAdornment, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useAppDispatch } from '../../../../hooks';
-import { changeDistance } from '../../submissionFrame/submitSlice';
+import { changeDistance } from '../../../../routeDataSlice';
 import './MaximumDistance.css';
 
 interface IMaximumDistanceProps {

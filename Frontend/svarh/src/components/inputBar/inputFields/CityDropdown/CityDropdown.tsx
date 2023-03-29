@@ -2,7 +2,7 @@ import { Autocomplete, Skeleton, TextField } from "@mui/material";
 import React from "react";
 import { City } from "../../../../data/City";
 import { useAppDispatch } from "../../../../hooks";
-import { changeCity } from "../../submissionFrame/submitSlice";
+import { changeCity } from "../../../../routeDataSlice";
 
 interface ICityDropdownProps {
   cities: City[];

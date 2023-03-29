@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import submitReducer from './components/inputBar/submissionFrame/submitSlice';
-import routeSlice from './data/response/routeSlice';
+import routeDataReducer from './routeDataSlice';
 
 const store = configureStore({
     reducer: {
-        submit: submitReducer,
-        response: routeSlice,
-    }
+        routeData: routeDataReducer,
+    },
 })
 
 export type RootState = ReturnType<typeof store.getState>

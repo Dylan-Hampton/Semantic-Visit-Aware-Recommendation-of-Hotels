@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useAppSelector } from '../../../../hooks';
-import { selectAlgorithm, selectOrigins } from '../../submissionFrame/submitSlice';
+import { selectAlgorithm, selectOrigins } from '../../../../routeDataSlice';
 import SettingsButton from '../SettingsButton/SettingsButton';
 import SettingsMenu from '../SettingsMenu/SettingsMenu';
 import './Settings.css';
@@ -8,11 +8,6 @@ import './Settings.css';
 interface ISettingsProps {
 
 }
-
-// export interface ISettingsValues {
-//     algorithm: string;
-//     maxOrigins: number;
-// }
 
 const Settings: React.FC<ISettingsProps> = (props: ISettingsProps) => {
     const maxOrigins = useAppSelector(selectOrigins);
