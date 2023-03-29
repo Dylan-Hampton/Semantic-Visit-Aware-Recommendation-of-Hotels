@@ -1,7 +1,7 @@
 import { Divider } from "@mui/material";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { changeAlgorithm, changeOrigins, selectAlgorithmChoices } from "../../submissionFrame/submitSlice";
+import { changeAlgorithm, changeOrigins, selectAlgorithmChoices } from "../../../../routeDataSlice";
 import AlgorithmDropdown from "../AlgorithmDropdown/AlgorithmDropdown";
 import MaxOrigins from "../MaxOriginsField/MaxOrigins";
 import './SettingsMenu.css';

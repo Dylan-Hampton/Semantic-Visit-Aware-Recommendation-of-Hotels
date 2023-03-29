@@ -1,6 +1,6 @@
 import { MapNode, OriginNode, PoiNode } from "./Node";
 
-export interface Route {
+export default interface Route {
     distance: number;
     nodes: MapNode[];
     origin: OriginNode;

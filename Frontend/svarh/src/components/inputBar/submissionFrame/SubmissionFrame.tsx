@@ -9,8 +9,9 @@ import SubmitButton from '../inputFields/SubmitButton/SubmitButton';
 import { City } from '../../../data/City';
 import type RouteRequest from '../../../data/request/RouteRequest';
 import './SubmissionFrame.css';
-import { selectAlgorithm, selectCategories, selectDistance, selectOrigins, receivedCities, selectCities, selectCity } from './submitSlice';
+import { selectAlgorithm, selectCategories, selectDistance, selectOrigins, receivedCities, selectCities, selectCity } from '../../../routeDataSlice';
 import { generateRoute } from '../../../data/api';
+import { Algorithm } from '../../../data/Algorithm';
 
 interface ISubmissionFrameProps {
 
@@ -18,18 +19,17 @@ interface ISubmissionFrameProps {
 
 const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFrameProps) => {
     const [failAlert, setFailAlert] = useState(false);
-    const city = useAppSelector(selectCity);
-    const cities = useAppSelector(selectCities);
-    const dist = useAppSelector(selectDistance);
-    const algo = useAppSelector(selectAlgorithm);
-    const origins = useAppSelector(selectOrigins);
-    const categories = useAppSelector(selectCategories);
+    const city: City = useAppSelector(selectCity);
+    const cities: City[] = useAppSelector(selectCities);
+    const dist: number = useAppSelector(selectDistance);
+    const algo: Algorithm = useAppSelector(selectAlgorithm);
+    const origins: number = useAppSelector(selectOrigins);
+    const categories: { [name: string]: number } = useAppSelector(selectCategories);
     const dispatch = useAppDispatch();
 
     // Get list of cities from backend on page load
     useEffect(() => {
         if (cities.length === 0) {
-            // fetch(apiUrl + '/cities').then(async (response) => {
             fetch(apiUrl + '/cities').then(async (response) => {
                 const data = await response.json();
                 if (response.ok) {
@@ -54,7 +54,7 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
     }
 
     // Sends data to async thunk for generating route
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const categoryNumbers = Object.values(categories)
         const r: RouteRequest = {
             algorithm: algo.algorithmNum,

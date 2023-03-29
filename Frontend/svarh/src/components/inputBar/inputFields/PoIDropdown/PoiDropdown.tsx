@@ -9,7 +9,7 @@ import WaterIcon from '@mui/icons-material/Water';
 import PinDropIcon from '@mui/icons-material/PinDrop';
 import './PoiDropdown.css';
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { changeCategories, selectCategories } from "../../submissionFrame/submitSlice";
+import { changeCategories, selectCategories } from "../../../../routeDataSlice";
 
 interface IPoiDropdownProps {
   poiTypes: string[];
