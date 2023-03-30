@@ -41,6 +41,9 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         marker.addTo(map.current);
         const newMarkers = markers.concat(marker);
         setMarkers(newMarkers);
+        const markerDiv = marker.getElement(); // Add popup toggle on mouse hover
+        markerDiv.addEventListener('mouseenter', () => marker.togglePopup());
+        markerDiv.addEventListener('mouseleave', () => marker.togglePopup());
     }
 
     const addLine = (data: IAddLineData) => {
