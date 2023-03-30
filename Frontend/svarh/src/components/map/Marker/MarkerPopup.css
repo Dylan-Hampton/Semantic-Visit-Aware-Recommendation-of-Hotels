@@ -1,0 +1,20 @@
+.marker-popup {
+    width: fit-content;
+    max-width: 100px;
+    text-align: center;
+}
+
+.marker-name {
+    font-size: 1.1em;
+    display: block;
+}
+
+.view-route {
+    color: rgb(0, 0, 116);
+    cursor: pointer;
+}
+
+.view-route:hover {
+    text-decoration: underline;
+    color: rgb(0, 0, 70);
+}

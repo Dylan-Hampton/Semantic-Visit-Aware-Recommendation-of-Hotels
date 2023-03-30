@@ -5,6 +5,10 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import MapController, { IAddLineData, IMarkerData } from '../mapController/MapController';
 import Marker from '../Marker/MapMarker';
 import { renderToStaticMarkup } from 'react-dom/server';
+import { useAppSelector } from '../../../hooks';
+import { selectRoutes } from '../../../routeDataSlice';
+import Route from '../../../data/response/RouteResponse';
+import MarkerPopup from '../Marker/MarkerPopup';
 
 mapboxgl.accessToken = "pk.eyJ1IjoibmF0ZXNjaGVuY2siLCJhIjoiY2xkZ2hha3IwMHJ6djN3bndlYzlud29vaSJ9.4gjvZipOtY9lWJXc3Ffk6g";
 if (process.env.NODE_ENV !== 'test'){
@@ -24,13 +28,16 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     const map = useRef<Map>(null);
     const [markers, setMarkers] = useState<mapboxgl.Marker[]>([]);
     const [lineIds, setLineIds] = useState<string[]>([]);
+    const routes: Route[] = useAppSelector(selectRoutes);
 
     const addMarker = (data: IMarkerData) => {
-        // Use `map` variable with .current to deal with Map object
         const el = document.createElement('div');
         const markerEl = renderToStaticMarkup(<Marker type={data.type} name={data.name} />)
         el.innerHTML = markerEl;
         let marker = new mapboxgl.Marker(el).setLngLat([data.lng, data.lat]);
+        marker.setPopup(new mapboxgl.Popup({offset: 16, closeOnClick: true, closeButton: false}).setHTML(
+            renderToStaticMarkup(<MarkerPopup name={data.name} />)
+        ));
         const newMarkers = [marker, ...markers];
         setMarkers(newMarkers);
         marker.addTo(map.current);
@@ -87,6 +94,21 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        if (routes !== undefined && routes !== null && routes.length > 0) {
+            routes.forEach((route, index) => {
+                const originMarkerData: IMarkerData = {
+                    lng: route.origin.lng,
+                    lat: route.origin.lat,
+                    name: route.origin.name,
+                    type: 'origin'
+                }
+                addMarker(originMarkerData);
+            });
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [routes]);
 
     return (
         <div ref={mapContainer} className="map-base">

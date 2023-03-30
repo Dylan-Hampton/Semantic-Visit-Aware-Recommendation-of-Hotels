@@ -62,7 +62,7 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
             distance: dist,
             categories: categoryNumbers,
         }
-        dispatch(generateRoute(r))
+        await dispatch(generateRoute(r))
     }
 
     return (
@@ -93,7 +93,10 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                             <Divider />
                             <div className="input-bottom-inputs">
                                 <div className="input-maxdist"><MaximumDistance></MaximumDistance></div>
-                                <div className="input-submit" onClick={handleSubmit}><SubmitButton></SubmitButton></div>
+                                <div className="input-submit" onClick={async () => {
+                                        await handleSubmit();
+                                    }
+                                }><SubmitButton></SubmitButton></div>
                             </div>
                         </div>
                 </div>

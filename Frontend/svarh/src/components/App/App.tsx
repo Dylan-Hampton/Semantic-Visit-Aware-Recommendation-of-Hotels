@@ -21,17 +21,17 @@ function App() {
       
        {/* <div className="PubSubTest" style={{backgroundColor: 'green', width: '100px', height: '100px'}} onClick={() => {
         let mapController: MapController = MapController.getInstance();
-        // let data: IMarkerData = {
-        //   lat: 40.723,
-        //   lng: -74.006,
-        //   name: 'Test',
-        //   type: 'origin'
-        // }
+        let data: IMarkerData = {
+          lat: 40.723,
+          lng: -74.006,
+          name: 'Test',
+          type: 'origin'
+        }
         let lineData: IAddLineData = {
           id: '6',
           route: [[-74.006, 40.723],[-74.106, 40.723],[-74.106, 41.000]]
         }
-        mapController.publish(MapController.ADD_LINE, lineData);
+        mapController.publish(MapController.ADD_MARKER, data);
       }}>
         <span>PubSub Test</span>
       </div> */}
