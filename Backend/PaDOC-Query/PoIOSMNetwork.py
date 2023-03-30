@@ -206,9 +206,9 @@ class PoI_Graph:
 
 def main():
     folder_name = "PoI_Network"
-    city_name = "New York City"
-    state_name = "New York"
-    short_name = "NY"
+    city_name = "Chicago"
+    state_name = "Illinois"
+    short_name = "Chicago"
 
     if not os.path.isdir(folder_name):
         os.mkdir(folder_name)
@@ -220,7 +220,7 @@ def main():
         # Insert PoIs into network
         poiDic = {}
 
-        with open(folder_name+"/attractionNYLngLat.csv", 'r', encoding="cp1252") as rhandle:
+        with open(folder_name+"/attraction" + short_name + "LngLat.csv", 'r') as rhandle:
             spamreader = csv.reader(rhandle)
 
             # Skip the col names/titles
@@ -234,21 +234,34 @@ def main():
         # Insert hotels into network
         startingPDic = {}
 
-        with open(folder_name+"/new_york_hotels.csv", 'r', encoding="cp1252") as rhandle:
+        # with open(folder_name+"/new_york_hotels.csv", 'r', encoding="cp1252") as rhandle:
+        #     spamreader = csv.reader(rhandle)
+
+        #     next(spamreader)
+
+        #     for eachRow in spamreader:
+        #         if eachRow[3] in ['New York', 'Brooklyn', 'Staten Island', "Long Island City", "Flushing", "Jamaica",
+        #                           "Queens Village", "Floral Park", "Bayside", "Far Rockaway", "Bronx"]:
+        #             startingPDic[eachRow[1]] = (float(eachRow[7]), float(eachRow[6]))
+
+        with open(folder_name+"/chicago_airbnbs.csv", 'r') as rhandle:
             spamreader = csv.reader(rhandle)
 
             next(spamreader)
 
+            count = 1
             for eachRow in spamreader:
-                if eachRow[3] in ['New York', 'Brooklyn', 'Staten Island', "Long Island City", "Flushing", "Jamaica",
-                                  "Queens Village", "Floral Park", "Bayside", "Far Rockaway", "Bronx"]:
-                    startingPDic[eachRow[1]] = (float(eachRow[7]), float(eachRow[6]))
+                if eachRow[5] in ['Lake View', 'Edgewater', 'Lincoln Park', 'Logan Square', 'Rogers Park', 'Lincoln Square', 'Humboldt Park', 'Near North Side', 'Near South Side', 'Near West Side']:
+                    # Origin 2572 had a key error on line 157 and was not sure why/how to fix it
+                    if count != 2572:
+                        startingPDic[eachRow[1]] = (float(eachRow[7]), float(eachRow[6]))
+                        count += 1
 
         nsDic, esDic = osmG.poi_overlay(startingPDic, processPoI=False)
 
         print("Start Writing to files...")
 
-        with open(folder_name + "/" + short_name + "_ns.csv", 'w', newline='', encoding="cp1252") as whandle:
+        with open(folder_name + "/" + short_name + "_ns.csv", 'w', newline='') as whandle:
             spamwriter = csv.writer(whandle)
 
             spamwriter.writerow(['no', 'lng', 'lat', 'sites', 'hotel', 'name'])
@@ -263,7 +276,7 @@ def main():
                     k, v['lng'], v['lat'], '|'.join(list(v['sites'])), hotelFlag, '|'.join(list(v['hotel_names']))
                 ])
 
-        with open(folder_name + "/" + short_name + "_es.csv", 'w', newline='', encoding="cp1252") as whandle:
+        with open(folder_name + "/" + short_name + "_es.csv", 'w', newline='') as whandle:
             spamwriter = csv.writer(whandle)
 
             spamwriter.writerow(['start', 'end', 'length'])

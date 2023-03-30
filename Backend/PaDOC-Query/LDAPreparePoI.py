@@ -6,14 +6,18 @@ from LDALearner import places_reviews
 import os, csv
 import CONSTANTS
 
+import nltk
+
+
 
 def main():
     folder_name = "LDA_Model_" + str(CONSTANTS.CATEGORY_NUM)
+    city = "Chicago"
 
-    if os.path.exists(folder_name + "/NYCleanedText.csv"):
+    if os.path.exists(folder_name + "/" + city + "CleanedText.csv"):
         print("Start Loading Cleaned Text...")
 
-        with open(folder_name + "/NYCleanedText.csv", 'r') as rhandle:
+        with open(folder_name + "/" + city + "CleanedText.csv", 'r') as rhandle:
             rfile = csv.reader(rhandle, delimiter='|')
 
             reviews = {}
@@ -21,9 +25,9 @@ def main():
             for each_row in rfile:
                 reviews[each_row[0]] = reviews.get(each_row[0], []) + [each_row[1]]
     else:
-        reviews = places_reviews("TripAdvisorCrawler/attractionNYTripAdvisor.csv")
+        reviews = places_reviews("TripAdvisorCrawler/attraction" + city + "TripAdvisor.csv")
 
-        with open(folder_name + "/NYCleanedText.csv", 'a', newline='') as whandle:
+        with open(folder_name + "/" + city + "CleanedText.csv", 'a', newline='') as whandle:
             spamwriter = csv.writer(whandle, delimiter='|')
 
             for k, v in reviews.items():
@@ -32,16 +36,16 @@ def main():
 
     print("----------------------------------------")
 
-    if not os.path.exists(folder_name + "/NYDivVector.csv"):
+    if not os.path.exists(folder_name + "/" + city + "DivVector.csv"):
         print("Start Generating Div Vector...")
 
         counter = [0] * CONSTANTS.CATEGORY_NUM
 
-        model_file = datapath(os.getcwd() + "\\" + folder_name + "\\ldaTrainedModel")
+        model_file = datapath(os.getcwd() + "/" + folder_name + "/ldaTrainedModel")
         trained_model = models.LdaModel.load(model_file)
         dict_word = trained_model.id2word
 
-        with open(folder_name + "/NYDivVector.csv", 'a', newline='') as whandle:
+        with open(folder_name + "/" + city + "DivVector.csv", 'a', newline='') as whandle:
             spamwriter = csv.writer(whandle)
 
             for k, v in reviews.items():
