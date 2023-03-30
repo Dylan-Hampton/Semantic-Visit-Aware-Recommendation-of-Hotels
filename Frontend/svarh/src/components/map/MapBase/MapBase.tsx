@@ -26,7 +26,7 @@ interface IMapBaseProps {
 const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     const mapContainer = useRef(null);
     const map = useRef<Map>(null);
-    const [markers, setMarkers] = useState<mapboxgl.Marker[]>([]);
+    let markers: mapboxgl.Marker[] = [];
     const [lineIds, setLineIds] = useState<string[]>([]);
     const routes: Route[] = useAppSelector(selectRoutes);
 
@@ -39,8 +39,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
             renderToStaticMarkup(<MarkerPopup name={data.name} />)
         ));
         marker.addTo(map.current);
-        const newMarkers = markers.concat(marker);
-        setMarkers(newMarkers);
+        markers = markers.concat(marker);
         const markerDiv = marker.getElement(); // Add popup toggle on mouse hover
         markerDiv.addEventListener('mouseenter', () => marker.togglePopup());
         markerDiv.addEventListener('mouseleave', () => marker.togglePopup());
@@ -99,9 +98,6 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     }, []);
 
     useEffect(() => {
-        markers.forEach((m) => {
-            m.remove();
-        });
         if (routes !== undefined && routes !== null && routes.length > 0) {
             routes.forEach((route, index) => {
                 const originMarkerData: IMarkerData = {
@@ -111,6 +107,11 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                     type: 'origin'
                 }
                 addMarker(originMarkerData);
+            });
+        }
+        return () => { // Called when component unmounts
+            markers.forEach((m) => {
+                m.remove();
             });
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
