@@ -1,0 +1,10 @@
+.marker-popup {
+    width: fit-content;
+    max-width: 100px;
+    text-align: center;
+}
+
+.marker-name {
+    font-size: 1.1em;
+    display: block;
+}
