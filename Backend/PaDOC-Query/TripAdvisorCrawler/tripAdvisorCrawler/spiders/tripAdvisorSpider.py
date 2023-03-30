@@ -10,15 +10,15 @@ class TripAdvisorSpider(scrapy.Spider):
     #start_urls = [
     #    "https://www.tripadvisor.com/Attractions-g55197-Activities-a_allAttractions.true-Memphis_Tennessee.html"
     #]
-    #start_urls = [
-    #    "https://www.tripadvisor.com/Attractions-g35805-Activities-a_allAttractions.true-Chicago_Illinois.html"
-    #]
+    start_urls = [
+       "https://www.tripadvisor.com/Attractions-g35805-Activities-a_allAttractions.true-Chicago_Illinois.html"
+    ]
     #start_urls = [
     #    "https://www.tripadvisor.com/Attractions-g34438-Activities-a_allAttractions.true-Miami_Florida.html"
     #]
-    start_urls = [
-        "https://www.tripadvisor.com/Attractions-g60750-Activities-a_allAttractions.true-San_Diego_California.html"
-    ]
+    # start_urls = [
+    #     "https://www.tripadvisor.com/Attractions-g60750-Activities-a_allAttractions.true-San_Diego_California.html"
+    # ]
     #start_urls = [
     #    "https://www.tripadvisor.com/Attractions-g28970-Activities-a_allAttractions.true-Washington_DC_District_"
     #    "of_Columbia.html"
@@ -33,8 +33,7 @@ class TripAdvisorSpider(scrapy.Spider):
 
     def parse(self, response):
         # Redirect to Reviews page
-        poiLinks = response.xpath('//a[@class="_2OD1jgdZ"]/@href').extract()
-
+        poiLinks = response.xpath('//div[@class="alPVI eNNhq PgLKC tnGGX"]/a[not(@class)]/@href').extract() # Old XPath '//a[@class="_2OD1jgdZ"]/@href'
         for link in poiLinks:
             # Generate absolute url link for the review of each PoI
             poiAbsPath = response.urljoin(link + "#REVIEWS")
@@ -50,8 +49,8 @@ class TripAdvisorSpider(scrapy.Spider):
         #curPage = int(response.xpath('//div[@class="pageNumbers"]/span[contains(@class, "pageNum current")]/text()').
         #              extract_first())
 
-        curPage = response.xpath('//div[@class="pageNumbers"]/span[contains(@class, "pageNum current")]/text()').\
-            extract_first()
+        curPage = response.xpath('//button[@class="BrOJk u j z _F wSSLS tIqAi iNBVo SSqtP"]//span[@class="biGQs _P ttuOS"]/text()').\
+            extract_first() # Old XPath '//div[@class="pageNumbers"]/span[contains(@class, "pageNum current")]/text()'
 
         if curPage:
             curPage = int(curPage)
@@ -62,8 +61,8 @@ class TripAdvisorSpider(scrapy.Spider):
 
             # E.g. https://www.tripadvisor.com/Attractions-g35805-Activities-oa30
             # -a_allAttractions.true-Chicago_Illinois.html
-            #preUrl = "https://www.tripadvisor.com/Attractions-g35805-Activities-oa"
-            #sufUrl = "-a_allAttractions.true-Chicago_Illinois.html"
+            preUrl = "https://www.tripadvisor.com/Attractions-g35805-Activities-oa"
+            sufUrl = "-a_allAttractions.true-Chicago_Illinois.html"
 
             # E.g. https://www.tripadvisor.com/Attractions-g28970-Activities-oa30
             # -a_allAttractions.true-Washington_DC_District_of_Columbia.html
@@ -77,8 +76,8 @@ class TripAdvisorSpider(scrapy.Spider):
 
             # E.g. https://www.tripadvisor.com/Attractions-g60750-Activities-oa30
             # -a_allAttractions.true-San_Diego_California.html
-            preUrl = "https://www.tripadvisor.com/Attractions-g60750-Activities-oa"
-            sufUrl = "-a_allAttractions.true-San_Diego_California.html"
+            # preUrl = "https://www.tripadvisor.com/Attractions-g60750-Activities-oa"
+            # sufUrl = "-a_allAttractions.true-San_Diego_California.html"
 
             # nextPage = curPage + 1
             # Url: (nextPage -1) * 30 = curPage * 30
@@ -87,14 +86,14 @@ class TripAdvisorSpider(scrapy.Spider):
 
             # Note that URL link from "Next" button is reset in html source file, which thus cannot be directly used
             # However, we can use nextPage to check if it is the last page
-            nextPage = response.xpath('//a[contains(@class, "ui_button nav next")]/@href').extract()
+            nextPage = response.xpath('//a[@aria-label="Next page"]/@href').extract() # Old XPath '//a[contains(@class, "ui_button nav next")]/@href'
 
             if nextPage and len(self.poiSet) <= 600:
                 yield scrapy.Request(nextPageUrl, callback=self.parse)
 
     def parseReviewsSum(self, response):
         # Extract the links for reviews
-        reviewLinks = response.xpath('//div[@data-test-target="review-title"]/a/@href').extract()
+        reviewLinks = response.xpath('//a[starts-with(@href, "/ShowUserReviews")]/@href').extract() # Old XPath '//div[@data-test-target="review-title"]/a/@href'
 
         for link in reviewLinks:
             # Generate absolute url link for each review
@@ -106,11 +105,11 @@ class TripAdvisorSpider(scrapy.Spider):
                 yield scrapy.Request(reviewAbsPath, callback=self.parseReview)
 
         #next_page = response.xpath('//link[@rel="next"]/@href').extract()
-        nextPage = response.xpath('//a[contains(@class, "ui_button nav next")]/@href').extract()
+        nextPage = response.xpath('//a[@aria-label="Next page"]/@href').extract() # Old XPath '//a[contains(@class, "ui_button nav next")]/@href'
         #curPage = int(response.xpath('//div[@class="pageNumbers"]/span[contains(@class, "pageNum current")]/text()').
         #              extract_first())
-        curPage = response.xpath('//div[@class="pageNumbers"]/span[contains(@class, "pageNum current")]/text()').\
-            extract_first()
+        curPage = response.xpath('//button[@class="BrOJk u j z _F wSSLS tIqAi iNBVo SSqtP"]//span[@class="biGQs _P ttuOS"]/text()').\
+            extract_first() # Old XPath '//div[@class="pageNumbers"]/span[contains(@class, "pageNum current")]/text()'
 
         if curPage:
             curPage = int(curPage)
