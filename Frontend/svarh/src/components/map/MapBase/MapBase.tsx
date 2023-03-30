@@ -38,9 +38,9 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         marker.setPopup(new mapboxgl.Popup({offset: 16, closeOnClick: true, closeButton: false}).setHTML(
             renderToStaticMarkup(<MarkerPopup name={data.name} />)
         ));
-        const newMarkers = [marker, ...markers];
-        setMarkers(newMarkers);
         marker.addTo(map.current);
+        const newMarkers = markers.concat(marker);
+        setMarkers(newMarkers);
     }
 
     const addLine = (data: IAddLineData) => {
@@ -96,6 +96,9 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     }, []);
 
     useEffect(() => {
+        markers.forEach((m) => {
+            m.remove();
+        });
         if (routes !== undefined && routes !== null && routes.length > 0) {
             routes.forEach((route, index) => {
                 const originMarkerData: IMarkerData = {
