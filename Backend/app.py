@@ -19,88 +19,6 @@ from Experiment import greedy_dijkstra
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/cities')
-def cities():
-    '''
-    If we had a database for cities we could get the data from there.
-    For now as we have one city, this is hard coded along with an extra
-    city for the frontend to test their functionality.
-    '''
-    city_data = [
-        {
-            'cityName': 'New York City',
-            'poiTypes': [
-                'Museum',
-                'Statue',
-                'Mall',
-                'Park',
-                'Zoo',
-                'Aquarium'
-            ]
-        },
-        {
-            'cityName': 'Chicago',
-            'poiTypes': [
-                'Museum',
-                'Restaurant',
-                'Beach',
-                'Market',
-                'Library',
-                'Book Store'
-            ]
-        }
-    ]
-    return jsonify(city_data)
-
-
-@app.route('/routes', methods=['POST'])
-def routes():
-    # TODO: Separate the setup parts (graph, index, origins) into different functions that can be called or ran on setup of Apache
-    num_poi = 623
-
-    g = get_ny_graph()
-    ############################################################################################
-    ############################################################################################
-    ############################################################################################
-
-    container_index = get_index_from_pickle("./PaDOC-Query/PoI_Network/Index/MatrixContainer_" + str(num_poi) + ".pickle")
-
-    ############################################################################################
-    ############################################################################################
-    ############################################################################################
-    origins, origin_name_mapping = get_origins("./PaDOC-Query/PoI_Network/NY_ns.csv")
-
-    g.rtree_build(origins)
-
-    GREEDY_DIJKSTRA = 0
-    RANDOM_WALK_RESTART = 1
-    POI_FIRST = 2
-    ORIGIN_FIRST = 3
-
-    content = request.json
-
-    algorithm = content['algorithm']
-    theta = content['categories']
-    max_dist = content['distance']
-    num_required_origin = content['origins']
-
-    # Not really sure what this should be set to, but for now 2 seems good
-    max_time = 2
-
-    route_res = None
-    if(algorithm == GREEDY_DIJKSTRA):
-        route_res = greedy_dijkstra(g, origins, theta, max_dist, num_required_origin, verbal=False, complexity=False)
-    elif(algorithm == RANDOM_WALK_RESTART):
-        route_res = random_walk_restart(g, origins, theta, max_dist, 3*max_time, num_required_origin, verbal=False, complexity=False)
-    elif(algorithm == POI_FIRST):
-        route_res = GreedySearch.greedy_process_PoI(g, container_index, theta, max_dist, origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
-    elif(algorithm == ORIGIN_FIRST):
-        route_res = GreedySearch.greedy_process_origin(g, container_index, theta, max_dist, origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
-    else:
-        return "Invalid argument for: algorithm", status.HTTP_400_BAD_REQUEST
-    
-    return jsonify(get_result_JSON(g, route_res, origin_name_mapping))
-
 def get_index_from_pickle(path_to_pickle):
     if os.path.exists(path_to_pickle):
         print("Start Loading Container Index from Pickle file......")
@@ -313,6 +231,264 @@ def get_ny_graph():
         exit()
     return g
 
+def get_chicago_graph():
+    num_poi = 0 #TODO: Change this number to the number of PoIs in the dataset
+    if os.path.exists("./PaDOC-Query/PoI_Network/PKL/Chicago_" + str(num_poi) + "_PoI_network_euclidean.pickle"):
+        print("Start Loading PoI Network from Pickle file......")
+
+        with open("./PaDOC-Query/PoI_Network/PKL/Chicago_" + str(num_poi) + "_PoI_network_euclidean.pickle", 'rb') as f:
+            g = pickle.load(f)
+
+        print("PoI Network Has Been Loaded......")
+        print("=================================================")
+    elif os.path.exists("./PaDOC-Query/PoI_Network/CSV/Chicago_CH_es_euclidean.csv") and \
+            os.path.exists("./PaDOC-Query/PoI_Network/CSV/Chicago_CH_ns_euclidean.csv") and \
+            os.path.exists("./PaDOC-Query/PoI_Network/CSV/Chicago_PoI_info.csv"):
+        print("Start Loading PoI Network from CSV files......")
+
+        print("Start Loading Diversity......")
+
+        with open("./PaDOC-Query/PoI_Network/CSV/Chicago_PoI_info.csv", 'r') as rf:
+            spamreader = csv.reader(rf)
+            next(spamreader)
+
+            poi_dict = {}
+
+            for eachPoI in spamreader:
+                poi_id, poi_name, category_idx = int(eachPoI[0]), eachPoI[1], int(eachPoI[2])
+
+                poi_dict[poi_name] = Node.PoI(poi_id=poi_id, name=poi_name, category=category_idx)
+
+        ############################################################################################
+        ############################################################################################
+        ############################################################################################
+
+        print("Start Pairing Node with PoIs......")
+
+        embedded_poi_node = {}
+
+        '''
+        {
+            node_1: set(Node.PoI(), Node.PoI(), ...),
+            ...
+        }
+        Note: Only contain the node with PoI embedded
+        This step is necessary because CH_ns does not have info related to PoI
+        '''
+
+        with open("./PaDOC-Query/PoI_Network/Chicago_ns.csv", 'r') as rf:
+            spamreader = csv.reader(rf)
+            next(spamreader)
+
+            for each_node in spamreader:
+                node_id, node_lng, node_lat, node_pois_str = int(each_node[0]), float(each_node[1]), \
+                                                             float(each_node[2]), each_node[3]
+
+                if node_pois_str != '':
+                    node_pois = set()
+                    pois_name_list = node_pois_str.split('|')
+
+                    for each_poi_name in pois_name_list:
+                        node_pois.add(poi_dict[each_poi_name])
+
+                    embedded_poi_node[node_id] = node_pois
+
+        ############################################################################################
+        ############################################################################################
+        ############################################################################################
+
+        g = ContractPoINetwork.ContractPoINetwork()
+
+        print("Start Inserting Nodes......")
+        with open("./PaDOC-Query/PoI_Network/CSV/Chicago_CH_ns_euclidean.csv", 'r') as rf:
+            spamreader = csv.reader(rf)
+            next(spamreader)
+
+            counter = 1
+
+            for each_row in spamreader:
+                node_id, node_lng, node_lat, node_depth, node_order = int(each_row[0]), float(each_row[1]), \
+                                                                      float(each_row[2]), int(each_row[3]), \
+                                                                      int(each_row[4])
+
+                if node_id not in embedded_poi_node:
+                    g.add_node(node_id, node_lng, node_lng)
+                else:
+                    g.add_node(node_id, node_lng, node_lng, embedded_poi_node[node_id])
+
+                '''
+                :param depth: Integer, Hierarchy Depth
+                :param contractOrder: Integer, contract order
+                '''
+
+                g.nodes[node_id].depth, g.nodes[node_id].contract_order = node_depth, node_order
+
+                print("Inserted ", counter, " nodes")
+                g.nodes[node_id].print_info()
+                print("///////////////////////")
+                counter += 1
+
+        print("Inserted all ", counter - 1, " nodes successfully......")
+
+        ############################################################################################
+        ############################################################################################
+        ############################################################################################
+
+        print("Starting Inserting Edges......")
+        with open("./PaDOC-Query/PoI_Network/CSV/Chicago_CH_es_euclidean.csv", 'r') as rf:
+            spamreader = csv.reader(rf)
+            next(spamreader)
+
+            counter = 1
+
+            for each_row in spamreader:
+                node_id1, node_id2, edge_weight, edge_isShortcut, mid_node_id = int(each_row[0]), int(each_row[1]), \
+                                                                                float(each_row[2]), each_row[3], \
+                                                                                int(each_row[4])
+
+                if math.isnan(edge_weight):
+                    continue
+
+                if edge_isShortcut == 'N':
+                    g.add_edge(node_id1, node_id2, edge_weight)
+                    print("Inserted ", counter, " edges")
+                else:
+                    g.add_shortcut(node_id1, node_id2, edge_weight, mid_node_id)
+                    print("Inserted ", counter, " shortcuts")
+
+                g.edges[(node_id1, node_id2)].print_info()
+                print("///////////////////////")
+                counter += 1
+
+        print("Inserted all ", counter - 1, " edges successfully......")
+        print("==================================================")
+    else:
+        print("No PoI network data!!!")
+        exit()
+    return g
+
+def setup(self=app):
+    global ny_num_poi
+    global ny_g
+    global ny_container_idx
+    global ny_origins
+    global ny_origin_name_mapping
+
+    ny_num_poi = 623
+    ny_g = get_ny_graph()
+    ny_container_idx = get_index_from_pickle("./PaDOC-Query/PoI_Network/Index/MatrixContainer_" + str(ny_num_poi) + ".pickle")
+    ny_origins, ny_origin_name_mapping = get_origins("./PaDOC-Query/PoI_Network/NY_ns.csv")
+    ny_g.rtree_build(ny_origins)
+
+    ''' #TODO: Uncomment this to use Chicago
+    global chicago_num_poi
+    global chicago_g
+    global chicago_container_idx
+    global chicago_origins
+    global chicago_origin_name_mapping
+
+    chicago_num_poi = 0 #TODO: Change this to the number of POIs in Chicago
+    chicago_g = get_chicago_graph()
+    chicago_container_idx = get_index_from_pickle("./PaDOC-Query/PoI_Network/Index/MatrixContainer_" + str(chicago_num_poi) + ".pickle")
+    chicago_origins, chicago_origin_name_mapping = get_origins("./PaDOC-Query/PoI_Network/Chicago_ns.csv")
+    chicago_g.rtree_build(chicago_origins)
+    '''
+
+@app.route('/cities')
+def cities():
+    '''
+    If we had a database for cities we could get the data from there.
+    For now as we have one city, this is hard coded along with an extra
+    city for the frontend to test their functionality.
+    '''
+    city_data = [
+        {
+            'cityName': 'New York City',
+            'poiTypes': [
+                'Museum',
+                'Statue',
+                'Mall',
+                'Park',
+                'Zoo',
+                'Aquarium'
+            ]
+        },
+        {
+            'cityName': 'Chicago',
+            'poiTypes': [
+                'Museum',
+                'Restaurant',
+                'Beach',
+                'Market',
+                'Library',
+                'Book Store'
+            ]
+        }
+    ]
+    return jsonify(city_data)
+
+@app.before_first_request(setup)
+@app.route('/routes', methods=['POST'])
+def routes():
+    global ny_num_poi
+    global ny_g
+    global ny_container_idx
+    global ny_origins
+    global ny_origin_name_mapping
+
+    ''' #TODO: Uncomment this to use Chicago
+    global chicago_num_poi
+    global chicago_g
+    global chicago_container_idx
+    global chicago_origins
+    global chicago_origin_name_mapping
+    '''
+
+    GREEDY_DIJKSTRA = 0
+    RANDOM_WALK_RESTART = 1
+    POI_FIRST = 2
+    ORIGIN_FIRST = 3
+
+    content = request.json
+
+    algorithm = content['algorithm']
+    theta = content['categories']
+    max_dist = content['distance']
+    num_required_origin = content['origins']
+    #city = content['city'] TODO: uncomment this to use Chicago and comment out the line below (inputs are "New York City" or "Chicago")
+    city = "New York City"
+
+    # Not really sure what this should be set to, but for now 2 seems good
+    max_time = 2
+    route_res = None
+    if city == "New York City":
+        if(algorithm == GREEDY_DIJKSTRA):
+            route_res = greedy_dijkstra(ny_g, ny_origins, theta, max_dist, num_required_origin, verbal=False, complexity=False)
+        elif(algorithm == RANDOM_WALK_RESTART):
+            route_res = random_walk_restart(ny_g, ny_origins, theta, max_dist, 3*max_time, num_required_origin, verbal=False, complexity=False)
+        elif(algorithm == POI_FIRST):
+            route_res = GreedySearch.greedy_process_PoI(ny_g, ny_container_idx, theta, max_dist, ny_origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
+        elif(algorithm == ORIGIN_FIRST):
+            route_res = GreedySearch.greedy_process_origin(ny_g, ny_container_idx, theta, max_dist, ny_origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
+        else:
+            return "Invalid argument for: algorithm", status.HTTP_400_BAD_REQUEST
+        return jsonify(get_result_JSON(ny_g, route_res, ny_origin_name_mapping))
+    elif city == "Chicago":
+        '''if(algorithm == GREEDY_DIJKSTRA): #TODO: Uncomment this to use Chicago
+            route_res = greedy_dijkstra(chicago_g, chicago_origins, theta, max_dist, num_required_origin, verbal=False, complexity=False)
+        elif(algorithm == RANDOM_WALK_RESTART):
+            route_res = random_walk_restart(chicago_g, chicago_origins, theta, max_dist, 3*max_time, num_required_origin, verbal=False, complexity=False)
+        elif(algorithm == POI_FIRST):
+            route_res = GreedySearch.greedy_process_PoI(chicago_g, chicago_container_idx, theta, max_dist, chicago_origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
+        elif(algorithm == ORIGIN_FIRST):
+            route_res = GreedySearch.greedy_process_origin(chicago_g, chicago_container_idx, theta, max_dist, chicago_origins, num_required_origin, index_matrix=True, verbal=False, complexity=False)
+        else:
+            return "Invalid argument for: algorithm", status.HTTP_400_BAD_REQUEST
+        return jsonify(get_result_JSON(chicago_g, route_res, chicago_origin_name_mapping))
+        '''
+    else:
+        return "Invalid argument for: city", status.HTTP_400_BAD_REQUEST
+
 def get_result_JSON(g, route_res, origin_name_mapping):
     result = []
     path_JSON = {'origin': [], 'nodes': [], 'pois': [], 'distance': ''}
@@ -354,7 +530,6 @@ def get_poi_JSON(g, path, poi):
         node = g.nodes[node_id]
         if poi in node.PoIs:
             return {'name': poi.name, 'category': poi.category, 'lng': node.lng, 'lat': node.lat}
-
 
 if __name__ == '__main__':
     app.run()
