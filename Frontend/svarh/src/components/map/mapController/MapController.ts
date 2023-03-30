@@ -1,9 +1,13 @@
-export interface IAddMarkerData {
-    test: string;
+export interface IMarkerData {
+    lat: number;
+    lng: number;
+    name: string;
+    type: "origin" | "poi";
 }
 
 export interface IAddLineData {
-
+    id: string; // Must be UNIQUE across all lines
+    route: number[][]; // [[lng, lat],[lng, lat],...]
 }
 
 export default class MapController {
