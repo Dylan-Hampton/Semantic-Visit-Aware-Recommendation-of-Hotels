@@ -9,6 +9,7 @@ import { useAppSelector } from '../../../hooks';
 import { selectRoutes } from '../../../routeDataSlice';
 import Route from '../../../data/response/RouteResponse';
 import MarkerPopup from '../Marker/MarkerPopup';
+import { MapNode } from '../../../data/response/Node';
 
 mapboxgl.accessToken = "pk.eyJ1IjoibmF0ZXNjaGVuY2siLCJhIjoiY2xkZ2hha3IwMHJ6djN3bndlYzlud29vaSJ9.4gjvZipOtY9lWJXc3Ffk6g";
 if (process.env.NODE_ENV !== 'test'){
@@ -30,6 +31,25 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     const [lineIds, setLineIds] = useState<string[]>([]);
     const routes: Route[] = useAppSelector(selectRoutes);
 
+    const drawHotelRoute = (data: IMarkerData) => {
+        console.log(data.name + " Marker Clicked");
+        routes.forEach(route => {
+            if (route.origin.name === data.name) {
+                let nodes: number[][] = [];
+                let i = 0;
+                route.nodes.forEach((node) => {
+                    nodes.push([node.lng, node.lat]);
+                })
+                // console.log(nodes)
+                const hotelLineData: IAddLineData = {
+                    id: route.origin.name,
+                    route: nodes,
+                }
+                addLine(hotelLineData);
+            }
+        })
+    }
+
     const addMarker = (data: IMarkerData) => {
         const el = document.createElement('div');
         const markerEl = renderToStaticMarkup(<Marker type={data.type} name={data.name} />)
@@ -43,6 +63,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         const markerDiv = marker.getElement(); // Add popup toggle on mouse hover
         markerDiv.addEventListener('mouseenter', () => marker.togglePopup());
         markerDiv.addEventListener('mouseleave', () => marker.togglePopup());
+        markerDiv.addEventListener('click', () => drawHotelRoute(data));
     }
 
     const addLine = (data: IAddLineData) => {
