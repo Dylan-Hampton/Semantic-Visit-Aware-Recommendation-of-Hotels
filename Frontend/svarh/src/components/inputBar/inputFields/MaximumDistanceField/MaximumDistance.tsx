@@ -24,7 +24,7 @@ const MaximumDistance: React.FC<IMaximumDistanceProps> = (props: IMaximumDistanc
         <div className="maxDist">
             <TextField 
                 inputProps={{ inputMode: 'text', pattern: '[0-9]*' }} 
-                InputProps={{endAdornment: <InputAdornment position="end">m</InputAdornment>}}
+                InputProps={{endAdornment: <InputAdornment position="end">mi</InputAdornment>}}
                 className="maxDistInput" 
                 id="outlined-basic" 
                 label="Maximum Distance" 
