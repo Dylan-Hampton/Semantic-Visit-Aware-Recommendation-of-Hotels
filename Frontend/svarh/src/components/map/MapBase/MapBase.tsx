@@ -9,7 +9,6 @@ import { useAppSelector } from '../../../hooks';
 import { selectRoutes } from '../../../routeDataSlice';
 import Route from '../../../data/response/RouteResponse';
 import MarkerPopup from '../Marker/MarkerPopup';
-import { MapNode } from '../../../data/response/Node';
 
 mapboxgl.accessToken = "pk.eyJ1IjoibmF0ZXNjaGVuY2siLCJhIjoiY2xkZ2hha3IwMHJ6djN3bndlYzlud29vaSJ9.4gjvZipOtY9lWJXc3Ffk6g";
 if (process.env.NODE_ENV !== 'test'){
@@ -30,13 +29,13 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     let markers: mapboxgl.Marker[] = [];
     const [lineIds, setLineIds] = useState<string[]>([]);
     const routes: Route[] = useAppSelector(selectRoutes);
+    let lines: string[] = [];
 
     const drawHotelRoute = (data: IMarkerData) => {
         console.log(data.name + " Marker Clicked");
+        let nodes: number[][] = [];
         routes.forEach(route => {
             if (route.origin.name === data.name) {
-                let nodes: number[][] = [];
-                let i = 0;
                 route.nodes.forEach((node) => {
                     nodes.push([node.lng, node.lat]);
                 })
@@ -45,7 +44,19 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                     id: route.origin.name,
                     route: nodes,
                 }
+                lines.push(route.origin.name);
                 addLine(hotelLineData);
+
+                route.pois.forEach(poi => {
+                    const poiMarkerData: IMarkerData = {
+                        lat: poi.lat,
+                        lng: poi.lng,
+                        name: poi.name,
+                        type: "poi",
+                    }
+                    console.log(poi.name+" Added, lat: " + poi.lat + ", lng: " + poi.lng);
+                    addMarker(poiMarkerData);
+                })
             }
         })
     }
@@ -63,7 +74,9 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         const markerDiv = marker.getElement(); // Add popup toggle on mouse hover
         markerDiv.addEventListener('mouseenter', () => marker.togglePopup());
         markerDiv.addEventListener('mouseleave', () => marker.togglePopup());
-        markerDiv.addEventListener('click', () => drawHotelRoute(data));
+        if(data.type === "origin") { 
+            markerDiv.addEventListener('click', () => drawHotelRoute(data));
+        }
     }
 
     const addLine = (data: IAddLineData) => {
@@ -90,8 +103,8 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                 'line-cap': 'round'
             },
             'paint': {
-                'line-color': '#a89132',
-                'line-width': 2
+                'line-color': '#ffb20d',
+                'line-width': 6
             }
         });
     }
@@ -134,6 +147,10 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
             markers.forEach((m) => {
                 m.remove();
             });
+            lines.forEach(line => {
+                map.current.removeLayer('route'+line);
+                map.current.removeSource('route'+line);
+            })
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [routes]);
