@@ -9,6 +9,7 @@ import { useAppSelector } from '../../../hooks';
 import { selectRoutes } from '../../../routeDataSlice';
 import Route from '../../../data/response/RouteResponse';
 import MarkerPopup from '../Marker/MarkerPopup';
+import { PoiNode } from '../../../data/response/Node';
 
 mapboxgl.accessToken = "pk.eyJ1IjoibmF0ZXNjaGVuY2siLCJhIjoiY2xkZ2hha3IwMHJ6djN3bndlYzlud29vaSJ9.4gjvZipOtY9lWJXc3Ffk6g";
 if (process.env.NODE_ENV !== 'test'){
@@ -34,30 +35,61 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     const drawHotelRoute = (data: IMarkerData) => {
         console.log(data.name + " Marker Clicked");
         let nodes: number[][] = [];
+
         routes.forEach(route => {
             if (route.origin.name === data.name) {
-                route.nodes.forEach((node) => {
-                    nodes.push([node.lng, node.lat]);
-                })
-                // console.log(nodes)
-                const hotelLineData: IAddLineData = {
-                    id: route.origin.name,
-                    route: nodes,
-                }
-                lines.push(route.origin.name);
-                addLine(hotelLineData);
-
-                route.pois.forEach(poi => {
-                    const poiMarkerData: IMarkerData = {
-                        lat: poi.lat,
-                        lng: poi.lng,
-                        name: poi.name,
-                        type: "poi",
+                if (!map.current.getSource('route'+route.origin.name)) {
+                    console.log("Displaying " + route.origin.name + " route");
+                    route.nodes.forEach((node) => {
+                        nodes.push([node.lng, node.lat]);
+                    })
+                    // console.log(nodes)
+                    const hotelLineData: IAddLineData = {
+                        id: route.origin.name,
+                        route: nodes,
                     }
-                    console.log(poi.name+" Added, lat: " + poi.lat + ", lng: " + poi.lng);
-                    addMarker(poiMarkerData);
+                    lines.push(route.origin.name);
+                    addLine(hotelLineData);
+
+                    route.pois.forEach(poi => {
+                        const poiMarkerData: IMarkerData = {
+                            lat: poi.lat,
+                            lng: poi.lng,
+                            name: poi.name,
+                            type: "poi",
+                        }
+                        console.log(poi.name+" Added, lat: " + poi.lat + ", lng: " + poi.lng);
+                        addMarker(poiMarkerData);
+                    })
+                }
+                else {
+                    console.log("Hiding " + route.origin.name + " route");
+                    hideHotelRoute(data);
+                }
+            }
+        })
+    }
+
+    const hideHotelRoute = (data: IMarkerData) => {
+        map.current.removeLayer('route'+data.name);
+        map.current.removeSource('route'+data.name);
+
+        let pois: PoiNode[] = [];
+        routes.forEach(route => {
+            if (route.origin.name === data.name) {
+                route.pois.forEach(poi => {
+                    pois.push(poi);
                 })
             }
+        })
+        markers.forEach(m => {
+            pois.forEach(poi => {
+                let lat = m.getLngLat().lat;
+                let lng = m.getLngLat().lng;
+                if (poi.lat === lat && poi.lng === lng) {
+                    m.remove();
+                }
+            })
         })
     }
 
