@@ -1,6 +1,6 @@
 # Semantic Vist Aware Recommendation of Hotels
 
-Vist our website (must me on the ISU network to access this link)[http://sdmay23-34.sd.ece.iastate.edu/"]
+Vist our project website to learn more "http://sdmay23-34.sd.ece.iastate.edu/"
 
 ## Description
 Our client has developed an algorithm to efficiently determine the optimal semantically diverse points of interest (PoI) as well as the optimal route between them given user constraints like maximum travel distance, preferred PoI categories, etc. Furthermore, our client has compiled a dataset of New York City that contains categorized PoIs and the road network that contains them.
@@ -10,14 +10,18 @@ The main objective of this project is to create a web application that creates a
 ## Website
 Access our website, note: you must be on the ISU VPN: "http://sdmay23-34.ece.iastate.edu/"
 
+## Installation
+`- pip3 install virtualenv`
+`- pip3 install -r "requirements.txt"`
+
 ## Contact
-    Thomas Frohwein - tfroh@iastate.edu
-    Zachary Garwood - zgarwood@iastate.edu
-    Dylan Hampton - dhampton@iastate.edu
-    Kevin Knack - kcknack@iastate.edu
-    Nate Schenck - nschenck@iastate.edu
-    Britney Yu - britneyy@iastate.edu
-    Joe Zuber - zubes@iastate.edu
+    Thomas Frohwein - "tfroh@iastate.edu"
+    Zachary Garwood - "zgarwood@iastate.edu"
+    Dylan Hampton - "dhampton@iastate.edu"
+    Kevin Knack - "kcknack@iastate.edu"
+    Nate Schenck - "nschenck@iastate.edu"
+    Britney Yu - "britneyy@iastate.edu"
+    Joe Zuber - "zubes@iastate.edu"
 ## Acknowledgments
     Goce Trajcevski - Client
-    Xu Teng - Grad Student
+    Xu Teng
