@@ -6,6 +6,7 @@ import { IRouteData } from './generatedRoute/Route/Route';
 import RecommendedHotels from './recommendedHotels/RecommendedHotels';
 import GeneratedRoute from './generatedRoute/GeneratedRoute/GeneratedRoute';
 import Hotel from './recommendedHotels/Hotel';
+import { selectLines } from '../../mapDataSlice';
 
 interface IResultsProps {
 
@@ -13,7 +14,7 @@ interface IResultsProps {
 
 const Results: React.FC<IResultsProps> = (props: IResultsProps) => {
     const routes: Route[] = useAppSelector(selectRoutes);
-    let lines: IRouteData[] = []; // Eventually use this through a slice, component should auto update
+    let lines: IRouteData[] = useAppSelector(selectLines); // Eventually use this through a slice, component should auto update
     return (
         <>
         {routes.length > 0 &&

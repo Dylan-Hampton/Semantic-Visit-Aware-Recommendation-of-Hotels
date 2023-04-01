@@ -2,14 +2,14 @@ import React, { useEffect, useRef } from 'react';
 import mapboxgl, { Map as ReactMap } from 'mapbox-gl';
 import './MapBase.css'; 
 import 'mapbox-gl/dist/mapbox-gl.css';
-import MapController, { IAddLineData, IMarkerData } from '../mapController/MapController';
 import Marker from '../Marker/MapMarker';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { useAppSelector } from '../../../hooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { selectRoutes } from '../../../routeDataSlice';
 import Route from '../../../data/response/RouteResponse';
 import MarkerPopup from '../Marker/MarkerPopup';
 import { PoiNode } from '../../../data/response/Node';
+import { changeMarkers, addMarkerWithName, changeToggleRoute } from '../../../mapDataSlice';
 
 mapboxgl.accessToken = "pk.eyJ1IjoibmF0ZXNjaGVuY2siLCJhIjoiY2xkZ2hha3IwMHJ6djN3bndlYzlud29vaSJ9.4gjvZipOtY9lWJXc3Ffk6g";
 if (process.env.NODE_ENV !== 'test'){
@@ -18,6 +18,17 @@ if (process.env.NODE_ENV !== 'test'){
     mapboxgl.workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 }
 
+export interface IMarkerData {
+    name: string;
+    lat: number;
+    lng: number;
+    type: 'origin' | 'poi';
+}
+
+interface IAddLineData {
+    id: string;
+    route: number[][];
+}
 
 interface IMapBaseProps {
     lat: number;
@@ -31,6 +42,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     let markerQuantity = new Map<mapboxgl.Marker, number>();
     const routes: Route[] = useAppSelector(selectRoutes);
     let lines: string[] = [];
+    const mapDispatch = useAppDispatch();
 
     const countMarker = (marker: mapboxgl.Marker) => {
         if (markerQuantity.has(marker)) {
@@ -71,7 +83,6 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                     }
                     lines.push(route.origin.name);
                     addLine(hotelLineData);
-
                     route.pois.forEach(poi => {
                         const poiMarkerData: IMarkerData = {
                             lat: poi.lat,
@@ -138,6 +149,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         marker.addTo(map.current);
         countMarker(marker);
         markers = markers.concat(marker);
+        mapDispatch(addMarkerWithName({marker: marker, name: data.name}));
         const markerDiv = marker.getElement(); // Add popup toggle on mouse hover
         markerDiv.addEventListener('mouseenter', () => marker.togglePopup());
         markerDiv.addEventListener('mouseleave', () => marker.togglePopup());
@@ -186,13 +198,6 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
             maxPitch: 0,
             attributionControl: false
         });
-        let mapController: MapController = MapController.getInstance();
-        mapController.subscribe(MapController.ADD_MARKER, (data: IMarkerData) => {
-            addMarker(data); // Change this to add params as needed, string is passed as an example
-        });
-        mapController.subscribe(MapController.ADD_LINE, (data: IAddLineData) => {
-            addLine(data); // Change this to add params as needed
-        });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -208,10 +213,12 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                 addMarker(originMarkerData);
             });
         }
+        mapDispatch(changeToggleRoute(drawHotelRoute));
         return () => { // Called when component unmounts
             markers.forEach((m) => {
                 m.remove();
             });
+            mapDispatch(changeMarkers([]));
             lines.forEach(line => {
                 map.current.removeLayer('route'+line);
                 map.current.removeSource('route'+line);

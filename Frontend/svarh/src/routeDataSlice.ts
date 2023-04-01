@@ -97,7 +97,6 @@ export const routeDataSlice = createSlice({
         .addCase(generateRoute.fulfilled, (state, action) => {
             state.loading = false
             state.routes = action.payload
-            console.log(state.routes);
         })
         .addCase(generateRoute.rejected, (state, action) => {
             state.loading = false
