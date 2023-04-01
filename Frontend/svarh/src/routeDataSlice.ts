@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Algorithm, DIJKSTRA, EDGEFIRST, NODEFIRST, RANDOMWALK } from './data/Algorithm';
+import { Algorithm, DIJKSTRA, POIFIRST, ORIGINFIRST, RANDOMWALK } from './data/Algorithm';
 import { generateRoute } from './data/api';
 import { City } from './data/City';
 import Route from './data/response/RouteResponse';
@@ -23,9 +23,9 @@ const initialState: SubmitState = {
         cityName: '',
         poiTypes: [],
     },
-    algorithmChoices: [RANDOMWALK, DIJKSTRA, EDGEFIRST, NODEFIRST],
+    algorithmChoices: [RANDOMWALK, DIJKSTRA, POIFIRST, ORIGINFIRST],
     algorithm: {
-        algorithmName: NODEFIRST,
+        algorithmName: ORIGINFIRST,
         algorithmNum: 3,
     },
     origins: 10,
@@ -60,21 +60,21 @@ export const routeDataSlice = createSlice({
         },
         changeAlgorithm: (state, action: PayloadAction<string>) => {
             switch (action.payload) {
-                case RANDOMWALK:
-                    state.algorithm.algorithmNum = 0
-                    state.algorithm.algorithmName = RANDOMWALK
-                    break;
                 case DIJKSTRA:
-                    state.algorithm.algorithmNum = 1
+                    state.algorithm.algorithmNum = 0
                     state.algorithm.algorithmName = DIJKSTRA
                     break;
-                case EDGEFIRST:
-                    state.algorithm.algorithmNum = 2
-                    state.algorithm.algorithmName = EDGEFIRST
+                case RANDOMWALK:
+                    state.algorithm.algorithmNum = 1
+                    state.algorithm.algorithmName = RANDOMWALK
                     break;
-                case NODEFIRST:
+                case POIFIRST:
+                    state.algorithm.algorithmNum = 2
+                    state.algorithm.algorithmName = POIFIRST
+                    break;
+                case ORIGINFIRST:
                     state.algorithm.algorithmNum = 3
-                    state.algorithm.algorithmName = NODEFIRST
+                    state.algorithm.algorithmName = ORIGINFIRST
                     break;
                 default:
                     break;

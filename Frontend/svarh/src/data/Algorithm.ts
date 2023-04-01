@@ -5,5 +5,5 @@ export interface Algorithm {
 
 export const RANDOMWALK = 'Random Walk';
 export const DIJKSTRA = 'Dijkstra';
-export const EDGEFIRST = 'Edge-first';
-export const NODEFIRST = 'Node-first';
+export const POIFIRST = 'PoI-first';
+export const ORIGINFIRST = 'Origin-first';
