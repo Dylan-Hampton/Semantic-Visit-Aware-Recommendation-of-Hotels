@@ -94,7 +94,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     const hideHotelRoute = (data: IMarkerData) => {
         map.current.removeLayer('route'+data.name);
         map.current.removeSource('route'+data.name);
-        lines = lines.filter(l => l !== 'route' + data.name);
+        lines = lines.filter(l => l !== data.name);
         let pois: PoiNode[] = [];
         routes.forEach(route => {
             if (route.origin.name === data.name) {
