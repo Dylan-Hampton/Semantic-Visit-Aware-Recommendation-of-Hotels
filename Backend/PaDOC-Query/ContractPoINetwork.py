@@ -377,7 +377,7 @@ class ContractPoINetwork:
                   on same vertex, but PoI12 and PoI13 would be different)
         """
 
-        #print("Building Matrix-Container for Node ", node_id, "......")
+        print("Building Matrix-Container for Node ", node_id, "......")
 
         start_time = time.time()
 
@@ -423,13 +423,13 @@ class ContractPoINetwork:
                                     break
 
                 if all([True if each_row[CONSTANTS.K_MAX - 1][1] != float('inf') else False for each_row in res]):
-                    #print("Done with Node ", node_id, "/", len(self.nodes), " by using ", time.time() - start_time,
-                    #      "s......")
-                    #print("Collected all categories")
+                    print("Done with Node ", node_id, "/", len(self.nodes), " by using ", time.time() - start_time,
+                         "s......")
+                    print("Collected all categories")
                     if cur_node == node_id:
                         print("***END AT START***")
-                    #print(res)
-                    #print('===================================================')
+                    print(res)
+                    print('===================================================')
                     return node_id, res, time.time() - start_time
 
             for eachE in self.neighbor_edges[cur_node]:
@@ -459,9 +459,9 @@ class ContractPoINetwork:
                         heapq.heappush(pq, (next_dist, adjacent_node))
                         dist[adjacent_node] = next_dist
 
-        #print("Done with Node ", node_id, " by using ", time.time() - start_time, "s......")
-        #print(res)
-        #print('===================================================')
+        print("Done with Node ", node_id, " by using ", time.time() - start_time, "s......")
+        print(res)
+        print('===================================================')
 
         return node_id, res, time.time() - start_time
 

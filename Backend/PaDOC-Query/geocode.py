@@ -2,7 +2,8 @@ import csv
 from geopy.geocoders import Nominatim, ArcGIS
 from geopy.exc import GeocoderTimedOut
 
-city = 'New York, USA'
+long_city = 'Chicago, IL'
+short_city = 'Chicago'
 
 
 def get_lng_lat(geolocator, address):
@@ -15,7 +16,7 @@ def get_lng_lat(geolocator, address):
 def main():
     places = {}
 
-    with open("tripAdvisorCrawler/attractionNYAddress.csv", "r", encoding='utf-8') as rhandle:
+    with open("TripAdvisorCrawler/attraction" + short_city + "Address.csv", "r", encoding='utf-8') as rhandle:
         rfile = csv.reader(rhandle)
 
         fields = next(rfile)
@@ -26,7 +27,7 @@ def main():
             if len(each_row[addIdx]) >= 2:
                 place = ", ".join(each_row)
             else:
-                place = each_row[poiIdx] + ", " + city
+                place = each_row[poiIdx] + ", " + long_city
 
             places[each_row[poiIdx]] = place
 
@@ -56,7 +57,7 @@ def main():
 
     #pickle.dump(res, open("attractionNYLngLat.pkl", "wb"))
 
-    with open("attractionNYLngLat.csv", 'a', newline='') as whandle:
+    with open("attraction" + short_city + "LngLat.csv", 'a', newline='') as whandle:
         spamwriter = csv.writer(whandle)
 
         spamwriter.writerow(['place', 'lng', 'lat'])

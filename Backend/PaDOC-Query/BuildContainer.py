@@ -8,24 +8,25 @@ import Node
 
 
 def main():
-    num_poi = 623
+    num_poi = 594
+    city = "Chicago"
 
-    if os.path.exists("PoI_Network/PKL/NY_" + str(num_poi) + "_PoI_network_euclidean.pickle"):
+    if os.path.exists("PoI_Network/PKL/" + city + "_" + str(num_poi) + "_PoI_network_euclidean.pickle"):
         print("Start Loading PoI Network from Pickle file......")
 
-        with open("PoI_Network/PKL/NY_" + str(num_poi) + "_PoI_network_euclidean.pickle", 'rb') as f:
+        with open("PoI_Network/PKL/" + city + "_" + str(num_poi) + "_PoI_network_euclidean.pickle", 'rb') as f:
             g = pickle.load(f)
 
         print("PoI Network Has Been Loaded......")
         print("=================================================")
-    elif os.path.exists("PoI_Network/CSV/NY_CH_es_euclidean.csv") and \
-            os.path.exists("PoI_Network/CSV/NY_CH_ns_euclidean.csv") and \
-            os.path.exists("PoI_Network/CSV/NY_" + str(num_poi) + "_PoI_info.csv"):
+    elif os.path.exists("PoI_Network/CSV/" + city + "_CH_es_euclidean.csv") and \
+            os.path.exists("PoI_Network/CSV/" + city + "_CH_ns_euclidean.csv") and \
+            os.path.exists("PoI_Network/CSV/" + city + "_" + str(num_poi) + "_PoI_info.csv"):
         print("Start Loading PoI Network from CSV files......")
 
         print("Start Loading Diversity......")
 
-        with open("PoI_Network/CSV/NY_" + str(num_poi) + "_PoI_info.csv", 'r') as rf:
+        with open("PoI_Network/CSV/" + city + "_" + str(num_poi) + "_PoI_info.csv", 'r') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
 
@@ -53,7 +54,7 @@ def main():
         This step is necessary because CH_ns does not have info related to PoI
         '''
 
-        with open("PoI_Network/NY_ns.csv", 'r') as rf:
+        with open("PoI_Network/" + city + "_ns.csv", 'r') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
 
@@ -80,7 +81,7 @@ def main():
         g = ContractPoINetwork.ContractPoINetwork()
 
         print("Start Inserting Nodes......")
-        with open("PoI_Network/CSV/NY_CH_ns_euclidean.csv", 'r') as rf:
+        with open("PoI_Network/CSV/" + city + "_CH_ns_euclidean.csv", 'r') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
 
@@ -115,7 +116,7 @@ def main():
         ############################################################################################
 
         print("Starting Inserting Edges......")
-        with open("PoI_Network/CSV/NY_CH_es_euclidean.csv", 'r') as rf:
+        with open("PoI_Network/CSV/" + city + "_CH_es_euclidean.csv", 'r') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
 
@@ -143,9 +144,9 @@ def main():
         print("Inserted all ", counter - 1, " edges successfully......")
         print("==================================================")
 
-        with open("PoI_Network/PKL/NY_" + str(num_poi) + "_PoI_network_euclidean.pickle", 'wb') as f:
+        with open("PoI_Network/PKL/" + city + "_" + str(num_poi) + "_PoI_network_euclidean.pickle", 'wb') as f:
             pickle.dump(g, f, pickle.HIGHEST_PROTOCOL)
-        exit()
+        # exit()
     else:
         print("No PoI network data!!!")
         exit()
@@ -177,8 +178,8 @@ def main():
     print("avg. time", sum(time_record)/len(time_record))
 
     print("in total time", time.time() - start_t)
-    #with open("PoI_Network/Index/MatrixContainer_" + str(num_poi) + ".pickle", 'wb') as f:
-    #    pickle.dump(gc, f, pickle.HIGHEST_PROTOCOL)
+    with open("PoI_Network/Index/MatrixContainer_" + city + "_" + str(num_poi) + ".pickle", 'wb') as f:
+       pickle.dump(gc, f, pickle.HIGHEST_PROTOCOL)
 
 
 if __name__ == '__main__':
