@@ -1,5 +1,10 @@
 .list-item {
-    margin: 7px 0;
+    padding: 7px 0;
+    cursor: pointer;
+}
+
+.list-item:hover {
+    background-color: #eeeeee;
 }
 
 .hotel-name {
