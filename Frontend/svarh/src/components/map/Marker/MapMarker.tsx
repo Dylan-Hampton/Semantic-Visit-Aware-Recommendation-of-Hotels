@@ -8,10 +8,16 @@ interface IMapMarkerProps {
 }
 
 const MapMarker: React.FC<IMapMarkerProps> = (props: IMapMarkerProps) => {
+    const originSizeStyle = {
+        fontSize: '28px'
+    }
+    const poiSizeStyle = {
+        fontSize: '20px'
+    }
     return (
         <>
-            <div className="icon">
-                <CircleIcon />
+            <div className={props.type === "origin" ? 'origin-icon' : 'poi-icon'}>
+                <CircleIcon style={props.type === "origin" ? originSizeStyle : poiSizeStyle}/>
             </div>
         </>
     )

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import mapboxgl, { Map } from 'mapbox-gl';
+import React, { useEffect, useRef } from 'react';
+import mapboxgl, { Map as ReactMap } from 'mapbox-gl';
 import './MapBase.css'; 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import MapController, { IAddLineData, IMarkerData } from '../mapController/MapController';
@@ -9,6 +9,7 @@ import { useAppSelector } from '../../../hooks';
 import { selectRoutes } from '../../../routeDataSlice';
 import Route from '../../../data/response/RouteResponse';
 import MarkerPopup from '../Marker/MarkerPopup';
+import { PoiNode } from '../../../data/response/Node';
 
 mapboxgl.accessToken = "pk.eyJ1IjoibmF0ZXNjaGVuY2siLCJhIjoiY2xkZ2hha3IwMHJ6djN3bndlYzlud29vaSJ9.4gjvZipOtY9lWJXc3Ffk6g";
 if (process.env.NODE_ENV !== 'test'){
@@ -25,12 +26,108 @@ interface IMapBaseProps {
 
 const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     const mapContainer = useRef(null);
-    const map = useRef<Map>(null);
+    const map = useRef<ReactMap>(null);
     let markers: mapboxgl.Marker[] = [];
-    const [lineIds, setLineIds] = useState<string[]>([]);
+    let markerQuantity = new Map<mapboxgl.Marker, number>();
     const routes: Route[] = useAppSelector(selectRoutes);
+    let lines: string[] = [];
+
+    const countMarker = (marker: mapboxgl.Marker) => {
+        if (markerQuantity.has(marker)) {
+            markerQuantity.set(marker, markerQuantity.get(marker) + 1);
+        }
+        else {
+            markerQuantity.set(marker, 1);
+        }
+    }
+
+    const uncountMarker = (marker: mapboxgl.Marker) => {
+        if (markerQuantity.has(marker)) {
+            let currentCount: number = markerQuantity.get(marker);
+            if (currentCount > 1) {
+                markerQuantity.set(marker, currentCount - 1);
+            }
+            else {
+                markerQuantity.delete(marker);
+            }
+        }
+    }
+
+    const drawHotelRoute = (data: IMarkerData) => {
+        //console.log(data.name + " Marker Clicked");
+        let nodes: number[][] = [];
+
+        routes.forEach(route => {
+            if (route.origin.name === data.name) {
+                if (!map.current.getSource('route'+route.origin.name)) {
+                    //console.log("Displaying " + route.origin.name + " route");
+                    route.nodes.forEach((node) => {
+                        nodes.push([node.lng, node.lat]);
+                    })
+                    // console.log(nodes)
+                    const hotelLineData: IAddLineData = {
+                        id: route.origin.name,
+                        route: nodes,
+                    }
+                    lines.push(route.origin.name);
+                    addLine(hotelLineData);
+
+                    route.pois.forEach(poi => {
+                        const poiMarkerData: IMarkerData = {
+                            lat: poi.lat,
+                            lng: poi.lng,
+                            name: poi.name,
+                            type: "poi",
+                        }
+                        //console.log(poi.name+" Added, lat: " + poi.lat + ", lng: " + poi.lng);
+                        addMarker(poiMarkerData);
+                    })
+                }
+                else {
+                    //console.log("Hiding " + route.origin.name + " route");
+                    hideHotelRoute(data);
+                }
+            }
+        })
+    }
+
+    const hideHotelRoute = (data: IMarkerData) => {
+        map.current.removeLayer('route'+data.name);
+        map.current.removeSource('route'+data.name);
+        lines = lines.filter(l => l !== data.name);
+        let pois: PoiNode[] = [];
+        routes.forEach(route => {
+            if (route.origin.name === data.name) {
+                route.pois.forEach(poi => {
+                    pois.push(poi);
+                })
+            }
+        })
+        markers.forEach(m => {
+            pois.forEach(poi => {
+                let lat = m.getLngLat().lat;
+                let lng = m.getLngLat().lng;
+                if (poi.lat === lat && poi.lng === lng) {
+                    uncountMarker(m);
+                    const currentCount = markerQuantity.get(m);
+                    if (currentCount === undefined || currentCount < 1) {
+                        m.remove();
+                        markers = markers.filter(mk => mk !== m);
+                    }
+                }
+            })
+        })
+    }
 
     const addMarker = (data: IMarkerData) => {
+        if (data.type === 'poi') {
+            markerQuantity.forEach((n, m) => {
+                if (m.getLngLat().lat === data.lat && m.getLngLat().lng === data.lng) {
+                    countMarker(m);
+                    return;
+                }
+            });
+        }
         const el = document.createElement('div');
         const markerEl = renderToStaticMarkup(<Marker type={data.type} name={data.name} />)
         el.innerHTML = markerEl;
@@ -39,16 +136,18 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
             renderToStaticMarkup(<MarkerPopup name={data.name} />)
         ));
         marker.addTo(map.current);
+        countMarker(marker);
         markers = markers.concat(marker);
         const markerDiv = marker.getElement(); // Add popup toggle on mouse hover
         markerDiv.addEventListener('mouseenter', () => marker.togglePopup());
         markerDiv.addEventListener('mouseleave', () => marker.togglePopup());
+        if(data.type === "origin") { 
+            markerDiv.addEventListener('click', () => drawHotelRoute(data));
+        }
     }
 
     const addLine = (data: IAddLineData) => {
         if (!map) return;
-        const newLineIds = [data.id, ...lineIds];
-        setLineIds(newLineIds);
         map.current.addSource('route' + data.id, {
             'type': 'geojson',
             'data': {
@@ -69,8 +168,8 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                 'line-cap': 'round'
             },
             'paint': {
-                'line-color': '#a89132',
-                'line-width': 2
+                'line-color': '#ffb20d',
+                'line-width': 6
             }
         });
     }
@@ -113,6 +212,10 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
             markers.forEach((m) => {
                 m.remove();
             });
+            lines.forEach(line => {
+                map.current.removeLayer('route'+line);
+                map.current.removeSource('route'+line);
+            })
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [routes]);
