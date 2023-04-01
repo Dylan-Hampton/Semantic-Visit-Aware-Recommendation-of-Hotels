@@ -1,0 +1,36 @@
+import React from 'react';
+import { selectRoutes } from '../../routeDataSlice';
+import { useAppSelector } from '../../hooks';
+import Route from '../../data/response/RouteResponse';
+import { IRouteData } from './generatedRoute/Route/Route';
+import RecommendedHotels from './recommendedHotels/RecommendedHotels';
+import GeneratedRoute from './generatedRoute/GeneratedRoute/GeneratedRoute';
+import Hotel from './recommendedHotels/Hotel';
+
+interface IResultsProps {
+
+}
+
+const Results: React.FC<IResultsProps> = (props: IResultsProps) => {
+    const routes: Route[] = useAppSelector(selectRoutes);
+    let lines: IRouteData[] = []; // Eventually use this through a slice, component should auto update
+    return (
+        <>
+        {routes.length > 0 &&
+            (lines.length === 0 ?
+                <RecommendedHotels hotels={routes.map(r => {
+                    const hotel: Hotel = {
+                        name: r.origin.name,
+                        routeLength: r.distance
+                    }
+                    return hotel;
+                })} /> 
+            :
+                <GeneratedRoute routes={lines}/>
+            )
+        }
+        </>
+    )
+}
+
+export default Results;
