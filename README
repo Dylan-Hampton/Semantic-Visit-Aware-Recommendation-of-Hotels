@@ -1,6 +1,6 @@
 # Semantic Vist Aware Recommendation of Hotels
 
-[http://sdmay23-34.sd.ece.iastate.edu/"]
+Vist our website (must me on the ISU network to access this link)[http://sdmay23-34.sd.ece.iastate.edu/"]
 
 ## Description
 Our client has developed an algorithm to efficiently determine the optimal semantically diverse points of interest (PoI) as well as the optimal route between them given user constraints like maximum travel distance, preferred PoI categories, etc. Furthermore, our client has compiled a dataset of New York City that contains categorized PoIs and the road network that contains them.
