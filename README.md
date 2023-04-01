@@ -1,5 +1,7 @@
 # Semantic Vist Aware Recommendation of Hotels
 
+Reference-style: 
+![image of a POI]][/images/mappingicon.png]
 Vist our project website to learn more "http://sdmay23-34.sd.ece.iastate.edu/"
 
 ## Description
@@ -11,17 +13,17 @@ The main objective of this project is to create a web application that creates a
 Access our website, note: you must be on the ISU VPN: "http://sdmay23-34.ece.iastate.edu/"
 
 ## Installation
-`- pip3 install virtualenv`
-`- pip3 install -r "requirements.txt"`
+> pip3 install virtualenv
+> pip3 install -r "requirements.txt"
 
 ## Contact
-    Thomas Frohwein - "tfroh@iastate.edu"
-    Zachary Garwood - "zgarwood@iastate.edu"
-    Dylan Hampton - "dhampton@iastate.edu"
-    Kevin Knack - "kcknack@iastate.edu"
-    Nate Schenck - "nschenck@iastate.edu"
-    Britney Yu - "britneyy@iastate.edu"
-    Joe Zuber - "zubes@iastate.edu"
+    Thomas Frohwein - [tfroh@iastate.edu]("tfroh@iastate.edu")
+    Zachary Garwood - [zgarwood@iastate.edu]("zgarwood@iastate.edu")
+    Dylan Hampton - [dhampton@iastate.edu]("dhampton@iastate.edu")
+    Kevin Knack - [kcknack@iastate.edu]("kcknack@iastate.edu")
+    Nate Schenck - [nschenck@iastate.edu]("nschenck@iastate.edu")
+    Britney Yu - [britneyy@iastate.edu]("britneyy@iastate.edu")
+    Joe Zuber - [zubes@iastate.edu]("zubes@iastate.edu")
 ## Acknowledgments
     Goce Trajcevski - Client
     Xu Teng
