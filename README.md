@@ -1,4 +1,4 @@
-# Semantic Vist Aware Recommendation of Hotels
+# Semantic Visit Aware Recommendation of Hotels
 
 Reference-style: 
 ![image of a POI]][/images/mappingicon.png]
@@ -10,7 +10,7 @@ Our client has developed an algorithm to efficiently determine the optimal seman
 The main objective of this project is to create a web application that creates a visualization for the algorithm mentioned above for travelers to display the optimal PoIs and the path between them as there are no current means to visualize the algorithms. Additionally, visualizations of other algorithms that determine paths between PoIs will be created to compare the PoI diversity along the routes to demonstrate the algorithm's effectiveness. Users will be able to input constraints from which the algorithm will compute the route to semantically diverse PoIs.
    
 ## Website
-Access our website, note: you must be on the ISU VPN: "http://sdmay23-34.ece.iastate.edu/"
+Access our website, Note: you must be on the ISU VPN: http://sdmay23-34.ece.iastate.edu/
 
 ## Installation
 > pip3 install virtualenv
@@ -25,5 +25,5 @@ Access our website, note: you must be on the ISU VPN: "http://sdmay23-34.ece.ias
     Britney Yu - [britneyy@iastate.edu]("britneyy@iastate.edu")
     Joe Zuber - [zubes@iastate.edu]("zubes@iastate.edu")
 ## Acknowledgments
-    Goce Trajcevski - Client
+    Goce Trajcevski - Client, Advisor
     Xu Teng
