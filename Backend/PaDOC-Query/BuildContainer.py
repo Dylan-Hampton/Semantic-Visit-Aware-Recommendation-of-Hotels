@@ -8,8 +8,8 @@ import Node
 
 
 def main():
-    num_poi = 594
-    city = "Chicago"
+    num_poi = 623
+    city = "NY"
 
     if os.path.exists("PoI_Network/PKL/" + city + "_" + str(num_poi) + "_PoI_network_euclidean.pickle"):
         print("Start Loading PoI Network from Pickle file......")
