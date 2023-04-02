@@ -1,5 +1,6 @@
 import ContractPoINetwork
 import CONSTANTS
+import Node
 
 import csv, time
 import multiprocessing as mp
@@ -11,9 +12,10 @@ from itertools import repeat
 def main():
     poiDivtDict = {}
     poi_info_dict = {} # Used to create PoI_info.csv, and nodes for the ContractPoINetwork
-    city = "Chicago"
+    city = "NY"
+    num_pois = 623
 
-    with open("LDA_Model_6/" + city + "DivVector.csv", 'r') as rf:
+    with open("LDA_Model_6/" + city + "DivVector.csv", 'r', encoding='cp1252') as rf:
         spamreader = csv.reader(rf)
 
         id = 0
@@ -32,7 +34,7 @@ def main():
 
     # Create <CITY>_PoI_info.csv
     if not os.path.exists("PoI_Network/CSV/" + city + "_PoI_info.csv"):
-        with open("PoI_Network/CSV/" + city + "_PoI_info.csv", 'w', newline='') as wfile:
+        with open("PoI_Network/CSV/" + city + "_" + str(num_pois) + "_PoI_info.csv", 'w', newline='') as wfile:
             spamwriter = csv.writer(wfile)
 
             spamwriter.writerow(['id', 'name', 'category'])
