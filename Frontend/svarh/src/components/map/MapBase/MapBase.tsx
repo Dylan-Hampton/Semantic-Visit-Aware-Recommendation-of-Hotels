@@ -237,7 +237,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                 if (lat < minRouteLat) { minRouteLat = lat; }
             })
             map.current.fitBounds([[minRouteLng, minRouteLat], [maxRouteLng, maxRouteLat]], {
-                padding: {top: 50, bottom: 50, left: 250, right: 250}
+                padding: {top: 50, bottom: 50, left: 300, right: 300}
             });
         }
         else { 
