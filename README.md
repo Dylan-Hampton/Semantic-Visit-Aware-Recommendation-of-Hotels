@@ -1,7 +1,7 @@
 # Semantic Visit Aware Recommendation of Hotels
 
 Reference-style: 
-![image of a POI]][/images/mappingicon.png]
+![image of a POI]][https://git.ece.iastate.edu/sd/sdmay23-34/-/blob/main/images/mappingicon.png]
 Vist our project website to learn more "http://sdmay23-34.sd.ece.iastate.edu/"
 
 ## Description
@@ -17,13 +17,13 @@ Access our website, Note: you must be on the ISU VPN: http://sdmay23-34.ece.iast
 > pip3 install -r "requirements.txt"
 
 ## Contact
-    Thomas Frohwein - [tfroh@iastate.edu]("tfroh@iastate.edu")
-    Zachary Garwood - [zgarwood@iastate.edu]("zgarwood@iastate.edu")
-    Dylan Hampton - [dhampton@iastate.edu]("dhampton@iastate.edu")
-    Kevin Knack - [kcknack@iastate.edu]("kcknack@iastate.edu")
-    Nate Schenck - [nschenck@iastate.edu]("nschenck@iastate.edu")
-    Britney Yu - [britneyy@iastate.edu]("britneyy@iastate.edu")
-    Joe Zuber - [zubes@iastate.edu]("zubes@iastate.edu")
+    Thomas Frohwein - [tfroh@iastate.edu](tfroh@iastate.edu)
+    Zachary Garwood - [zgarwood@iastate.edu](zgarwood@iastate.edu)
+    Dylan Hampton - [dhampton@iastate.edu](dhampton@iastate.edu)
+    Kevin Knack - [kcknack@iastate.edu](kcknack@iastate.edu)
+    Nate Schenck - [nschenck@iastate.edu](nschenck@iastate.edu)
+    Britney Yu - [britneyy@iastate.edu](britneyy@iastate.edu)
+    Joe Zuber - [zubes@iastate.edu](zubes@iastate.edu)
 ## Acknowledgments
     Goce Trajcevski - Client, Advisor
     Xu Teng
