@@ -93,6 +93,19 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                         //console.log(poi.name+" Added, lat: " + poi.lat + ", lng: " + poi.lng);
                         addMarker(poiMarkerData);
                     })
+
+                    let minRouteLng = route.origin.lng, minRouteLat = route.origin.lat, 
+                        maxRouteLng = route.origin.lng, maxRouteLat = route.origin.lat;
+                    route.pois.forEach(poi => {
+                        const lng = poi.lng, lat = poi.lat;
+                        if (lng > maxRouteLng) { maxRouteLng = lng; }
+                        if (lat > maxRouteLat) { maxRouteLat = lat; }
+                        if (lng < minRouteLng) { minRouteLng = lng; }
+                        if (lat < minRouteLat) { minRouteLat = lat; }
+                    })
+                    map.current.fitBounds([[minRouteLng, minRouteLat], [maxRouteLng, maxRouteLat]], {
+                        padding: {top: 250, bottom: 250, left: 500, right: 500}
+                    });
                 }
                 else {
                     //console.log("Hiding " + route.origin.name + " route");
@@ -212,8 +225,27 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                 }
                 addMarker(originMarkerData);
             });
+
+            let minRouteLng = routes[0].origin.lng, minRouteLat = routes[0].origin.lat, 
+            maxRouteLng = routes[0].origin.lng, maxRouteLat = routes[0].origin.lat;
+
+            routes.forEach(route => {
+                const lng = route.origin.lng, lat = route.origin.lat;
+                if (lng > maxRouteLng) { maxRouteLng = lng; }
+                if (lat > maxRouteLat) { maxRouteLat = lat; }
+                if (lng < minRouteLng) { minRouteLng = lng; }
+                if (lat < minRouteLat) { minRouteLat = lat; }
+            })
+            map.current.fitBounds([[minRouteLng, minRouteLat], [maxRouteLng, maxRouteLat]], {
+                padding: {top: 50, bottom: 50, left: 300, right: 300}
+            });
+        }
+        else { 
+            map.current.setZoom(13); // set map back to original zoom / location
+            map.current.panTo([-73.995,40.723]); 
         }
         mapDispatch(changeToggleRoute(drawHotelRoute));
+
         return () => { // Called when component unmounts
             markers.forEach((m) => {
                 m.remove();
