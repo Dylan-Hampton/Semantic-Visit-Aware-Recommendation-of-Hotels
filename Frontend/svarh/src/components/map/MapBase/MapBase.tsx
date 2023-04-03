@@ -93,6 +93,19 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                         //console.log(poi.name+" Added, lat: " + poi.lat + ", lng: " + poi.lng);
                         addMarker(poiMarkerData);
                     })
+
+                    let minRouteLng = route.origin.lng, minRouteLat = route.origin.lat, 
+                        maxRouteLng = route.origin.lng, maxRouteLat = route.origin.lat;
+                    route.pois.forEach(poi => {
+                        const lng = poi.lng, lat = poi.lat;
+                        if (lng > maxRouteLng) { maxRouteLng = lng; }
+                        if (lat > maxRouteLat) { maxRouteLat = lat; }
+                        if (lng < minRouteLng) { minRouteLng = lng; }
+                        if (lat < minRouteLat) { minRouteLat = lat; }
+                    })
+                    map.current.fitBounds([[minRouteLng, minRouteLat], [maxRouteLng, maxRouteLat]], {
+                        padding: {top: 250, bottom: 250, left: 500, right: 500}
+                    });
                 }
                 else {
                     //console.log("Hiding " + route.origin.name + " route");
@@ -214,6 +227,8 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
             });
         }
         mapDispatch(changeToggleRoute(drawHotelRoute));
+        map.current.setZoom(13); // set map back to original zoom / location
+        map.current.panTo([-73.995,40.723]);
         return () => { // Called when component unmounts
             markers.forEach((m) => {
                 m.remove();

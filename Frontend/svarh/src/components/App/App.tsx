@@ -8,7 +8,7 @@ import Results from '../results/Results';
 function App() {
   return (
     <div className="App">
-      <MapBase lng={-74.006} lat={40.723}/>
+      <MapBase lng={-73.995} lat={40.723}/>
       <SubmissionFrame />
       <Results />
       <Settings />
