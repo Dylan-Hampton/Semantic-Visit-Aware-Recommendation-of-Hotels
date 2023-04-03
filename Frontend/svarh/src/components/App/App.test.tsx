@@ -3,6 +3,8 @@ import App from './App';
 import GeneratedRoute from '../results/generatedRoute/GeneratedRoute/GeneratedRoute';
 import { Provider } from 'react-redux';
 import store from '../../store';
+import SubmissionFrame from '../inputBar/submissionFrame/SubmissionFrame';
+import Settings from '../inputBar/advancedSettings/Settings/Settings';
 
 export const mockMapOn = jest.fn();
 export const mockMapRemove = jest.fn();
@@ -20,14 +22,14 @@ jest.mock('mapbox-gl', () => ({
 
 test('renders search frame header', () => {
   render(<Provider store={store}>
-           <App />
+           <SubmissionFrame></SubmissionFrame>
          </Provider>);
   expect(screen.getByText(/Search Hotels/i)).toBeInTheDocument();
 });
 
 test('renders submission frame inputs', () => {
   render(<Provider store={store}>
-    <App />
+    <SubmissionFrame></SubmissionFrame>
   </Provider>);
   expect(screen.getByRole("combobox", { name: "City" })).toBeInTheDocument();
   expect(screen.getByRole("combobox", { name: "Points of Interest" })).toBeInTheDocument();
@@ -36,7 +38,7 @@ test('renders submission frame inputs', () => {
 
 test('renders submission button', () => {
   render(<Provider store={store}>
-          <App />
+          <SubmissionFrame></SubmissionFrame>
         </Provider>);
   expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Submit" })).toBeEnabled();
@@ -44,7 +46,7 @@ test('renders submission button', () => {
 
 test('renders settings button', () => {
   render(<Provider store={store}>
-          <App />
+          <Settings></Settings>
         </Provider>);
   expect(screen.getByTestId("SettingsIcon")).toBeInTheDocument(); 
 });
@@ -52,7 +54,7 @@ test('renders settings button', () => {
 test('settings button handles click', () => {
   const defaultOriginNum = "10";
   render(<Provider store={store}>
-          <App />
+          <Settings></Settings>
         </Provider>);
   const settingsBtn = screen.getByTestId("SettingsIcon");
   expect(settingsBtn).toBeInTheDocument(); 
@@ -68,7 +70,7 @@ test('settings button handles click', () => {
 
 test('open and close settings panel', () => {
   render(<Provider store={store}>
-        <App />
+        <Settings></Settings>
         </Provider>);
   const settingsBtn = screen.getByTestId("SettingsIcon");
   fireEvent.click(settingsBtn); // open settings panel
