@@ -225,10 +225,27 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                 }
                 addMarker(originMarkerData);
             });
+
+            let minRouteLng = routes[0].origin.lng, minRouteLat = routes[0].origin.lat, 
+            maxRouteLng = routes[0].origin.lng, maxRouteLat = routes[0].origin.lat;
+
+            routes.forEach(route => {
+                const lng = route.origin.lng, lat = route.origin.lat;
+                if (lng > maxRouteLng) { maxRouteLng = lng; }
+                if (lat > maxRouteLat) { maxRouteLat = lat; }
+                if (lng < minRouteLng) { minRouteLng = lng; }
+                if (lat < minRouteLat) { minRouteLat = lat; }
+            })
+            map.current.fitBounds([[minRouteLng, minRouteLat], [maxRouteLng, maxRouteLat]], {
+                padding: {top: 50, bottom: 50, left: 50, right: 50}
+            });
+        }
+        else { 
+            map.current.setZoom(13); // set map back to original zoom / location
+            map.current.panTo([-73.995,40.723]); 
         }
         mapDispatch(changeToggleRoute(drawHotelRoute));
-        map.current.setZoom(13); // set map back to original zoom / location
-        map.current.panTo([-73.995,40.723]);
+
         return () => { // Called when component unmounts
             markers.forEach((m) => {
                 m.remove();
