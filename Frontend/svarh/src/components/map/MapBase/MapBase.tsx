@@ -85,9 +85,10 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                     addLine(hotelLineData);
 
                     let nonOverlappingPois: PoiNode[] = [];
+                    let tempNames: string[] = [];
                     route.pois.forEach(refPoi => {
                         route.pois.forEach(compPoi => {
-                            if(refPoi.lng === compPoi.lng && refPoi.lat === compPoi.lat && refPoi !== compPoi) {
+                            if(refPoi.lng === compPoi.lng && refPoi.lat === compPoi.lat && refPoi !== compPoi && !tempNames.includes(compPoi.name)) {
                                 const temp: PoiNode = {
                                     lng: refPoi.lng,
                                     lat: refPoi.lat,
@@ -95,6 +96,8 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                                     category: refPoi.category // will only keep 1 category, may need to change in future
                                 }
                                 nonOverlappingPois.push(temp);
+                                let tempStr = refPoi.name + " ; " + compPoi.name;
+                                tempNames.push(tempStr);
                             }
                         })
                     })
