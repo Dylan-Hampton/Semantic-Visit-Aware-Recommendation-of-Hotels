@@ -72,25 +72,41 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         routes.forEach(route => {
             if (route.origin.name === data.name) {
                 if (!map.current.getSource('route'+route.origin.name)) {
-                    //console.log("Displaying " + route.origin.name + " route");
+                    console.log("Displaying " + route.origin.name + " route");
                     route.nodes.forEach((node) => {
                         nodes.push([node.lng, node.lat]);
                     })
-                    // console.log(nodes)
+                    // console.log(nodes);
                     const hotelLineData: IAddLineData = {
                         id: route.origin.name,
                         route: nodes,
                     }
                     lines.push(route.origin.name);
                     addLine(hotelLineData);
-                    route.pois.forEach(poi => {
+
+                    let nonOverlappingPois: PoiNode[] = [];
+                    route.pois.forEach(refPoi => {
+                        route.pois.forEach(compPoi => {
+                            if(refPoi.lng === compPoi.lng && refPoi.lat === compPoi.lat && refPoi !== compPoi) {
+                                const temp: PoiNode = {
+                                    lng: refPoi.lng,
+                                    lat: refPoi.lat,
+                                    name: refPoi.name += " ; " + compPoi.name,
+                                    category: refPoi.category // will only keep 1 category, may need to change in future
+                                }
+                                nonOverlappingPois.push(temp);
+                            }
+                        })
+                    })
+
+                    nonOverlappingPois.forEach(poi => {
                         const poiMarkerData: IMarkerData = {
                             lat: poi.lat,
                             lng: poi.lng,
                             name: poi.name,
                             type: "poi",
                         }
-                        //console.log(poi.name+" Added, lat: " + poi.lat + ", lng: " + poi.lng);
+                        console.log(poi.name+" Added, lat: " + poi.lat + ", lng: " + poi.lng);
                         addMarker(poiMarkerData);
                     })
 
