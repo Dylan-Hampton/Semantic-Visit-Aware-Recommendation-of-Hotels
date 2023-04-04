@@ -41,6 +41,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     const map = useRef<ReactMap>(null);
     let markers: mapboxgl.Marker[] = [];
     let markerQuantity = new Map<mapboxgl.Marker, number>();
+    let markerNames = new Map<mapboxgl.Marker, string[]>();
     const routes: Route[] = useAppSelector(selectRoutes);
     let lines: string[] = [];
     const mapDispatch = useAppDispatch();
@@ -92,21 +93,21 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                         for (const key of noOverlapNames.keys()) {
                             keysMatch = true;
                             if (key.length !== lngLatObj.length) {
-                              keysMatch = false;
+                                keysMatch = false;
                             } else {
-                              for (let i = 0; i < key.length; i++) {
-                                if (key[i] !== lngLatObj[i]) {
-                                  keysMatch = false;
-                                  break;
+                                for (let i = 0; i < key.length; i++) {
+                                    if (key[i] !== lngLatObj[i]) {
+                                        keysMatch = false;
+                                        break;
+                                    }
                                 }
-                              }
                             }
                           
                             if (keysMatch) {
-                              noOverlapNames.set(key, [refPoi.name, ...noOverlapNames.get(key)]);
-                              break;
+                                noOverlapNames.set(key, [refPoi.name, ...noOverlapNames.get(key)]);
+                                break;
                             }
-                          }
+                        }
                         if (!keysMatch) {
                             noOverlapNames.set(lngLatObj, [refPoi.name]);
                         }
@@ -167,6 +168,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                     const currentCount = markerQuantity.get(m);
                     if (currentCount === undefined || currentCount < 1) {
                         m.remove();
+                        markerNames.delete(m);
                         markers = markers.filter(mk => mk !== m);
                     }
                 }
@@ -176,6 +178,14 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
 
     const addMarker = (data: IMarkerData) => {
         if (data.type === 'poi') {
+            markerNames.forEach((names, m) => {
+                if (m.getLngLat().lat === data.lat && m.getLngLat().lng === data.lng) {
+                    data.names = [...names, ...data.names.filter(n => !names.includes(n))];
+                    m.setPopup(new mapboxgl.Popup({offset: 16, closeOnClick: true, closeButton: false}).setHTML(
+                        renderToStaticMarkup(<MarkerPopup name={data.name} names={data.names}/>)
+                    ));
+                }
+            });
             markerQuantity.forEach((n, m) => {
                 if (m.getLngLat().lat === data.lat && m.getLngLat().lng === data.lng) {
                     countMarker(m);
@@ -192,6 +202,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         ));
         marker.addTo(map.current);
         countMarker(marker);
+        markerNames.set(marker, data.names);
         markers = markers.concat(marker);
         mapDispatch(addMarkerWithName({marker: marker, name: data.name}));
         const markerDiv = marker.getElement(); // Add popup toggle on mouse hover
