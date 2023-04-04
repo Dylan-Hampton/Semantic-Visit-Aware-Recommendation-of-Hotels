@@ -341,6 +341,9 @@ def greedy_process_PoI(g, container_index, theta, max_dist, origin, num_origins=
                             satisfied_idx = 0
 
                             while num_required_poi > 0:
+                                # Was having index error once satisfied_idx was >= 5, this seemed to fix it but may be incorrect in terms of the algorithm
+                                if satisfied_idx == (CONSTANTS.CATEGORY_NUM-1):
+                                    satisfied_idx = 0
                                 if container_index[adj_node][idx][satisfied_idx][0] is None:
                                     next_min_dist = float('inf')
                                     break
@@ -808,6 +811,9 @@ def greedy_process_origin(g, container_index, theta, max_dist, origin, num_origi
                             satisfied_idx = 0
 
                             while num_required_poi > 0:
+                                # Was having index error once satisfied_idx was >= 5, this seemed to fix it but may be incorrect in terms of the algorithm
+                                if satisfied_idx == (CONSTANTS.CATEGORY_NUM-1):
+                                    satisfied_idx = 0
                                 if container_index[adj_node][idx][satisfied_idx][0] is None:
                                     next_min_dist = float('inf')
                                     break
