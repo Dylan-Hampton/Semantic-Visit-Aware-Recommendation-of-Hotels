@@ -19,7 +19,8 @@ if (process.env.NODE_ENV !== 'test'){
 }
 
 export interface IMarkerData {
-    name: string;
+    name?: string;
+    names?: string[];
     lat: number;
     lng: number;
     type: 'origin' | 'poi';
@@ -84,34 +85,43 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                     lines.push(route.origin.name);
                     addLine(hotelLineData);
 
-                    let nonOverlappingPois: PoiNode[] = [];
-                    let tempNames: string[] = [];
+                    let noOverlapNames: Map<number[], string[]> = new Map<number[], string[]>();
                     route.pois.forEach(refPoi => {
-                        route.pois.forEach(compPoi => {
-                            if(refPoi.lng === compPoi.lng && refPoi.lat === compPoi.lat && refPoi !== compPoi && !tempNames.includes(compPoi.name)) {
-                                const temp: PoiNode = {
-                                    lng: refPoi.lng,
-                                    lat: refPoi.lat,
-                                    name: refPoi.name += " ; " + compPoi.name,
-                                    category: refPoi.category // will only keep 1 category, may need to change in future
+                        const lngLatObj = [refPoi.lng, refPoi.lat];
+                        let keysMatch = false;
+                        for (const key of noOverlapNames.keys()) {
+                            keysMatch = true;
+                            if (key.length !== lngLatObj.length) {
+                              keysMatch = false;
+                            } else {
+                              for (let i = 0; i < key.length; i++) {
+                                if (key[i] !== lngLatObj[i]) {
+                                  keysMatch = false;
+                                  break;
                                 }
-                                nonOverlappingPois.push(temp);
-                                let tempStr = refPoi.name + " ; " + compPoi.name;
-                                tempNames.push(tempStr);
+                              }
                             }
-                        })
-                    })
+                          
+                            if (keysMatch) {
+                              noOverlapNames.set(key, [refPoi.name, ...noOverlapNames.get(key)]);
+                              break;
+                            }
+                          }
+                        if (!keysMatch) {
+                            noOverlapNames.set(lngLatObj, [refPoi.name]);
+                        }
+                    });
 
-                    nonOverlappingPois.forEach(poi => {
+                    noOverlapNames.forEach((names, lngLatObj) => {
                         const poiMarkerData: IMarkerData = {
-                            lat: poi.lat,
-                            lng: poi.lng,
-                            name: poi.name,
+                            lat: lngLatObj[1],
+                            lng: lngLatObj[0],
+                            names: names,
                             type: "poi",
                         }
-                        console.log(poi.name+" Added, lat: " + poi.lat + ", lng: " + poi.lng);
+                        console.log(names +" Added, lat: " + lngLatObj[1] + ", lng: " + lngLatObj[0]);
                         addMarker(poiMarkerData);
-                    })
+                    });
 
                     let minRouteLng = route.origin.lng, minRouteLat = route.origin.lat, 
                         maxRouteLng = route.origin.lng, maxRouteLat = route.origin.lat;
@@ -142,7 +152,9 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         routes.forEach(route => {
             if (route.origin.name === data.name) {
                 route.pois.forEach(poi => {
-                    pois.push(poi);
+                    if (!pois.some(p => p.lat === poi.lat && p.lng === poi.lng)) {
+                        pois.push(poi);
+                    }
                 })
             }
         })
@@ -176,7 +188,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         el.innerHTML = markerEl;
         let marker = new mapboxgl.Marker(el).setLngLat([data.lng, data.lat]);
         marker.setPopup(new mapboxgl.Popup({offset: 16, closeOnClick: true, closeButton: false}).setHTML(
-            renderToStaticMarkup(<MarkerPopup name={data.name} />)
+            renderToStaticMarkup(<MarkerPopup name={data.name} names={data.names}/>)
         ));
         marker.addTo(map.current);
         countMarker(marker);
