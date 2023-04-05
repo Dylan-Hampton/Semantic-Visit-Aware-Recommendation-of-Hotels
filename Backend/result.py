@@ -1,4 +1,3 @@
-
 def get_result_JSON(g, route_res, origin_name_mapping):
     result = []
     path_JSON = {'origin': [], 'nodes': [], 'pois': [], 'distance': ''}
