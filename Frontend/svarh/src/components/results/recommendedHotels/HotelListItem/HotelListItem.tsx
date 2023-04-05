@@ -44,8 +44,8 @@ const HotelListItem: React.FC<IHotelListItemProps> = (props: IHotelListItemProps
 
     return (
         <>
-            <Grid container display="flex" className="list-item" onMouseEnter={togglePopup} onMouseLeave={togglePopup} onClick={drawRoute}>
-                <div className="list-item-header">
+            <Grid container display="flex" className="list-item" onMouseEnter={togglePopup} onMouseLeave={togglePopup}>
+                <div className="list-item-header"  onClick={drawRoute}>
                     <Grid item xs={2} display="flex" justifyContent="center" alignItems="center" ><HotelIcon /></Grid>
                     <Grid item xs={10} container direction="column">
                         <Grid item className="hotel-name">{props.name}</Grid>
