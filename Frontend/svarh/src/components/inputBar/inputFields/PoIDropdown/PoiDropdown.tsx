@@ -1,15 +1,10 @@
 import { Autocomplete, AutocompleteChangeDetails, AutocompleteChangeReason, Skeleton, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import PoIListItem from "./PoiListItem/PoIListItem";
-import MuseumIcon from '@mui/icons-material/Museum';
-import StoreMallDirectoryIcon from '@mui/icons-material/StoreMallDirectory';
-import ParkIcon from '@mui/icons-material/Park';
-import EmojiNatureIcon from '@mui/icons-material/EmojiNature';
-import WaterIcon from '@mui/icons-material/Water';
-import PinDropIcon from '@mui/icons-material/PinDrop';
 import './PoiDropdown.css';
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
 import { changeCategories, selectCategories } from "../../../../routeDataSlice";
+import { getIcon } from "../../../../data/IconMap";
 
 interface IPoiDropdownProps {
   poiTypes: string[];
@@ -25,23 +20,6 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
     useEffect(() => {
       setPois([])
     }, [props.poiTypes])
-
-    const getIcon = (name: string): JSX.Element => {
-      switch (name) {
-        case 'Museum':
-          return <MuseumIcon />;
-        case 'Mall':
-          return <StoreMallDirectoryIcon />;
-        case 'Park':
-          return <ParkIcon />;
-        case 'Zoo':
-          return <EmojiNatureIcon />
-        case 'Aquarium':
-          return <WaterIcon />
-        default:
-          return <PinDropIcon />
-      }
-    }
 
     const onChange = (event: React.SyntheticEvent<Element, Event>, value: string, reason: AutocompleteChangeReason, details?: AutocompleteChangeDetails<string>) => {
       if (value !== null) {

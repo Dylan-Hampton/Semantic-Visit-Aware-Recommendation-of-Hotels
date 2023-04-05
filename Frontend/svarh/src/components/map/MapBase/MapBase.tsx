@@ -9,7 +9,7 @@ import { selectRoutes } from '../../../routeDataSlice';
 import Route from '../../../data/response/RouteResponse';
 import MarkerPopup from '../Marker/MarkerPopup';
 import { PoiNode } from '../../../data/response/Node';
-import { changeMarkers, addMarkerWithName, changeToggleRoute } from '../../../mapDataSlice';
+import { changeMarkers, addMarkerWithName, changeToggleRoute, changeOpenRoutesNames } from '../../../mapDataSlice';
 
 mapboxgl.accessToken = "pk.eyJ1IjoibmF0ZXNjaGVuY2siLCJhIjoiY2xkZ2hha3IwMHJ6djN3bndlYzlud29vaSJ9.4gjvZipOtY9lWJXc3Ffk6g";
 if (process.env.NODE_ENV !== 'test'){
@@ -44,6 +44,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     let markerNames = new Map<mapboxgl.Marker, string[]>();
     const routes: Route[] = useAppSelector(selectRoutes);
     let lines: string[] = [];
+    let openRoutes: string[] = [];
     const mapDispatch = useAppDispatch();
 
     const countMarker = (marker: mapboxgl.Marker) => {
@@ -136,6 +137,10 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                     map.current.fitBounds([[minRouteLng, minRouteLat], [maxRouteLng, maxRouteLat]], {
                         padding: {top: 250, bottom: 250, left: 500, right: 500}
                     });
+                    if (data.type === 'origin') {
+                        openRoutes = [data.name, ...openRoutes];
+                        mapDispatch(changeOpenRoutesNames(openRoutes));
+                    }
                 }
                 else {
                     //console.log("Hiding " + route.origin.name + " route");
@@ -174,6 +179,8 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
                 }
             })
         })
+        openRoutes = openRoutes.filter(name => name !== data.name);
+        mapDispatch(changeOpenRoutesNames(openRoutes));
     }
 
     const addMarker = (data: IMarkerData) => {

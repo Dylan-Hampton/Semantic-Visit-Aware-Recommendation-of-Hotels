@@ -8,6 +8,10 @@
     color: rgb(1, 208, 254);
 }
 
-.icon:hover {
+.origin-icon:hover {
     color: rgb(173, 0, 0);
+}
+
+.poi-icon:hover {
+    color: rgb(1, 208, 254);
 }

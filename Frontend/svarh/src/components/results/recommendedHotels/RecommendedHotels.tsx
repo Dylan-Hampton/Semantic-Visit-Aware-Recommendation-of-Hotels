@@ -21,7 +21,7 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
                     {hotels.map((h, i) => {
                         return (
                             <div key={i}>
-                                <HotelListItem name={h.name} distance={h.routeLength} />
+                                <HotelListItem name={h.name} distance={h.routeLength} pois={h.pois}/>
                                 {i !== props.hotels.length - 1 &&
                                     <Divider/>
                                 }
