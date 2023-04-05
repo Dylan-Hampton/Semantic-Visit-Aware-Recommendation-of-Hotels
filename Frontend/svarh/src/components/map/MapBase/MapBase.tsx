@@ -202,7 +202,9 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         ));
         marker.addTo(map.current);
         countMarker(marker);
-        markerNames.set(marker, data.names);
+        if (data.type === 'poi') {
+            markerNames.set(marker, data.names !== undefined ? data.names : [data.name]);
+        }
         markers = markers.concat(marker);
         mapDispatch(addMarkerWithName({marker: marker, name: data.name}));
         const markerDiv = marker.getElement(); // Add popup toggle on mouse hover
