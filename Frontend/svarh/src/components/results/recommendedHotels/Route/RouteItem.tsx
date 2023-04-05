@@ -25,7 +25,7 @@ const RouteItem: React.FC<IRouteProps> = (props: IRouteProps) => {
             <Grid container display="flex" className="route-item">
                 {props.route.pois.map((poi, i) => {
                     return (
-                        <>
+                        <div key={i} className="poi-key">
                         <div className="poi">
                         <Grid item xs={2} display="flex" justifyContent="center" alignItems="center" >
                             {getIcon('default')}
@@ -44,7 +44,7 @@ const RouteItem: React.FC<IRouteProps> = (props: IRouteProps) => {
                                 <MoreVertIcon />
                             </Grid>
                         }
-                        </>
+                        </div>
                     )
                 })}
             </Grid>

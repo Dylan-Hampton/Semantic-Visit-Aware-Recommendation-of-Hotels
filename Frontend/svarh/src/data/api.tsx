@@ -24,7 +24,7 @@ export const generateRoute = createAsyncThunk<
             },
             body: JSON.stringify(r),
         })
-        const data = await response.json()
+        const data = await response.json();
         return data as Route[]
     }
   )
