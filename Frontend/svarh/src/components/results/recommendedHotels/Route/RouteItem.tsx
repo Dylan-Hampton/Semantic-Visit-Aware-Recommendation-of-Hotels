@@ -28,7 +28,7 @@ const RouteItem: React.FC<IRouteProps> = (props: IRouteProps) => {
                         <div key={i} className="poi-key">
                         <div className="poi">
                         <Grid item xs={2} display="flex" justifyContent="center" alignItems="center" >
-                            {getIcon('default')}
+                            {getIcon(city.poiTypes[poi.category])}
                         </Grid>
                         <Grid item xs={10} container direction="column">
                             <Grid item className="poi-name">{poi.name}</Grid>
