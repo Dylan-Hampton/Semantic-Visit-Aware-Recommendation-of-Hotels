@@ -1,3 +1,4 @@
+
 def get_result_JSON(g, route_res, origin_name_mapping):
     result = []
     path_JSON = {'origin': [], 'nodes': [], 'pois': [], 'distance': ''}
@@ -25,3 +26,17 @@ def get_result_JSON(g, route_res, origin_name_mapping):
         path_JSON = {'origin': [], 'nodes': [], 'pois': [], 'distance': ''}
         
     return result
+
+def get_node_JSON(node, origin_name=None):
+        if origin_name:
+            return {'lng': node.lng, 'lat': node.lat, 'name': origin_name}
+        else:
+            return {'lng': node.lng, 'lat': node.lat}
+
+# TODO: Find a way to not have to iterate through all nodes in the path to find PoI's lat,long
+def get_poi_JSON(g, path, poi):
+    # PoIs don't have lat,long attributes in their class, so we need to iterate through each node in the path to find the PoI's lat,long
+    for node_id in path:
+        node = g.nodes[node_id]
+        if poi in node.PoIs:
+            return {'name': poi.name, 'category': poi.category, 'lng': node.lng, 'lat': node.lat}
