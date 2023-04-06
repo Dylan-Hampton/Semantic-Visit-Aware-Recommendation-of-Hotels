@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IRouteData } from "./components/results/generatedRoute/Route/Route";
+import { IRouteData } from "./components/results/recommendedHotels/Route/RouteItem";
 import { RootState } from './store';
 import { IMarkerData } from './components/map/MapBase/MapBase';
 
@@ -12,12 +12,14 @@ interface MapState {
     markers: IMarkerWithName[];
     lines: IRouteData[];
     toggleRoute: (data?: IMarkerData) => void;
+    openRoutesNames: string[];
 }
 
 const initialState: MapState = {
     markers: [],
     lines: [],
-    toggleRoute: () => {}
+    toggleRoute: () => {},
+    openRoutesNames: []
 }
 
 export const mapDataSlice = createSlice({
@@ -35,14 +37,18 @@ export const mapDataSlice = createSlice({
         },
         changeToggleRoute: (state, action: PayloadAction<(data: IMarkerData) => void>) => {
             state.toggleRoute = action.payload;
-        }
+        },
+        changeOpenRoutesNames: (state, action: PayloadAction<string[]>) => {
+            state.openRoutesNames = action.payload;
+        },
     }
 });
 
-export const { changeMarkers, addMarkerWithName, changeLines, changeToggleRoute } = mapDataSlice.actions;
+export const { changeMarkers, addMarkerWithName, changeLines, changeToggleRoute, changeOpenRoutesNames } = mapDataSlice.actions;
 
 export const selectMarkers = (state: RootState) => state.mapData.markers;
 export const selectLines = (state: RootState) => state.mapData.lines;
 export const selectToggleRoute = (state: RootState) => state.mapData.toggleRoute;
+export const selectOpenRoutesNames = (state: RootState) => state.mapData.openRoutesNames;
 
 export default mapDataSlice.reducer;

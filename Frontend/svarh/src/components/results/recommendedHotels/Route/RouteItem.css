@@ -1,0 +1,23 @@
+.route-item {
+    background-color: #f6f6f6;
+    padding: 3px 0;
+}
+
+.poi {
+    width: 100%;
+    display: flex;
+    margin: 3px 0;
+}
+
+.poi-name {
+    color: #028eac;
+}
+
+.poi-category {
+    color: #7d7d7d;
+    font-size: 14px;
+}
+
+.poi-key {
+    width: 100%;
+}
