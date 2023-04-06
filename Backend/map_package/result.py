@@ -11,7 +11,8 @@ def get_result_JSON(g, route_res, origin_name_mapping):
         pois = data[3]
 
         # Construct result JSON for a certain origin
-        path_JSON['origin'] = get_node_JSON(g.nodes[origin_id], origin_name=origin_name_mapping[origin_id])
+        path_JSON['origin'] = get_node_JSON(
+            g.nodes[origin_id], origin_name=origin_name_mapping[origin_id])
 
         for node_id in path:
             path_JSON['nodes'].append(get_node_JSON(g.nodes[node_id]))
@@ -20,17 +21,19 @@ def get_result_JSON(g, route_res, origin_name_mapping):
 
         for poi in pois:
             path_JSON['pois'].append(get_poi_JSON(g, path, poi))
-        
+
         result.append(path_JSON)
         path_JSON = {'origin': [], 'nodes': [], 'pois': [], 'distance': ''}
-        
+
     return result
 
+
 def get_node_JSON(node, origin_name=None):
-        if origin_name:
-            return {'lng': node.lng, 'lat': node.lat, 'name': origin_name}
-        else:
-            return {'lng': node.lng, 'lat': node.lat}
+    if origin_name:
+        return {'lng': node.lng, 'lat': node.lat, 'name': origin_name}
+    else:
+        return {'lng': node.lng, 'lat': node.lat}
+
 
 # TODO: Find a way to not have to iterate through all nodes in the path to find PoI's lat,long
 def get_poi_JSON(g, path, poi):
@@ -38,4 +41,22 @@ def get_poi_JSON(g, path, poi):
     for node_id in path:
         node = g.nodes[node_id]
         if poi in node.PoIs:
-            return {'name': poi.name, 'category': poi.category, 'lng': node.lng, 'lat': node.lat}
+            return {
+                'name': poi.name,
+                'category': poi.category,
+                'lng': node.lng,
+                'lat': node.lat
+            }
+
+
+def order_pois(path, pois):
+    # Return idx of node with lat,lng of poi
+    def idx_of_node(poi):
+        for idx, node in enumerate(path):
+            if node['lng'] == poi['lng'] and node['lat'] == poi['lat']:
+                return idx
+        # This should (hopefully) never run
+        return -1
+
+    pois.sort(key=idx_of_node)
+    return pois
