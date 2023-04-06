@@ -1,19 +1,23 @@
-.list-item {
-    padding: 7px 0;
-    cursor: pointer;
-}
-
-.list-item:hover {
-    background-color: #eeeeee;
-}
-
 .hotel-name {
     color: rgb(240, 116, 71);
     font-size: 20px;
     font-weight: 500;
+    width: 95%;
+    word-wrap: break-word;
 }
 
 .hotel-distance {
     color: #7d7d7d;
     font-size: 14px;
+}
+
+.list-item-header {
+    width: 100%;
+    display: flex;
+    padding: 7px 0;
+    cursor: pointer;
+}
+
+.list-item-header:hover {
+    background-color: #eeeeee;
 }

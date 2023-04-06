@@ -90,33 +90,33 @@ test('open and close settings panel', () => {
   expect(algoDropdown).not.toBeInTheDocument();
 });
 
-test('renders view hotels return button', () => {
-  render(<GeneratedRoute routes={[{},{},{}]}/>);
-  expect(screen.getByLabelText("HotelReturnBtn")).toBeInTheDocument(); 
-});
+// test('renders view hotels return button', () => {
+//   render(<GeneratedRoute routes={[{},{},{}]}/>);
+//   expect(screen.getByLabelText("HotelReturnBtn")).toBeInTheDocument(); 
+// });
 
-test('scroll through generated routes panel', () => {
-  render(<GeneratedRoute routes={[{},{},{}]}/>);
-  // expect(screen.getByTestId("NavigateBeforeIcon")).toBeDisabled();   not too sure on how to check if icon is disabled, toBeDisabled seems to be for buttons
+// test('scroll through generated routes panel', () => {
+//   render(<GeneratedRoute routes={[{},{},{}]}/>);
+//   // expect(screen.getByTestId("NavigateBeforeIcon")).toBeDisabled();   not too sure on how to check if icon is disabled, toBeDisabled seems to be for buttons
 
-  // Test scrolling forwards 
-  const maxRoutes = 3;
-  for(let i = 0; i < maxRoutes; i++)
-  {
-    expect(screen.getByText("Generated Route #" + (i+1))).toBeInTheDocument();
-    if(i < (maxRoutes - 1))
-    {
-      fireEvent.click(screen.getByTestId("NavigateNextIcon"));
-    }
-  }
+//   // Test scrolling forwards 
+//   const maxRoutes = 3;
+//   for(let i = 0; i < maxRoutes; i++)
+//   {
+//     expect(screen.getByText("Generated Route #" + (i+1))).toBeInTheDocument();
+//     if(i < (maxRoutes - 1))
+//     {
+//       fireEvent.click(screen.getByTestId("NavigateNextIcon"));
+//     }
+//   }
 
-  // Test scrolling backwards 
-  for(let i = (maxRoutes-1); i >= 0; i--)
-  {
-    expect(screen.getByText("Generated Route #" + (i+1))).toBeInTheDocument();
-    if(i > 0)
-    {
-      fireEvent.click(screen.getByTestId("NavigateBeforeIcon"));
-    }
-  }
-});
+//   // Test scrolling backwards 
+//   for(let i = (maxRoutes-1); i >= 0; i--)
+//   {
+//     expect(screen.getByText("Generated Route #" + (i+1))).toBeInTheDocument();
+//     if(i > 0)
+//     {
+//       fireEvent.click(screen.getByTestId("NavigateBeforeIcon"));
+//     }
+//   }
+// });

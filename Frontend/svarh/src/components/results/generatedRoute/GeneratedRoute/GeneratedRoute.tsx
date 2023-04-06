@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import './GeneratedRoute.css';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import Route, { IRouteData } from "../Route/Route";
+import RouteItem, { IRouteData } from "../../recommendedHotels/Route/RouteItem";
 import { Divider, Grid } from "@mui/material";
 import ReturnButton from "../ReturnButton/ReturnButton";
 
@@ -68,7 +68,7 @@ const GeneratedRoute: React.FC<IGeneratedRouteProps> = (props: IGeneratedRoutePr
                 </div>
                 <Divider />
                 <div className="route-body">
-                    <Route route={props.routes[currentRoute]}/>
+                    <RouteItem route={props.routes[currentRoute]}/>
                 </div>
                 <div className="route-footer">
                     <Divider sx={{width: '100%', paddingBottom: 0}}/>
