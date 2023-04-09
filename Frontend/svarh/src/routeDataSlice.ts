@@ -4,6 +4,7 @@ import { generateRoute } from './data/api';
 import { City } from './data/City';
 import Route from './data/response/RouteResponse';
 import { RootState } from './store';
+import { DistanceMetric, KILOMETERS, KILOMETERTOMETER, METERS, MILES, MILETOMETER } from './data/DistanceMetric';
 
 interface SubmitState {
     cities: City[],
@@ -15,6 +16,7 @@ interface SubmitState {
     algorithmChoices: string[],
     routes: Route[],
     loading: boolean,
+    distMetric: DistanceMetric,
 }
 
 const initialState: SubmitState = {
@@ -33,6 +35,10 @@ const initialState: SubmitState = {
     categories: {},
     routes: [],
     loading: false,
+    distMetric: {
+        metric: MILES,
+        conversionToMeter: MILETOMETER,
+    }
 }
 
 
@@ -89,6 +95,24 @@ export const routeDataSlice = createSlice({
         changeCategories: (state, action: PayloadAction<{ [name: string]: number }>) => {
             state.categories = action.payload
         },
+        changeDistanceMetric: (state, action: PayloadAction<string>) => {
+            switch (action.payload) {
+                case MILES:
+                    state.distMetric.metric = action.payload;
+                    state.distMetric.conversionToMeter = MILETOMETER;
+                    break;
+                case KILOMETERS:
+                    state.distMetric.metric = action.payload;
+                    state.distMetric.conversionToMeter = KILOMETERTOMETER;
+                    break;
+                case METERS:
+                    state.distMetric.metric = action.payload;
+                    state.distMetric.conversionToMeter = 1;
+                    break;
+                default:
+                    break;
+            }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(generateRoute.pending, (state, action) => {
@@ -115,5 +139,6 @@ export const selectCategories = (state: RootState) => state.routeData.categories
 export const selectCities = (state: RootState) => state.routeData.cities
 export const selectAlgorithmChoices = (state: RootState) => state.routeData.algorithmChoices
 export const selectRoutes = (state: RootState) => state.routeData.routes
+export const changeDistanceMetric = (state: RootState) => state.routeData.distMetric.metric
 
 export default routeDataSlice.reducer
