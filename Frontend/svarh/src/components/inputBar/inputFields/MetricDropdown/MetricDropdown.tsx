@@ -1,12 +1,17 @@
 import { Autocomplete, Skeleton, TextField } from "@mui/material";
 import React from "react";
-import { City } from "../../../../data/City";
 import { useAppDispatch } from "../../../../hooks";
 import { changeDistanceMetric } from "../../../../routeDataSlice";
 
 interface IMetricDropdownProps {
   metrics: string[];
 }
+
+export const MILES = 'Miles';
+export const METERS = 'Meters';
+export const KILOMETERS = 'Kilometers';
+export const MILETOMETER = Number(1609.344);
+export const KILOMETERTOMETER = Number(1000);
 
 const CityDropdown: React.FC<IMetricDropdownProps> = (props: IMetricDropdownProps) => {
     const dispatch = useAppDispatch();
@@ -24,7 +29,7 @@ const CityDropdown: React.FC<IMetricDropdownProps> = (props: IMetricDropdownProp
           options={props.metrics}
           getOptionLabel={(option) => option}
           sx={{ 
-            width: '30%',
+            width: '100%',
             'marginBottom': '4px',
           }}
           renderInput={(params) => 

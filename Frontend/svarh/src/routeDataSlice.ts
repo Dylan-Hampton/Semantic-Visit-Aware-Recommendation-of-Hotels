@@ -4,7 +4,7 @@ import { generateRoute } from './data/api';
 import { City } from './data/City';
 import Route from './data/response/RouteResponse';
 import { RootState } from './store';
-import { DistanceMetric, KILOMETERS, KILOMETERTOMETER, METERS, MILES, MILETOMETER } from './data/DistanceMetric';
+import { KILOMETERS, METERS, MILES } from "./components/inputBar/inputFields/MetricDropdown/MetricDropdown";
 
 interface SubmitState {
     cities: City[],
@@ -16,7 +16,7 @@ interface SubmitState {
     algorithmChoices: string[],
     routes: Route[],
     loading: boolean,
-    distMetric: DistanceMetric,
+    distMetric: string,
 }
 
 const initialState: SubmitState = {
@@ -35,10 +35,7 @@ const initialState: SubmitState = {
     categories: {},
     routes: [],
     loading: false,
-    distMetric: {
-        metric: MILES,
-        conversionToMeter: MILETOMETER,
-    }
+    distMetric: MILES,
 }
 
 
@@ -96,18 +93,16 @@ export const routeDataSlice = createSlice({
             state.categories = action.payload
         },
         changeDistanceMetric: (state, action: PayloadAction<string>) => {
+            console.log("changed to " + action.payload);
             switch (action.payload) {
                 case MILES:
-                    state.distMetric.metric = action.payload;
-                    state.distMetric.conversionToMeter = MILETOMETER;
+                    state.distMetric = action.payload;
                     break;
                 case KILOMETERS:
-                    state.distMetric.metric = action.payload;
-                    state.distMetric.conversionToMeter = KILOMETERTOMETER;
+                    state.distMetric = action.payload;
                     break;
                 case METERS:
-                    state.distMetric.metric = action.payload;
-                    state.distMetric.conversionToMeter = 1;
+                    state.distMetric = action.payload;
                     break;
                 default:
                     break;
@@ -128,7 +123,7 @@ export const routeDataSlice = createSlice({
     },
 })
 
-export const { changeCity, changeAlgorithm, changeOrigins, changeDistance, changeCategories, receivedCities } = routeDataSlice.actions
+export const { changeCity, changeAlgorithm, changeOrigins, changeDistance, changeCategories, receivedCities, changeDistanceMetric } = routeDataSlice.actions
 
 // Add selectors here
 export const selectDistance = (state: RootState) => state.routeData.distance
@@ -139,6 +134,6 @@ export const selectCategories = (state: RootState) => state.routeData.categories
 export const selectCities = (state: RootState) => state.routeData.cities
 export const selectAlgorithmChoices = (state: RootState) => state.routeData.algorithmChoices
 export const selectRoutes = (state: RootState) => state.routeData.routes
-export const changeDistanceMetric = (state: RootState) => state.routeData.distMetric.metric
+export const selectDistanceMetric = (state: RootState) => state.routeData.distMetric
 
 export default routeDataSlice.reducer

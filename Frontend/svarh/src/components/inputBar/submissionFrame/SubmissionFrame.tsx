@@ -5,7 +5,7 @@ import { apiUrl } from '../../../data/Constants';
 import CityDropdown from '../inputFields/CityDropdown/CityDropdown';
 import MaximumDistance from '../inputFields/MaximumDistanceField/MaximumDistance';
 import PoiDropdown from '../inputFields/PoIDropdown/PoiDropdown';
-import MetricDropdown from '../inputFields/MetricDropdown/MetricDropdown';
+import MetricDropdown, { KILOMETERS, METERS, MILES } from '../inputFields/MetricDropdown/MetricDropdown';
 import SubmitButton from '../inputFields/SubmitButton/SubmitButton';
 import { City } from '../../../data/City';
 import type RouteRequest from '../../../data/request/RouteRequest';
@@ -26,8 +26,8 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
     const algo: Algorithm = useAppSelector(selectAlgorithm);
     const origins: number = useAppSelector(selectOrigins);
     const categories: { [name: string]: number } = useAppSelector(selectCategories);
+    const metricsStr = [ MILES, KILOMETERS, METERS ];
     const dispatch = useAppDispatch();
-    const distanceMetrics = [ "Miles", "Kilometers", "Meters" ];
 
     // Get list of cities from backend on page load
     useEffect(() => {
@@ -95,9 +95,9 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                     <div className="input-bottom">
                             <Divider />
                             <div className="input-bottom-inputs">
-                                <div className="input-maxdist-metric" >
+                                <div className="input-maxdist-metric">
                                     <MaximumDistance></MaximumDistance>
-                                    <MetricDropdown metrics={distanceMetrics}></MetricDropdown>
+                                    <MetricDropdown metrics={metricsStr}></MetricDropdown>
                                 </div>
                                 <div className="input-submit" onClick={async () => {
                                         await handleSubmit();
