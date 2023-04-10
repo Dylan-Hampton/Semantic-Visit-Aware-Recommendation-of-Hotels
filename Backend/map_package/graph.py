@@ -1,13 +1,16 @@
 import os
-from .ContractPOINetwork import ContractPOINetwork
-from .Node import Node
+from PaDOC_Query import *
+
 
 def get_ny_graph():
     num_poi = 623
-    if os.path.exists("./PaDOC-Query/PoI_Network/PKL/NY_" + str(num_poi) + "_PoI_network_euclidean.pickle"):
+    if os.path.exists("./PaDOC-Query/PoI_Network/PKL/NY_" + str(num_poi) +
+                      "_PoI_network_euclidean.pickle"):
         print("Start Loading PoI Network from Pickle file......")
 
-        with open("./PaDOC-Query/PoI_Network/PKL/NY_" + str(num_poi) + "_PoI_network_euclidean.pickle", 'rb') as f:
+        with open(
+                "./PaDOC-Query/PoI_Network/PKL/NY_" + str(num_poi) +
+                "_PoI_network_euclidean.pickle", 'rb') as f:
             g = pickle.load(f)
 
         print("PoI Network Has Been Loaded......")
@@ -26,9 +29,12 @@ def get_ny_graph():
             poi_dict = {}
 
             for eachPoI in spamreader:
-                poi_id, poi_name, category_idx = int(eachPoI[0]), eachPoI[1], int(eachPoI[2])
+                poi_id, poi_name, category_idx = int(
+                    eachPoI[0]), eachPoI[1], int(eachPoI[2])
 
-                poi_dict[poi_name] = Node.PoI(poi_id=poi_id, name=poi_name, category=category_idx)
+                poi_dict[poi_name] = Node.PoI(poi_id=poi_id,
+                                              name=poi_name,
+                                              category=category_idx)
 
         ############################################################################################
         ############################################################################################
@@ -37,7 +43,6 @@ def get_ny_graph():
         print("Start Pairing Node with PoIs......")
 
         embedded_poi_node = {}
-
         '''
         {
             node_1: set(Node.PoI(), Node.PoI(), ...),
@@ -71,7 +76,8 @@ def get_ny_graph():
         g = ContractPoINetwork.ContractPoINetwork()
 
         print("Start Inserting Nodes......")
-        with open("./PaDOC-Query/PoI_Network/CSV/NY_CH_ns_euclidean.csv", 'r') as rf:
+        with open("./PaDOC-Query/PoI_Network/CSV/NY_CH_ns_euclidean.csv",
+                  'r') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
 
@@ -85,14 +91,15 @@ def get_ny_graph():
                 if node_id not in embedded_poi_node:
                     g.add_node(node_id, node_lng, node_lng)
                 else:
-                    g.add_node(node_id, node_lng, node_lng, embedded_poi_node[node_id])
-
+                    g.add_node(node_id, node_lng, node_lng,
+                               embedded_poi_node[node_id])
                 '''
                 :param depth: Integer, Hierarchy Depth
                 :param contractOrder: Integer, contract order
                 '''
 
-                g.nodes[node_id].depth, g.nodes[node_id].contract_order = node_depth, node_order
+                g.nodes[node_id].depth, g.nodes[
+                    node_id].contract_order = node_depth, node_order
 
                 print("Inserted ", counter, " nodes")
                 g.nodes[node_id].print_info()
@@ -106,7 +113,8 @@ def get_ny_graph():
         ############################################################################################
 
         print("Starting Inserting Edges......")
-        with open("./PaDOC-Query/PoI_Network/CSV/NY_CH_es_euclidean.csv", 'r') as rf:
+        with open("./PaDOC-Query/PoI_Network/CSV/NY_CH_es_euclidean.csv",
+                  'r') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
 
@@ -124,7 +132,8 @@ def get_ny_graph():
                     g.add_edge(node_id1, node_id2, edge_weight)
                     print("Inserted ", counter, " edges")
                 else:
-                    g.add_shortcut(node_id1, node_id2, edge_weight, mid_node_id)
+                    g.add_shortcut(node_id1, node_id2, edge_weight,
+                                   mid_node_id)
                     print("Inserted ", counter, " shortcuts")
 
                 g.edges[(node_id1, node_id2)].print_info()
