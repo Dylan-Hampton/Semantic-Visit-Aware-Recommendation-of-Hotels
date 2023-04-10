@@ -49,14 +49,14 @@ def routes():
     ############################################################################################
 
     container_index = get_index_from_pickle(
-        "./PaDOC-Query/PoI_Network/Index/MatrixContainer_NY_" + str(num_poi) +
+        "./paDOC_Query/PoI_Network/Index/MatrixContainer_NY_" + str(num_poi) +
         ".pickle")
 
     ############################################################################################
     ############################################################################################
     ############################################################################################
     origins, origin_name_mapping = get_origins(
-        "./PaDOC-Query/PoI_Network/NY_ns.csv")
+        "./PaDOC_Query/PoI_Network/NY_ns.csv")
 
     g.rtree_build(origins)
 
