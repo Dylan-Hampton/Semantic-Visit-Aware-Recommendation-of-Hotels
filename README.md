@@ -1,7 +1,7 @@
 # Semantic Visit Aware Recommendation of Hotels
 
 Reference-style: 
-![image of a POI]](https://git.ece.iastate.edu/sd/sdmay23-34/-/blob/main/images/mappingicon.png)
+![image of a POI](https://git.ece.iastate.edu/sd/sdmay23-34/-/raw/main/images/mappingicon.png)
 Vist our project website to learn more "http://sdmay23-34.sd.ece.iastate.edu/"
 
 ## Description
