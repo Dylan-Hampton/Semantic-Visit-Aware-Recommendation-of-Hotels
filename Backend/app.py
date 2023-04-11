@@ -1,6 +1,3 @@
-import os
-os.chdir('/Users/joezuber/Desktop/SDupdate/sdmay23-34/Backend/')
-
 from flask import Flask, jsonify, request
 from flask_api import status
 from flask_cors import CORS
