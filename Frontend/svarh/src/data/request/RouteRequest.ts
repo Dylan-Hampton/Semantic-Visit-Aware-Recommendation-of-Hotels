@@ -3,4 +3,5 @@ export default interface RouteRequest {
     origins: number; // Max # of origins
     distance: number; // Meters
     categories: number[]; // Map names of PoIs from City object to the index in this array with the value being the quantity.
+    city: string;
 }
