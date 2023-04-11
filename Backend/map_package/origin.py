@@ -9,7 +9,7 @@ def get_origins(origins_csv_path):
         origins = set()
         origin_name_mapping = {}
 
-        with open(origins_csv_path, 'r', encoding="cp1252") as rf:
+        with open(origins_csv_path, 'r', encoding='utf-8') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
 

@@ -11,12 +11,15 @@ from Experiment import greedy_dijkstra
 
 from map_package.origin import get_origins
 from map_package.index import get_index_from_pickle
-from map_package.graph import get_ny_graph
+from map_package.graph import get_generic_graph
 from map_package.result import *
 
 app = Flask(__name__)
 CORS(app)
 
+def setup(self=app):
+    global first_request
+    first_request = True
 
 @app.route('/cities')
 def cities():
@@ -37,28 +40,18 @@ def cities():
     }]
     return jsonify(city_data)
 
-
+@app.before_first_request(setup)
 @app.route('/routes', methods=['POST'])
 def routes():
-    # TODO: Separate the setup parts (graph, index, origins) into different functions that can be called or ran on setup of Apache
-    num_poi = 623
 
-    g = get_ny_graph()
-    ############################################################################################
-    ############################################################################################
-    ############################################################################################
-
-    container_index = get_index_from_pickle(
-        "./PaDOC_Query/PoI_Network/Index/MatrixContainer_NY_" + str(num_poi) +
-        ".pickle")
-
-    ############################################################################################
-    ############################################################################################
-    ############################################################################################
-    origins, origin_name_mapping = get_origins(
-        "./PaDOC_Query/PoI_Network/NY_ns.csv")
-
-    g.rtree_build(origins)
+    # This is a dictionary that will hold the city data for each city, 
+    # so we don't have to build it every time we get a request
+    global city_data 
+    global first_request
+    if first_request:
+        #begin the city data dictionary on the first call of the function
+        city_data = {}
+        first_request = False
 
     GREEDY_DIJKSTRA = 0
     RANDOM_WALK_RESTART = 1
@@ -71,6 +64,30 @@ def routes():
     theta = content['categories']
     max_dist = content['distance']
     num_required_origin = content['origins']
+    city = content['city'] 
+    if city.lower() == "new york city" or city.lower() == "new york" or city.lower() == "nyc" or city.lower() == "ny": 
+        city = "NY"
+    elif city.lower() == "chicago" or city.lower() == "chi":
+        city = "Chicago"
+
+    # only build city data if it's not already in the dictionary, 
+    # this lets us build each city only once, and one at a time
+    if city not in city_data: 
+        if city == "NY":
+            num_poi = 623
+        elif city == "Chicago":
+            num_poi = 594
+        g = get_generic_graph(city, num_poi)
+        container_index = get_index_from_pickle(
+            "./PaDOC_Query/PoI_Network/Index/MatrixContainer_" + str(city) 
+            + '_' + str(num_poi) + ".pickle")
+        origins, origin_name_mapping = get_origins(
+            "./PaDOC_Query/PoI_Network/" + str(city) + "_ns.csv")
+        g.rtree_build(origins)
+
+        city_data[city] = (num_poi, g, container_index, origins, origin_name_mapping)
+    
+    num_poi, g, container_index, origins, origin_name_mapping = city_data[city]
 
     # Not really sure what this should be set to, but for now 2 seems good
     max_time = 2

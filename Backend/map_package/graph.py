@@ -3,28 +3,26 @@ from PaDOC_Query import Node, ContractPoINetwork
 import csv, pickle, time
 import math
 
-
-def get_ny_graph():
-    num_poi = 623
-    if os.path.exists("./PaDOC_Query/PoI_Network/PKL/NY_" + str(num_poi) +
+def get_generic_graph(city_identifier, num_poi):
+    if os.path.exists("./PaDOC_Query/PoI_Network/PKL/" + city_identifier + "_" + str(num_poi) +
                       "_PoI_network_euclidean.pickle"):
         print("Start Loading PoI Network from Pickle file......")
 
         with open(
-                "./PaDOC_Query/PoI_Network/PKL/NY_" + str(num_poi) +
+                "./PaDOC_Query/PoI_Network/PKL/" + city_identifier + "_"  + str(num_poi) +
                 "_PoI_network_euclidean.pickle", 'rb') as f:
             g = pickle.load(f)
 
         print("PoI Network Has Been Loaded......")
         print("=================================================")
-    elif os.path.exists("./PaDOC_Query/PoI_Network/CSV/NY_CH_es_euclidean.csv") and \
-            os.path.exists("./PaDOC_Query/PoI_Network/CSV/NY_CH_ns_euclidean.csv") and \
-            os.path.exists("./PaDOC_Query/PoI_Network/CSV/NY_PoI_info.csv"):
+    elif os.path.exists("./PaDOC_Query/PoI_Network/CSV/" + city_identifier + "_CH_es_euclidean.csv") and \
+            os.path.exists("./PaDOC_Query/PoI_Network/CSV/" + city_identifier + "_CH_ns_euclidean.csv") and \
+            os.path.exists("./PaDOC_Query/PoI_Network/CSV/" + city_identifier + "_PoI_info.csv"):
         print("Start Loading PoI Network from CSV files......")
 
         print("Start Loading Diversity......")
 
-        with open("./PaDOC_Query/PoI_Network/CSV/NY_PoI_info.csv", 'r') as rf:
+        with open("./PaDOC_Query/PoI_Network/CSV/" + city_identifier + "_PoI_info.csv", 'r') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
 
@@ -54,7 +52,7 @@ def get_ny_graph():
         This step is necessary because CH_ns does not have info related to PoI
         '''
 
-        with open("./PaDOC_Query/PoI_Network/NY_ns.csv", 'r') as rf:
+        with open("./PaDOC_Query/PoI_Network/" + city_identifier + "_ns.csv", 'r') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
 
@@ -78,7 +76,7 @@ def get_ny_graph():
         g = ContractPoINetwork.ContractPoINetwork()
 
         print("Start Inserting Nodes......")
-        with open("./PaDOC_Query/PoI_Network/CSV/NY_CH_ns_euclidean.csv",
+        with open("./PaDOC_Query/PoI_Network/CSV/" + city_identifier + "_CH_ns_euclidean.csv",
                   'r') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)
@@ -115,7 +113,7 @@ def get_ny_graph():
         ############################################################################################
 
         print("Starting Inserting Edges......")
-        with open("./PaDOC_Query/PoI_Network/CSV/NY_CH_es_euclidean.csv",
+        with open("./PaDOC_Query/PoI_Network/CSV/" + city_identifier + "_CH_es_euclidean.csv",
                   'r') as rf:
             spamreader = csv.reader(rf)
             next(spamreader)

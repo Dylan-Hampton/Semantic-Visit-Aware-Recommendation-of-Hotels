@@ -21,6 +21,9 @@ def get_result_JSON(g, route_res, origin_name_mapping):
 
         for poi in pois:
             path_JSON['pois'].append(get_poi_JSON(g, path, poi))
+        
+        # Put the PoIs in the order which they are visited in the path
+        path_JSON['pois'] = order_pois(path_JSON['nodes'], path_JSON['pois'])
 
         result.append(path_JSON)
         path_JSON = {'origin': [], 'nodes': [], 'pois': [], 'distance': ''}
