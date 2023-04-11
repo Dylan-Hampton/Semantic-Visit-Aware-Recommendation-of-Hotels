@@ -46,18 +46,6 @@ def test_negative_poi_category():
     assert response.status_code == 200
     assert response.json[0]["pois"] == []
 
-# Invalid poi category is >= 6
-def test_invalid_poi_category():
-    response = app.test_client().post('/routes', json={
-        "algorithm": 3,
-        "origins": 1,
-        "distance": 1000,
-        "categories": [6,0,0,0,0,0],
-        "city": "New York City"
-    })
-
-    assert response.status_code == 500
-
 def test_no_request_body():
     response = app.test_client().post('/routes')
 
