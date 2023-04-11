@@ -61,6 +61,7 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
             origins: origins,
             distance: dist,
             categories: categoryNumbers,
+            city: city.cityName
         }
         await dispatch(generateRoute(r))
     }

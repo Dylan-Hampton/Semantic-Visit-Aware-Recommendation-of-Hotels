@@ -16,6 +16,7 @@ export const generateRoute = createAsyncThunk<
             origins: request.origins,
             distance: (request.distance * miToMeter),
             categories: request.categories,
+            city: request.city
         }
         const response = await fetch(apiUrl + '/routes', {
             method: 'POST',
