@@ -49,7 +49,7 @@ def routes():
     ############################################################################################
 
     container_index = get_index_from_pickle(
-        "./paDOC_Query/PoI_Network/Index/MatrixContainer_NY_" + str(num_poi) +
+        "./PaDOC_Query/PoI_Network/Index/MatrixContainer_NY_" + str(num_poi) +
         ".pickle")
 
     ############################################################################################
