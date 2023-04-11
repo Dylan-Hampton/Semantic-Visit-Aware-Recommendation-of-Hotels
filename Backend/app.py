@@ -17,6 +17,10 @@ from map_package.result import *
 app = Flask(__name__)
 CORS(app)
 
+def setup(self=app):
+    global first_request
+    first_request = True
+
 @app.route('/cities')
 def cities():
     '''
@@ -36,7 +40,7 @@ def cities():
     }]
     return jsonify(city_data)
 
-
+@app.before_first_request(setup)
 @app.route('/routes', methods=['POST'])
 def routes():
 
@@ -133,6 +137,4 @@ def routes():
 
 
 if __name__ == '__main__':
-    global first_request
-    first_request = True
     app.run()
