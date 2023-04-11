@@ -116,6 +116,8 @@ def routes():
     else:
         return "Invalid argument for: algorithm", status.HTTP_400_BAD_REQUEST
 
+    return jsonify(get_result_JSON(g, route_res, origin_name_mapping))
+
 
 if __name__ == '__main__':
     app.run()
