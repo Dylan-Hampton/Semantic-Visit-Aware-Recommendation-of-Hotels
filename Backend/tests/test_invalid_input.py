@@ -6,7 +6,8 @@ def test_invalid_algorithm():
         "algorithm": 10,
         "origins": 1,
         "distance": 1000,
-        "categories": [1,0,0,0,0,0]
+        "categories": [1,0,0,0,0,0],
+        "city": "New York City"
     })
 
     assert response.status_code == 400
@@ -15,7 +16,8 @@ def test_invalid_algorithm():
         "algorithm": -1,
         "origins": 1,
         "distance": 1000,
-        "categories": [1,0,0,0,0,0]
+        "categories": [1,0,0,0,0,0],
+        "city": "Chicago"
     })
 
     assert response.status_code == 400
@@ -25,7 +27,8 @@ def test_negative_distance():
         "algorithm": 3,
         "origins": 1,
         "distance": -1,
-        "categories": [1,0,0,0,0,0]
+        "categories": [1,0,0,0,0,0],
+        "city": "New York City"
     })
 
     assert response.status_code == 200
@@ -36,7 +39,8 @@ def test_negative_poi_category():
         "algorithm": 3,
         "origins": 1,
         "distance": 1000,
-        "categories": [-1,0,0,0,0,0]
+        "categories": [-1,0,0,0,0,0],
+        "city": "Chicago"
     })
 
     assert response.status_code == 200
@@ -48,7 +52,8 @@ def test_invalid_poi_category():
         "algorithm": 3,
         "origins": 1,
         "distance": 1000,
-        "categories": [6,0,0,0,0,0]
+        "categories": [6,0,0,0,0,0],
+        "city": "New York City"
     })
 
     assert response.status_code == 500

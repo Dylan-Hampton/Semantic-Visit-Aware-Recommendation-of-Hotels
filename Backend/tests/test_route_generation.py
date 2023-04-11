@@ -12,7 +12,8 @@ def test_greedy_dijkstra_generation():
         "algorithm": GREEDY_DIJKSTRA,
         "origins": 1,
         "distance": 1000,
-        "categories": [1,0,0,0,0,0]
+        "categories": [1,0,0,0,0,0],
+        "city": "New York City"
     })
 
     assert response.status_code == 200
@@ -27,7 +28,8 @@ def test_greedy_dijkstra_generation():
         "algorithm": GREEDY_DIJKSTRA,
         "origins": 3,
         "distance": 2000,
-        "categories": [1,1,1,1,1,1]
+        "categories": [1,1,1,1,1,1],
+        "city": "New York City"
     })
     
     # Generation of routes does not seem to be deterministic (PoIs change on different runs)
@@ -52,7 +54,8 @@ def test_random_walk_restart_generation():
         "algorithm": RANDOM_WALK_RESTART,
         "origins": 1,
         "distance": 1000,
-        "categories": [1,0,0,0,0,0]
+        "categories": [1,0,0,0,0,0],
+        "city": "New York City"
     })
 
     assert response.status_code == 200
@@ -70,7 +73,8 @@ def test_random_walk_restart_generation():
         "algorithm": RANDOM_WALK_RESTART,
         "origins": 3,
         "distance": 2000,
-        "categories": [1,1,1,1,1,1]
+        "categories": [1,1,1,1,1,1],
+        "city": "New York City"
     })
     
     assert response.status_code == 200
@@ -96,7 +100,8 @@ def test_poi_first_generation():
         "algorithm": POI_FIRST,
         "origins": 1,
         "distance": 1000,
-        "categories": [1,0,0,0,0,0]
+        "categories": [1,0,0,0,0,0],
+        "city": "New York City"
     })
 
     assert response.status_code == 200
@@ -111,7 +116,8 @@ def test_poi_first_generation():
         "algorithm": POI_FIRST,
         "origins": 3,
         "distance": 2000,
-        "categories": [1,1,1,1,1,1]
+        "categories": [1,1,1,1,1,1],
+        "city": "New York City"
     })
     
     # Generation of routes does not seem to be deterministic (PoIs change on different runs)
@@ -136,7 +142,8 @@ def test_origin_first_generation():
         "algorithm": ORIGIN_FIRST,
         "origins": 1,
         "distance": 1000,
-        "categories": [0,0,1,0,0,0]
+        "categories": [0,0,1,0,0,0],
+        "city": "New York City"
     })
 
     assert response.status_code == 200
@@ -151,7 +158,8 @@ def test_origin_first_generation():
         "algorithm": ORIGIN_FIRST,
         "origins": 3,
         "distance": 2000,
-        "categories": [1,1,1,1,1,1]
+        "categories": [1,1,1,1,1,1],
+        "city": "New York City"
     })
     
     # Generation of routes does not seem to be deterministic (PoIs change on different runs)

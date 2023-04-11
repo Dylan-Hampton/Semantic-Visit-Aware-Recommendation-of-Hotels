@@ -11,7 +11,18 @@ def test_routes_route():
         "algorithm": 3,
         "origins": 1,
         "distance": 2000,
-        "categories": [0,1,0,1,0,1]
+        "categories": [0,1,0,1,0,1],
+        "city": "New York City"
+    })
+
+    assert response.status_code == 200
+
+    response = app.test_client().post('/routes', json={
+        "algorithm": 3,
+        "origins": 1,
+        "distance": 2000,
+        "categories": [0,1,0,1,0,1],
+        "city": "Chicago"
     })
 
     assert response.status_code == 200
