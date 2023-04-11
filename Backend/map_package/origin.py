@@ -1,6 +1,7 @@
 
 import os
 import csv
+import random
 
 def get_origins(origins_csv_path):
     if os.path.exists(origins_csv_path):
@@ -41,7 +42,7 @@ def get_origins(origins_csv_path):
     if new_sample_origin:
         origins = random.sample(list(origins), k=num_origin)
 
-        with open('./PaDOC-Query/ExperimentRelated/random' + str(num_origin) + '.csv', 'w') as f:
+        with open('./PaDOC_Query/ExperimentRelated/random' + str(num_origin) + '.csv', 'w') as f:
             writer = csv.writer(f)
             writer.writerow([str(x) for x in origins])
 
@@ -50,7 +51,7 @@ def get_origins(origins_csv_path):
         print("Origins Sampling Completed...")
         print("==================================================")
     elif sampled_origin:
-        with open('./PaDOC-Query/ExperimentRelated/random' + str(num_origin) + '.csv', 'r') as f:
+        with open('./PaDOC_Query/ExperimentRelated/random' + str(num_origin) + '.csv', 'r') as f:
             rf = csv.reader(f)
 
             for row in rf:
