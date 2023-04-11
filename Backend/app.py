@@ -1,3 +1,6 @@
+import os
+os.chdir('/Users/joezuber/Desktop/SDupdate/sdmay23-34/Backend/')
+
 from flask import Flask, jsonify, request
 from flask_api import status
 from flask_cors import CORS
@@ -61,6 +64,10 @@ def routes():
     max_dist = content['distance']
     num_required_origin = content['origins']
     city = content['city'] #NY for New York City, Chicago for Chicago (CASE SENSITIVE)
+    if city.lower() == "new york city" or city.lower() == "new york" or city.lower() == "nyc" or city.lower() == "ny": 
+        city = "NY"
+    elif city.lower() == "chicago" or city.lower() == "chi":
+        city = "Chicago"
 
     # only build city data if it's not already in the dictionary, 
     # this lets us build each city only once, and one at a time
