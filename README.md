@@ -1,6 +1,5 @@
 # Semantic Visit Aware Recommendation of Hotels
 
-Reference-style: 
 ![image of a POI](https://git.ece.iastate.edu/sd/sdmay23-34/-/raw/main/images/mappingicon.png)
 Vist our project website to learn more "http://sdmay23-34.sd.ece.iastate.edu/"
 
@@ -14,6 +13,7 @@ Access our website, Note: you must be on the ISU VPN: http://sdmay23-34.ece.iast
 
 ## Installation
 > pip3 install virtualenv
+
 > pip3 install -r "requirements.txt"
 
 ## Contact
