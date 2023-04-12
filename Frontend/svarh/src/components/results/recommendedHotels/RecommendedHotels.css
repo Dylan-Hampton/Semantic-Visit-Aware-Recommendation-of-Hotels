@@ -5,7 +5,8 @@
     width: 15%;
     max-width: 300px;
     min-width: 250px;
-    height: 60%;
+    height: 70%;
+    max-height: 70%;
     background-color: white;
     border-radius: 8px;
     -webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
@@ -30,6 +31,43 @@
 }
 
 .recommended-hotels-body {
-    height: calc(100% - 52px);
     overflow: auto;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.recommended-hotels-footer {
+    position: absolute;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 0 0 0;
+    width: 100%;
+}
+
+.recommended-hotels-toggle-button {
+    width: fit-content;
+}
+
+.recommended-hotels-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: white;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: #777777;
+}
+
+.recommended-hotels-toggle:hover {
+    color: rgb(240, 116, 71);
+}
+
+.recommended-hotels-toggle:active {
+    box-shadow: inset 0px 0px 1px 1px #7777773a;
+    
 }

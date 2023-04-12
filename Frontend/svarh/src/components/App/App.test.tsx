@@ -1,6 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
-import GeneratedRoute from '../results/generatedRoute/GeneratedRoute/GeneratedRoute';
 import { Provider } from 'react-redux';
 import store from '../../store';
 import SubmissionFrame from '../inputBar/submissionFrame/SubmissionFrame';
