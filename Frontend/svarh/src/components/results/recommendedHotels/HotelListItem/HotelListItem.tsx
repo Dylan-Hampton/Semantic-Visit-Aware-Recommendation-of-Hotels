@@ -12,6 +12,7 @@ interface IHotelListItemProps {
     name: string;
     distance: number;
     pois: PoiNode[];
+    canShowRoute: (name: string) => boolean;
 }
 
 const HotelListItem: React.FC<IHotelListItemProps> = (props: IHotelListItemProps) => {
@@ -53,7 +54,7 @@ const HotelListItem: React.FC<IHotelListItemProps> = (props: IHotelListItemProps
                     </Grid>
                 </div>
                 
-                <Grid item xs={12} display={openRoutes.includes(props.name) ? 'block': 'none'}>
+                <Grid item xs={12} display={openRoutes.includes(props.name) && props.canShowRoute(props.name) ? 'block': 'none'}>
                     <RouteItem route={routeData} />
                 </Grid>
             </Grid>

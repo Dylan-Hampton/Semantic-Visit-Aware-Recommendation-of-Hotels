@@ -1,14 +1,14 @@
-.return-container {
+.button-container {
     width: max-content !important;
     color: inherit;
 }
 
-.return-container:hover {
+.button-container:hover {
     color: inherit;
     cursor: pointer;
 }
 
-.return-text {
+.button-text {
     display: inline;
     font-size: 20px;
     width: fit-content;
