@@ -17,6 +17,17 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
     const openRoutes = useAppSelector(selectOpenRoutesNames);
 
     useEffect(() => {
+        let newMap = new Map([...hotelRoutes]);
+        hotelRoutes.forEach((isOpen, name) => {
+            if (!openRoutes.includes(name)) {
+                newMap.set(name, true);
+            }
+        });
+        setHotelRoutes(newMap);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [openRoutes]);
+
+    useEffect(() => {
         let hotelRoutesMap = new Map<string, boolean>();
         props.hotels.forEach(h => {
             hotelRoutesMap.set(h.name, true);
@@ -27,10 +38,10 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
         }
     }, [props.hotels]);
 
-    const toggleRoutes = (show: boolean) => {
+    const toggleRoutes = () => {
         let newMap = new Map<string, boolean>();
         hotelRoutes.forEach((isOpen, name) => {
-            newMap.set(name, show);
+            newMap.set(name, getNumRoutesOpen() === 0);
         });
         setHotelRoutes(newMap);
     }
@@ -38,7 +49,7 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
     const getNumRoutesOpen = (): number => {
         let count = 0;
         hotelRoutes.forEach((isOpen, name) => {
-            if (isOpen) count++;
+            if (isOpen && openRoutes.includes(name)) count++;
         });
         return count;
     }
@@ -48,6 +59,14 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
             return hotelRoutes.get(name);
         }
         return false;
+    }
+    
+    const toggleRoute = (hotelName: string) => {
+        console.log('Yooo');
+        const newMap = new Map([...hotelRoutes]);
+        newMap.set(hotelName, !hotelRoutes.get(hotelName));
+        setHotelRoutes(newMap);
+        console.log(hotelRoutes);
     }
 
     return (
@@ -61,7 +80,7 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
                     {hotels.map((h, i) => {
                         return (
                             <div key={i}>
-                                <HotelListItem name={h.name} distance={h.routeLength} pois={h.pois} canShowRoute={hotelCanShowRoute}/>
+                                <HotelListItem name={h.name} distance={h.routeLength} pois={h.pois} canShowRoute={hotelCanShowRoute} toggle={toggleRoute} />
                                 {i !== props.hotels.length - 1 &&
                                     <Divider/>
                                 }
@@ -72,9 +91,9 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
                 {openRoutes.length > 0 &&
                     <div className="recommended-hotels-footer">
                         <Divider sx={{width: '100%', paddingBottom: 0}}/>
-                        <div className="recommended-hotels-toggle">    
+                        <div className="recommended-hotels-toggle" onClick={toggleRoutes}>    
                             <div className="recommended-hotels-toggle-button">
-                                <ListControlButton showRoutes={toggleRoutes} getNumRoutesOpen={getNumRoutesOpen}/>
+                                <ListControlButton getNumRoutesOpen={getNumRoutesOpen}/>
                             </div>
                         </div>
                     </div>
