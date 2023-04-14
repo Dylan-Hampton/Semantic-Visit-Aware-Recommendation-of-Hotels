@@ -62,11 +62,9 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
     }
     
     const toggleRoute = (hotelName: string) => {
-        console.log('Yooo');
         const newMap = new Map([...hotelRoutes]);
         newMap.set(hotelName, !hotelRoutes.get(hotelName));
         setHotelRoutes(newMap);
-        console.log(hotelRoutes);
     }
 
     return (
