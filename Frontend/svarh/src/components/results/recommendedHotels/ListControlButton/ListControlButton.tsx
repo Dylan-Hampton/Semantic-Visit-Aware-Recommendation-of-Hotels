@@ -5,21 +5,21 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { Grid } from "@mui/material";
 
 interface IListControlButtonProps {
-    getNumRoutesOpen: () => number;
+    option: 'expand' | 'collapse';
 }
 
 const ListControlButton: React.FC<IListControlButtonProps> = (props: IListControlButtonProps) => {
     return (
-        <Grid container className="button-container" spacing={1}>
-            <Grid item xs={2} alignItems="center" justifyContent="center" className="button-icon">
-                {props.getNumRoutesOpen() === 0 ?                 
+        <Grid container className="list-button-container" spacing={3}>
+            <Grid item xs={2} alignItems="center" justifyContent="center" className="list-button-icon">
+                {props.option === 'expand' ?                 
                     <AddIcon />
                 :
                     <RemoveIcon />
                 }
             </Grid>
-            <Grid item xs={10} alignItems="center" justifyContent="center" className="button-text" >
-                {props.getNumRoutesOpen() === 0 ? 'Expand Routes' : 'Collapse Routes'}
+            <Grid item xs={9} alignItems="center" justifyContent="center" className="list-button-text" >
+                {props.option === 'expand' ? 'Expand All' : 'Collapse All'}
             </Grid>
         </Grid>
     )

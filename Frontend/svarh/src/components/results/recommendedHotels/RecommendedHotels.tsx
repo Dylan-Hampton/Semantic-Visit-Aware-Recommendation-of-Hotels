@@ -1,4 +1,4 @@
-import { Divider } from '@mui/material';
+import { Divider, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Hotel from './Hotel';
 import HotelListItem from './HotelListItem/HotelListItem';
@@ -38,10 +38,23 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
         }
     }, [props.hotels]);
 
-    const toggleRoutes = () => {
+    const expandRoutes = () => {
+        toggleRoutes(true);
+    }
+
+    const collapseRoutes = () => {
+        toggleRoutes(false);
+    }
+
+    const toggleRoutes = (open?: boolean) => {
         let newMap = new Map<string, boolean>();
         hotelRoutes.forEach((isOpen, name) => {
-            newMap.set(name, getNumRoutesOpen() === 0);
+            newMap.set(name, open !== undefined ? open : getNumRoutesOpen() === 0);
+        });
+        hotelRoutes.forEach((isOpen, name) => {
+            if (!openRoutes.includes(name)) {
+                newMap.set(name, true);
+            }
         });
         setHotelRoutes(newMap);
     }
@@ -89,10 +102,19 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
                 {openRoutes.length > 0 &&
                     <div className="recommended-hotels-footer">
                         <Divider sx={{width: '100%', paddingBottom: 0}}/>
-                        <div className="recommended-hotels-toggle" onClick={toggleRoutes}>    
-                            <div className="recommended-hotels-toggle-button">
-                                <ListControlButton getNumRoutesOpen={getNumRoutesOpen}/>
-                            </div>
+                        <div className="recommended-hotels-toggle">    
+                            <Grid container display="flex">
+                                <Grid item xs={6} display="flex">
+                                        <div className="recommended-hotels-toggle-button left-toggle-button" onClick={collapseRoutes}>
+                                        <ListControlButton option={'collapse'}/>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={6} display="flex">  
+                                    <div className="recommended-hotels-toggle-button right-toggle-button" onClick={expandRoutes}>
+                                        <ListControlButton option={'expand'}/>
+                                    </div>
+                                </Grid>
+                            </Grid>
                         </div>
                     </div>
                 }
