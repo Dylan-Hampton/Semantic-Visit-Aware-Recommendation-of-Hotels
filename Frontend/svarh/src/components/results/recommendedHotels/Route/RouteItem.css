@@ -21,3 +21,34 @@
 .poi-key {
     width: 100%;
 }
+
+.expand-toggle {
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.expand-button {
+    justify-content: center;
+}
+
+.recommended-hotels-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: white;
+    color: #777777;
+}
+
+.expand-toggle:hover {
+    color: #00647a;
+}
+
+.expand-toggle:active {
+    box-shadow: inset 0px 0px 1px 1px #7777773a;
+}
