@@ -1,16 +1,29 @@
 .list-button-container {
-    width: max-content !important;
+    width: 100%;
+    height: 100%;
     color: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .list-button-container:hover {
     color: inherit;
-    cursor: pointer;
+}
+
+.list-button-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 10%;
 }
 
 .list-button-text {
-    display: inline;
     font-size: 18px;
     width: fit-content;
     white-space: nowrap;
+    width: 80%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }

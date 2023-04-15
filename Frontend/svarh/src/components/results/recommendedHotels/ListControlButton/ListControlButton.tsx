@@ -10,18 +10,18 @@ interface IListControlButtonProps {
 
 const ListControlButton: React.FC<IListControlButtonProps> = (props: IListControlButtonProps) => {
     return (
-        <Grid container className="list-button-container" spacing={3}>
-            <Grid item xs={2} alignItems="center" justifyContent="center" className="list-button-icon">
+        <div className="list-button-container" >
+            <div className="list-button-icon">
                 {props.option === 'expand' ?                 
                     <AddIcon />
                 :
                     <RemoveIcon />
                 }
-            </Grid>
-            <Grid item xs={9} alignItems="center" justifyContent="center" className="list-button-text" >
+            </div>
+            <div className="list-button-text" >
                 {props.option === 'expand' ? 'Expand All' : 'Collapse All'}
-            </Grid>
-        </Grid>
+            </div>
+        </div>
     )
 }
 
