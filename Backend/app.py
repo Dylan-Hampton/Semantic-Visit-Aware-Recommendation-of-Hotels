@@ -13,6 +13,7 @@ from map_package.origin import get_origins
 from map_package.index import get_index_from_pickle
 from map_package.graph import get_generic_graph
 from map_package.result import *
+import map_package.CONSTANTS as CONSTANTS
 
 app = Flask(__name__)
 CORS(app)
@@ -23,11 +24,6 @@ def setup(self=app):
 
 @app.route('/cities')
 def cities():
-    '''
-    If we had a database for cities we could get the data from there.
-    For now as we have one city, this is hard coded along with an extra
-    city for the frontend to test their functionality.
-    '''
     city_data = [{
         'cityName':
         'New York City',
@@ -49,28 +45,26 @@ def routes():
     global city_data 
     global first_request
     if first_request:
-        #begin the city data dictionary on the first call of the function
+        # Begin the city data dictionary on the first call of the function
         city_data = {}
         first_request = False
 
-    GREEDY_DIJKSTRA = 0
-    RANDOM_WALK_RESTART = 1
-    POI_FIRST = 2
-    ORIGIN_FIRST = 3
-
+    # Get request body contents
     content = request.json
-
     algorithm = content['algorithm']
     theta = content['categories']
     max_dist = content['distance']
     num_required_origin = content['origins']
     city = content['city'] 
+
     if city.lower() == "new york city" or city.lower() == "new york" or city.lower() == "nyc" or city.lower() == "ny": 
         city = "NY"
     elif city.lower() == "chicago" or city.lower() == "chi":
         city = "Chicago"
+    else:
+        return "Invalid argument for: city", status.HTTP_400_BAD_REQUEST
 
-    # only build city data if it's not already in the dictionary, 
+    # Only build city data if it's not already in the dictionary, 
     # this lets us build each city only once, and one at a time
     if city not in city_data: 
         if city == "NY":
@@ -89,11 +83,11 @@ def routes():
     
     num_poi, g, container_index, origins, origin_name_mapping = city_data[city]
 
-    # Not really sure what this should be set to, but for now 2 seems good
     max_time = 2
 
+    # Run algorithm based on request and store the resulting route
     route_res = None
-    if (algorithm == GREEDY_DIJKSTRA):
+    if (algorithm == CONSTANTS.GREEDY_DIJKSTRA):
         route_res = greedy_dijkstra(g,
                                     origins,
                                     theta,
@@ -101,7 +95,7 @@ def routes():
                                     num_required_origin,
                                     verbal=False,
                                     complexity=False)
-    elif (algorithm == RANDOM_WALK_RESTART):
+    elif (algorithm == CONSTANTS.RANDOM_WALK_RESTART):
         route_res = random_walk_restart(g,
                                         origins,
                                         theta,
@@ -110,7 +104,7 @@ def routes():
                                         num_required_origin,
                                         verbal=False,
                                         complexity=False)
-    elif (algorithm == POI_FIRST):
+    elif (algorithm == CONSTANTS.POI_FIRST):
         route_res = GreedySearch.greedy_process_PoI(g,
                                                     container_index,
                                                     theta,
@@ -120,7 +114,7 @@ def routes():
                                                     index_matrix=True,
                                                     verbal=False,
                                                     complexity=False)
-    elif (algorithm == ORIGIN_FIRST):
+    elif (algorithm == CONSTANTS.ORIGIN_FIRST):
         route_res = GreedySearch.greedy_process_origin(g,
                                                        container_index,
                                                        theta,
@@ -133,6 +127,7 @@ def routes():
     else:
         return "Invalid argument for: algorithm", status.HTTP_400_BAD_REQUEST
 
+    # Return formatted route as response
     return jsonify(get_result_JSON(g, route_res, origin_name_mapping))
 
 

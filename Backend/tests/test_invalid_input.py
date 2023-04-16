@@ -1,5 +1,7 @@
 import pytest
 from app import app
+import map_package.CONSTANTS as CONSTANTS
+
 
 def test_invalid_algorithm():
     response = app.test_client().post('/routes', json={
@@ -24,7 +26,7 @@ def test_invalid_algorithm():
 
 def test_negative_distance():
     response = app.test_client().post('/routes', json={
-        "algorithm": 3,
+        "algorithm": CONSTANTS.ORIGIN_FIRST,
         "origins": 1,
         "distance": -1,
         "categories": [1,0,0,0,0,0],
@@ -36,7 +38,7 @@ def test_negative_distance():
 
 def test_negative_poi_category():
     response = app.test_client().post('/routes', json={
-        "algorithm": 3,
+        "algorithm": CONSTANTS.ORIGIN_FIRST,
         "origins": 1,
         "distance": 1000,
         "categories": [-1,0,0,0,0,0],
@@ -48,6 +50,18 @@ def test_negative_poi_category():
 
 def test_no_request_body():
     response = app.test_client().post('/routes')
+
+    assert response.status_code == 400
+
+def test_invalid_city():
+    # Only have NYC and Chicago. Anything else should be invalid
+    response = app.test_client().post('/routes', json={
+        "algorithm": CONSTANTS.ORIGIN_FIRST,
+        "origins": 1,
+        "distance": 1000,
+        "categories": [1,0,0,0,0,0],
+        "city": "Ames"
+    })
 
     assert response.status_code == 400
 

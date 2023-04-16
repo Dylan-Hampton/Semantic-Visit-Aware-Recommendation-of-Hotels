@@ -1,35 +1,31 @@
 import pytest
 from app import app
-
-GREEDY_DIJKSTRA = 0
-RANDOM_WALK_RESTART = 1
-POI_FIRST = 2
-ORIGIN_FIRST = 3
+import map_package.CONSTANTS as CONSTANTS
 
 def test_greedy_dijkstra_generation():
     # 1 origin, 1 PoI of first category
     response = app.test_client().post('/routes', json={
-        "algorithm": GREEDY_DIJKSTRA,
+        "algorithm": CONSTANTS.GREEDY_DIJKSTRA,
         "origins": 1,
         "distance": 1000,
         "categories": [1,0,0,0,0,0],
-        "city": "New York City"
+        "city": "Chicago"
     })
 
     assert response.status_code == 200
-    assert response.json[0]["distance"] == 440.3207063135761
-    assert len(response.json[0]["nodes"]) == 6
-    assert response.json[0]["origin"]["name"] == "Grand Hyatt New York"
+    assert response.json[0]["distance"] == 495.9101714568851
+    assert len(response.json[0]["nodes"]) == 7
+    assert response.json[0]["origin"]["name"] == "QUIET PLACE IN PERFECT AREA TO EXPLORE CHICAGO"
     assert response.json[0]["pois"][0]["category"] == 0
-    assert response.json[0]["pois"][0]["name"] == "Church of Saint Agnes"
+    assert response.json[0]["pois"][0]["name"] == "Shrine of our Lady of Pompeii"
 
     # 3 origins, 1 PoI of each category
     response = app.test_client().post('/routes', json={
-        "algorithm": GREEDY_DIJKSTRA,
+        "algorithm": CONSTANTS.GREEDY_DIJKSTRA,
         "origins": 3,
         "distance": 2000,
         "categories": [1,1,1,1,1,1],
-        "city": "New York City"
+        "city": "Chicago"
     })
     
     # Generation of routes does not seem to be deterministic (PoIs change on different runs)
@@ -51,11 +47,11 @@ def test_greedy_dijkstra_generation():
 def test_random_walk_restart_generation():
     # 1 origin, 1 PoI of first category
     response = app.test_client().post('/routes', json={
-        "algorithm": RANDOM_WALK_RESTART,
+        "algorithm": CONSTANTS.RANDOM_WALK_RESTART,
         "origins": 1,
         "distance": 1000,
         "categories": [1,0,0,0,0,0],
-        "city": "New York City"
+        "city": "Chicago"
     })
 
     assert response.status_code == 200
@@ -70,11 +66,11 @@ def test_random_walk_restart_generation():
 
     # 3 origins, 1 PoI of each category
     response = app.test_client().post('/routes', json={
-        "algorithm": RANDOM_WALK_RESTART,
+        "algorithm": CONSTANTS.RANDOM_WALK_RESTART,
         "origins": 3,
         "distance": 2000,
         "categories": [1,1,1,1,1,1],
-        "city": "New York City"
+        "city": "Chicago"
     })
     
     assert response.status_code == 200
@@ -97,27 +93,27 @@ def test_random_walk_restart_generation():
 def test_poi_first_generation():
     # 1 origin, 1 PoI of first category
     response = app.test_client().post('/routes', json={
-        "algorithm": POI_FIRST,
+        "algorithm": CONSTANTS.POI_FIRST,
         "origins": 1,
         "distance": 1000,
         "categories": [1,0,0,0,0,0],
-        "city": "New York City"
+        "city": "Chicago"
     })
 
     assert response.status_code == 200
-    assert response.json[0]["distance"] == 279.1751597476729
-    assert len(response.json[0]["nodes"]) == 5
-    assert response.json[0]["origin"]["name"] == "The Towers at Lotte New York Palace"
+    assert response.json[0]["distance"] == 5.209068563651793
+    assert len(response.json[0]["nodes"]) == 2
+    assert response.json[0]["origin"]["name"] == "30 E. Huron #3103 Private Residence"
     assert response.json[0]["pois"][0]["category"] == 0
-    assert response.json[0]["pois"][0]["name"] == "St. Patrick's Cathedral"
+    assert response.json[0]["pois"][0]["name"] == "Holy Name Cathedral"
 
     # 3 origins, 1 PoI of each category
     response = app.test_client().post('/routes', json={
-        "algorithm": POI_FIRST,
+        "algorithm": CONSTANTS.POI_FIRST,
         "origins": 3,
         "distance": 2000,
         "categories": [1,1,1,1,1,1],
-        "city": "New York City"
+        "city": "Chicago"
     })
     
     # Generation of routes does not seem to be deterministic (PoIs change on different runs)
@@ -139,27 +135,27 @@ def test_poi_first_generation():
 def test_origin_first_generation():
     # 1 origin, 1 PoI of first category
     response = app.test_client().post('/routes', json={
-        "algorithm": ORIGIN_FIRST,
+        "algorithm": CONSTANTS.ORIGIN_FIRST,
         "origins": 1,
         "distance": 1000,
         "categories": [0,0,1,0,0,0],
-        "city": "New York City"
+        "city": "Chicago"
     })
 
     assert response.status_code == 200
-    assert response.json[0]["distance"] == 15.85720755775575
-    assert len(response.json[0]["nodes"]) == 2
-    assert response.json[0]["origin"]["name"] == "Novotel New York - Times Square"
+    assert response.json[0]["distance"] == 0
+    assert len(response.json[0]["nodes"]) == 1
+    assert response.json[0]["origin"]["name"] == "One bed room in Bucktown 5 min walks to blue line|Wanderlust in Wicker Park! Entire, HUGE 1 bed apt|Relaxed Bucktown/Wicker Park 1B Apt|The Bucktown Penthouse Family, Business, Friends|Bright Bucktown 3 Bedroom Near the 606|Private bedroom in beautiful condo w/ private bath"
     assert response.json[0]["pois"][0]["category"] == 2
-    assert response.json[0]["pois"][0]["name"] == "Gershwin Theater"
+    assert response.json[0]["pois"][0]["name"] == "Team vs Time"
 
     # 3 origins, 1 PoI of each category
     response = app.test_client().post('/routes', json={
-        "algorithm": ORIGIN_FIRST,
+        "algorithm": CONSTANTS.ORIGIN_FIRST,
         "origins": 3,
         "distance": 2000,
         "categories": [1,1,1,1,1,1],
-        "city": "New York City"
+        "city": "Chicago"
     })
     
     # Generation of routes does not seem to be deterministic (PoIs change on different runs)
