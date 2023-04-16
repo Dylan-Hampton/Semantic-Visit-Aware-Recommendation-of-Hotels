@@ -1,5 +1,7 @@
 import pytest
 from app import app
+import map_package.CONSTANTS as CONSTANTS
+
 
 def test_cities_route():
     response = app.test_client().get('/cities')
@@ -8,7 +10,7 @@ def test_cities_route():
 
 def test_routes_route():
     response = app.test_client().post('/routes', json={
-        "algorithm": 3,
+        "algorithm": CONSTANTS.ORIGIN_FIRST,
         "origins": 1,
         "distance": 2000,
         "categories": [0,1,0,1,0,1],
@@ -18,7 +20,7 @@ def test_routes_route():
     assert response.status_code == 200
 
     response = app.test_client().post('/routes', json={
-        "algorithm": 3,
+        "algorithm": CONSTANTS.ORIGIN_FIRST,
         "origins": 1,
         "distance": 2000,
         "categories": [0,1,0,1,0,1],
