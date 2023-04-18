@@ -93,7 +93,6 @@ export const routeDataSlice = createSlice({
             state.categories = action.payload
         },
         changeDistanceMetric: (state, action: PayloadAction<string>) => {
-            console.log("changed to " + action.payload);
             switch (action.payload) {
                 case MILES:
                     state.distMetric = action.payload;

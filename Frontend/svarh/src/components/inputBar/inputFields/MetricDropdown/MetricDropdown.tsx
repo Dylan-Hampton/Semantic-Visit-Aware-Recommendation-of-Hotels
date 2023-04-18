@@ -7,9 +7,9 @@ interface IMetricDropdownProps {
   metrics: string[];
 }
 
-export const MILES = 'Miles';
-export const METERS = 'Meters';
-export const KILOMETERS = 'Kilometers';
+export const MILES = 'mi';
+export const METERS = 'm';
+export const KILOMETERS = 'km';
 export const MILETOMETER = Number(1609.344);
 export const KILOMETERTOMETER = Number(1000);
 
@@ -32,6 +32,8 @@ const CityDropdown: React.FC<IMetricDropdownProps> = (props: IMetricDropdownProp
             width: '100%',
             'marginBottom': '4px',
           }}
+          disableClearable={true}
+          freeSolo={true}
           renderInput={(params) => 
             <TextField {...params}
             label="Metric" />}
