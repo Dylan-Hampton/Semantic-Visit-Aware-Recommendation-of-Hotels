@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import PoIListItem from "./PoiListItem/PoIListItem";
 import './PoiDropdown.css';
 import { useAppDispatch, useAppSelector } from "../../../../hooks";
-import { changeCategories, selectCategories } from "../../../../routeDataSlice";
+import { changeCategories, selectCategories, selectCity } from "../../../../routeDataSlice";
 import { getIcon } from "../../../../data/IconMap";
 
 interface IPoiDropdownProps {
@@ -16,6 +16,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
     
     const dispatch = useAppDispatch();
     const categories = useAppSelector(selectCategories);
+    const city = useAppSelector(selectCity);
 
     useEffect(() => {
       setPois([])
@@ -82,6 +83,7 @@ const PoiDropdown: React.FC<IPoiDropdownProps> = (props: IPoiDropdownProps) => {
         value={inputValue}
         isOptionEqualToValue={optionValue}
         disablePortal
+        disabled={city.cityName === ''}
         onChange={onChange}
         renderInput={(params) => (
           <TextField{...params} 

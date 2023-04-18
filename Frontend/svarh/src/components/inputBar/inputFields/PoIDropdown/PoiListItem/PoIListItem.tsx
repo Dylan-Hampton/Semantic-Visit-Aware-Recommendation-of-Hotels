@@ -25,8 +25,8 @@ const PoIListItem: React.FC<IPoIListItemProps> = (props: IPoIListItemProps) => {
         <>
         <Grid container className="li" display="flex">
             <Grid item xs={1} className="li-icon" display="flex" alignItems="center" justifyContent="center">{props.icon}</Grid>
-            <Grid item xs={4} className="li-name" display="flex" alignItems="center" justifyContent="start">{props.name}</Grid>
-            <Grid item xs={6} className="li-quantity" display="flex" alignItems="center" justifyContent="center"><PoIQuantity setQuantity={setQuantity} /></Grid>
+            <Grid item xs={5} className="li-name" display="flex" alignItems="center" justifyContent="start">{props.name}</Grid>
+            <Grid item xs={5} className="li-quantity" display="flex" alignItems="center" justifyContent="center"><PoIQuantity setQuantity={setQuantity} /></Grid>
             <Grid item xs={1} className="li-remove" display="flex" alignItems="center" justifyContent="center"><CloseIcon className="circle-on-hover" onClick={remove}/></Grid>
         </Grid>
             

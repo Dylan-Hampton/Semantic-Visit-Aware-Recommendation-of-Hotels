@@ -27,12 +27,16 @@ def cities():
     city_data = [{
         'cityName':
         'New York City',
-        'poiTypes': ['Museum', 'Statue', 'Mall', 'Park', 'Zoo', 'Aquarium']
+        'poiTypes': ['Memorial', 'Attraction', 'Entertainment', 'Shop', 'Museum', 'Park'],
+        'lat': 40.731491,
+        'lng': -73.997093
     }, {
         'cityName':
         'Chicago',
         'poiTypes':
-        ['Museum', 'Restaurant', 'Beach', 'Market', 'Library', 'Book Store']
+        ['Museum', 'Restaurant', 'Beach', 'Market', 'Library', 'Book Store'],
+        'lat': 41.878113,
+        'lng': -87.629799
     }]
     return jsonify(city_data)
 

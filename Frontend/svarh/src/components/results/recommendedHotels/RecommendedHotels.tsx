@@ -89,9 +89,13 @@ const RecommendedHotels: React.FC<IRecommendedHotelsProps> = (props: IRecommende
                 <Divider sx={{ width: '100%'}}/>
                 <div className="recommended-hotels-body" style={{height: openRoutes.length > 0 ? 'calc(100% - 52px - 26px)' : 'calc(100% - 52px)'}}>
                     {hotels.map((h, i) => {
+                        let shownName = h.name;
+                        if (shownName.length > 100) {
+                            shownName = h.name.substring(0, 100).concat('...');
+                        }
                         return (
                             <div key={i}>
-                                <HotelListItem name={h.name} distance={h.routeLength} pois={h.pois} canShowRoute={hotelCanShowRoute} toggle={toggleRoute} />
+                                <HotelListItem name={h.name} shownName={shownName} distance={h.routeLength} pois={h.pois} canShowRoute={hotelCanShowRoute} toggle={toggleRoute} />
                                 {i !== props.hotels.length - 1 &&
                                     <Divider/>
                                 }

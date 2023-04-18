@@ -5,11 +5,12 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import Marker from '../Marker/MapMarker';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { selectRoutes } from '../../../routeDataSlice';
+import { selectCity, selectRoutes } from '../../../routeDataSlice';
 import Route from '../../../data/response/RouteResponse';
 import MarkerPopup from '../Marker/MarkerPopup';
 import { PoiNode } from '../../../data/response/Node';
 import { changeMarkers, addMarkerWithName, changeToggleRoute, changeOpenRoutesNames } from '../../../mapDataSlice';
+import { City } from '../../../data/City';
 
 mapboxgl.accessToken = "pk.eyJ1IjoibmF0ZXNjaGVuY2siLCJhIjoiY2xkZ2hha3IwMHJ6djN3bndlYzlud29vaSJ9.4gjvZipOtY9lWJXc3Ffk6g";
 if (process.env.NODE_ENV !== 'test'){
@@ -32,8 +33,6 @@ interface IAddLineData {
 }
 
 interface IMapBaseProps {
-    lat: number;
-    lng: number;
 }
 
 const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
@@ -43,9 +42,13 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
     let markerQuantity = new Map<mapboxgl.Marker, number>();
     let markerNames = new Map<mapboxgl.Marker, string[]>();
     const routes: Route[] = useAppSelector(selectRoutes);
+    const city: City = useAppSelector(selectCity);
     let lines: string[] = [];
     let openRoutes: string[] = [];
     const mapDispatch = useAppDispatch();
+
+    const originalLng = -73.997093;
+    const originalLat = 40.731491;
 
     const countMarker = (marker: mapboxgl.Marker) => {
         if (markerQuantity.has(marker)) {
@@ -255,7 +258,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         map.current = new mapboxgl.Map({
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/streets-v12',
-            center: [props.lng, props.lat],
+            center: [originalLng, originalLat],
             zoom: 13,
             minZoom: 10,
             pitch: 0,
@@ -293,7 +296,7 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         }
         else { 
             map.current.setZoom(13); // set map back to original zoom / location
-            map.current.panTo([-73.995,40.723]); 
+            map.current.panTo([originalLng, originalLat]); 
         }
         mapDispatch(changeToggleRoute(drawHotelRoute));
 
@@ -309,6 +312,14 @@ const MapBase: React.FC<IMapBaseProps> = (props: IMapBaseProps) => {
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [routes]);
+
+    useEffect(() => {
+        if (city.cityName !== '') {
+            if (map.current !== undefined) {
+                map.current.jumpTo({ center: [city.lng, city.lat], zoom: 13});
+            }
+        }
+    }, [city]);
 
     return (
         <div ref={mapContainer} className="map-base">
