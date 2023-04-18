@@ -1,15 +1,16 @@
-import { Alert, Card, Divider, Snackbar } from '@mui/material';
+import { Alert, Card, Divider, Grid, Snackbar } from '@mui/material';
 import { useAppSelector, useAppDispatch } from '../../../hooks';
 import React, { useEffect, useState } from 'react';
 import { apiUrl } from '../../../data/Constants';
 import CityDropdown from '../inputFields/CityDropdown/CityDropdown';
 import MaximumDistance from '../inputFields/MaximumDistanceField/MaximumDistance';
 import PoiDropdown from '../inputFields/PoIDropdown/PoiDropdown';
+import MetricDropdown, { KILOMETERS, METERS, MILES } from '../inputFields/MetricDropdown/MetricDropdown';
 import SubmitButton from '../inputFields/SubmitButton/SubmitButton';
 import { City } from '../../../data/City';
 import type RouteRequest from '../../../data/request/RouteRequest';
 import './SubmissionFrame.css';
-import { selectAlgorithm, selectCategories, selectDistance, selectOrigins, receivedCities, selectCities, selectCity } from '../../../routeDataSlice';
+import { selectAlgorithm, selectCategories, selectDistance, selectOrigins, receivedCities, selectCities, selectCity, selectDistanceMetric } from '../../../routeDataSlice';
 import { generateRoute } from '../../../data/api';
 import { Algorithm } from '../../../data/Algorithm';
 
@@ -25,6 +26,8 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
     const algo: Algorithm = useAppSelector(selectAlgorithm);
     const origins: number = useAppSelector(selectOrigins);
     const categories: { [name: string]: number } = useAppSelector(selectCategories);
+    const metric: string = useAppSelector(selectDistanceMetric);
+    const metricsStr = [ MILES, KILOMETERS, METERS ];
     const dispatch = useAppDispatch();
 
     // Get list of cities from backend on page load
@@ -63,7 +66,7 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
             categories: categoryNumbers,
             city: city.cityName
         }
-        await dispatch(generateRoute(r))
+        await dispatch(generateRoute({request: r, distanceMetric: metric}))
     }
 
     return (
@@ -93,7 +96,16 @@ const SubmissionFrame: React.FC<ISubmissionFrameProps> = (props: ISubmissionFram
                     <div className="input-bottom">
                             <Divider />
                             <div className="input-bottom-inputs">
-                                <div className="input-maxdist"><MaximumDistance></MaximumDistance></div>
+                                <div className="input-maxdist-metric">
+                                    <Grid container spacing={1}>
+                                        <Grid item xs={8}>
+                                            <MaximumDistance></MaximumDistance>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <MetricDropdown metrics={metricsStr}></MetricDropdown>
+                                        </Grid>
+                                    </Grid>
+                                </div>
                                 <div className="input-submit" onClick={async () => {
                                         await handleSubmit();
                                     }

@@ -46,6 +46,10 @@
     height: 160px;
 }
 
+.input-maxdist-metric {
+    flex-direction: row;
+}
+
 .input-bottom-inputs {
     padding-top: 10px;
 }

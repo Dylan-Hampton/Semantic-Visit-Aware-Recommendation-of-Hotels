@@ -2,21 +2,33 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import RouteRequest from './request/RouteRequest';
 import { apiUrl } from './Constants';
 import Route from './response/RouteResponse';
-
-let miToMeter = Number(1609.344);
+import { MILES, KILOMETERS, METERS, MILETOMETER, KILOMETERTOMETER } from '../components/inputBar/inputFields/MetricDropdown/MetricDropdown';
 
 export const generateRoute = createAsyncThunk<
     Route[], 
-    RouteRequest
+    {request: RouteRequest, distanceMetric: string}
     >(
     'submit/generateRoute',
-    async (request: RouteRequest) => {
+    async (payload: {request: RouteRequest, distanceMetric: string}) => {
+        let metricToMeter = Number(1);
+        switch(payload.distanceMetric) {
+            case MILES:
+                metricToMeter = MILETOMETER;
+                break;
+            case KILOMETERS:
+                metricToMeter = KILOMETERTOMETER;
+                break;
+            case METERS:
+                break;
+            default:
+                break;
+        }
         const r: RouteRequest = {
-            algorithm: request.algorithm,
-            origins: request.origins,
-            distance: (request.distance * miToMeter),
-            categories: request.categories,
-            city: request.city
+            algorithm: payload.request.algorithm,
+            origins: payload.request.origins,
+            distance: (payload.request.distance * metricToMeter),
+            categories: payload.request.categories,
+            city: payload.request.city
         }
         const response = await fetch(apiUrl + '/routes', {
             method: 'POST',

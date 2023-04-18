@@ -1,4 +1,4 @@
-import { InputAdornment, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import React, { useState } from "react";
 import { useAppDispatch } from '../../../../hooks';
 import { changeDistance } from '../../../../routeDataSlice';
@@ -24,7 +24,7 @@ const MaximumDistance: React.FC<IMaximumDistanceProps> = (props: IMaximumDistanc
         <div className="maxDist">
             <TextField 
                 inputProps={{ inputMode: 'text', pattern: '[0-9]*' }} 
-                InputProps={{endAdornment: <InputAdornment position="end">mi</InputAdornment>}}
+                //InputProps={{endAdornment: <InputAdornment position="end">mi</InputAdornment>}}
                 className="maxDistInput" 
                 id="outlined-basic" 
                 label="Maximum Distance" 
