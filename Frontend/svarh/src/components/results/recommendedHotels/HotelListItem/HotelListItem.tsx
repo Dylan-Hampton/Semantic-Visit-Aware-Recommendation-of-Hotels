@@ -10,6 +10,7 @@ import { PoiNode } from '../../../../data/response/Node';
 
 interface IHotelListItemProps {
     name: string;
+    shownName: string;
     distance: number;
     pois: PoiNode[];
     canShowRoute: (name: string) => boolean;
@@ -54,7 +55,7 @@ const HotelListItem: React.FC<IHotelListItemProps> = (props: IHotelListItemProps
                 <div className="list-item-header"  onClick={drawRoute}>
                     <Grid item xs={2} display="flex" justifyContent="center" alignItems="center" ><HotelIcon /></Grid>
                     <Grid item xs={10} container direction="column">
-                        <Grid item className="hotel-name">{props.name}</Grid>
+                        <Grid item className="hotel-name">{props.shownName}</Grid>
                         <Grid item className="hotel-distance">Total Distance: {props.distance.toFixed(1)} m</Grid>
                     </Grid>
                 </div>

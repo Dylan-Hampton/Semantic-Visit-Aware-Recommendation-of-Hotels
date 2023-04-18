@@ -15,6 +15,13 @@ const CityDropdown: React.FC<ICityDropdownProps> = (props: ICityDropdownProps) =
       dispatch(changeCity(props.cities.find(i => i.cityName === e.target.innerText)))
     }
 
+    const getOptionLabel = (option: City) => {
+      if (option === undefined || option.cityName === undefined) {
+        return "";
+      }
+      return option.cityName;
+    }
+
     return (
       <>
       {props.cities ? 
@@ -22,7 +29,7 @@ const CityDropdown: React.FC<ICityDropdownProps> = (props: ICityDropdownProps) =
           disablePortal
           id="cityInput"
           options={props.cities}
-          getOptionLabel={(option) => option.cityName}
+          getOptionLabel={getOptionLabel}
           sx={{ 
             width: '100%',
             'marginBottom': '4px',

@@ -1,5 +1,6 @@
 import React from 'react';
 import CircleIcon from '@mui/icons-material/Circle';
+import FmdGoodIcon from '@mui/icons-material/FmdGood';
 import './MapMarker.css';
 
 interface IMapMarkerProps {
@@ -9,7 +10,7 @@ interface IMapMarkerProps {
 
 const MapMarker: React.FC<IMapMarkerProps> = (props: IMapMarkerProps) => {
     const originSizeStyle = {
-        fontSize: '28px'
+        fontSize: '32px'
     }
     const poiSizeStyle = {
         fontSize: '20px'
@@ -17,7 +18,12 @@ const MapMarker: React.FC<IMapMarkerProps> = (props: IMapMarkerProps) => {
     return (
         <>
             <div className={props.type === "origin" ? 'origin-icon' : 'poi-icon'}>
-                <CircleIcon style={props.type === "origin" ? originSizeStyle : poiSizeStyle}/>
+                {props.type === "origin" ?
+                    <FmdGoodIcon style={originSizeStyle}/>
+                :
+                    <CircleIcon style={poiSizeStyle}/>
+                }
+                
             </div>
         </>
     )

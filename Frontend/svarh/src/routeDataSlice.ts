@@ -22,6 +22,8 @@ const initialState: SubmitState = {
     city: {
         cityName: '',
         poiTypes: [],
+        lat: 40.731491,
+        lng: -73.997093
     },
     algorithmChoices: [RANDOMWALK, DIJKSTRA, POIFIRST, ORIGINFIRST],
     algorithm: {
@@ -54,6 +56,8 @@ export const routeDataSlice = createSlice({
                 state.city = {
                     cityName: '',
                     poiTypes: [],
+                    lat: 0,
+                    lng: 0
                 }
                 state.categories = {}
             }
