@@ -33,8 +33,7 @@ def cities():
     }, {
         'cityName':
         'Chicago',
-        'poiTypes':
-        ['Museum', 'Restaurant', 'Beach', 'Market', 'Library', 'Book Store'],
+        'poiTypes': ['Memorial', 'Attraction', 'Entertainment', 'Shop', 'Museum', 'Park'],
         'lat': 41.878113,
         'lng': -87.629799
     }]
