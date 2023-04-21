@@ -1,5 +1,5 @@
 # Backend Setup
-This setup assumes you have the project downloaded already. Setting up the backend will include installing Python 3.7 and creating a virtual environment that will contain all the needed dependencies.
+This setup assumes you have the project downloaded, and have Python and Node installed on your machine. All commands were done on a Linux machine and may need to be modified slightly depending on the operating system. Setting up the backend will include installing Python 3.7 and creating a virtual environment that will contain all the needed dependencies.
 
 First, change to the directory where you want your virtual environment to be stored. In my case, it will be in the Documents/environments directory for my user.
 
@@ -70,7 +70,7 @@ If you want to deactivate your virtual environment, you can run the following co
 (python37) $ deactivate
 ```
 
-# Testing the Project
+# Testing the Backend
 To run the backend test cases, you will need to change your directory to the Backend folder of the cloned project, activate your virtual environment, and then run a command to start the tests.
 
 ```
