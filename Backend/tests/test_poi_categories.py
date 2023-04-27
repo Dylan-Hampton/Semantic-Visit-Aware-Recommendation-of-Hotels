@@ -8,7 +8,7 @@ def test_origin_first_generation_poi1():
     response = app.test_client().post('/routes',
                                       json={
                                           "algorithm": CONSTANTS.ORIGIN_FIRST,
-                                          "origins": 1,
+                                          "origins": 10,
                                           "distance": 1000,
                                           "categories": [1, 0, 0, 0, 0, 0],
                                           "city": "Chicago"
@@ -22,7 +22,7 @@ def test_origin_first_generation_poi1():
                                           json={
                                               "algorithm":
                                               CONSTANTS.ORIGIN_FIRST,
-                                              "origins": 1,
+                                              "origins": 10,
                                               "distance": 1000,
                                               "categories": [0, 1, 0, 0, 0, 0],
                                               "city": "Chicago"
@@ -36,7 +36,7 @@ def test_origin_first_generation_poi1():
                                           json={
                                               "algorithm":
                                               CONSTANTS.ORIGIN_FIRST,
-                                              "origins": 1,
+                                              "origins": 10,
                                               "distance": 1000,
                                               "categories": [0, 0, 1, 0, 0, 0],
                                               "city": "Chicago"
@@ -50,7 +50,7 @@ def test_origin_first_generation_poi1():
                                           json={
                                               "algorithm":
                                               CONSTANTS.ORIGIN_FIRST,
-                                              "origins": 1,
+                                              "origins": 10,
                                               "distance": 1000,
                                               "categories": [0, 0, 0, 1, 0, 0],
                                               "city": "Chicago"
@@ -64,7 +64,7 @@ def test_origin_first_generation_poi1():
                                           json={
                                               "algorithm":
                                               CONSTANTS.ORIGIN_FIRST,
-                                              "origins": 1,
+                                              "origins": 10,
                                               "distance": 1000,
                                               "categories": [0, 0, 0, 0, 1, 0],
                                               "city": "Chicago"
@@ -78,7 +78,7 @@ def test_origin_first_generation_poi1():
                                           json={
                                               "algorithm":
                                               CONSTANTS.ORIGIN_FIRST,
-                                              "origins": 1,
+                                              "origins": 10,
                                               "distance": 1000,
                                               "categories": [0, 0, 0, 0, 1, 0],
                                               "city": "Chicago"
