@@ -68,7 +68,7 @@ def test_origin_first_generation_poi1():
 
         assert response.json[0]["pois"][0]["category"] == 4
 
-    def test_origin_first_generation_poi5():
+    def test_origin_first_generation_poi6():
         # origins 3, 1 PoI of first category, PARK
         response = app.test_client().post('/routes',
                                           json={
